@@ -65,8 +65,10 @@ PUNTOS = {
 }
 PUEBLOS = ['Cinctorres', 'Castellfort', 'Portell de Morella']
 CAMINOS_ROTULADOS = ['Camí de la Roca Parda', 'Miradors riu Celumbres']
-# punto UTM junto al que se rotula el cauce (tramo recto entre la Roca Parda y l'Arribassada)
-ROTULO_CAUCE = (735_900, 4_492_450)
+# el nombre del cauce va recto, no siguiendo la linea (el trazado de OSM serpentea demasiado):
+# punto UTM del centro del rotulo y rumbo del tramo, en grados, medido desde el este
+ROTULO_CAUCE = (735_650, 4_492_900)
+ROTULO_CAUCE_RUMBO = 26
 
 
 # ------------------------------------------------------------------ utilidades
@@ -428,19 +430,10 @@ a:hover .t-punto, a:hover .t-roca, a:focus .t-punto, a:focus .t-roca { text-deco
     for ident, nombre in rotulos_camino:
         p.append(f'<text class="t-camino" dy="-3"><textPath xlink:href="#{ident}" startOffset="50%" text-anchor="middle">{esc(nombre)}</textPath></text>')
 
-    # nombre del cauce: sobre el tramo que pasa por debajo de l'Arribassada, donde va casi recto
-    ancla = ((ROTULO_CAUCE[0] - X0) / ESCALA, (Y1 - ROTULO_CAUCE[1]) / ESCALA)
-    tramos = [t for t in capas['cauce'] if any(math.hypot(px(*q)[0] - ancla[0], px(*q)[1] - ancla[1]) < 40 for q in t)]
-    if tramos:
-        pts = [px(*q) for q in tramos[0]]
-        # que el texto vaya de izquierda a derecha
-        if pts[0][0] > pts[-1][0]:
-            pts = pts[::-1]
-        p.append(f'<path id="cauce-rotulo" fill="none" stroke="none" d="{polilinea(simplificar(pts, 4))}"/>')
-        i = min(range(len(pts)), key=lambda k: math.hypot(pts[k][0] - ancla[0], pts[k][1] - ancla[1]))
-        largo = sum(math.hypot(pts[k + 1][0] - pts[k][0], pts[k + 1][1] - pts[k][1]) for k in range(len(pts) - 1))
-        hasta = sum(math.hypot(pts[k + 1][0] - pts[k][0], pts[k + 1][1] - pts[k][1]) for k in range(i))
-        p.append(f'<text class="t-cauce" dy="-7"><textPath xlink:href="#cauce-rotulo" startOffset="{100 * hasta / largo:.0f}%" text-anchor="middle">Rambla Celumbres</textPath></text>')
+    # nombre del cauce, recto e inclinado como el tramo que pasa junto a l'Arribassada
+    cx, cy = (ROTULO_CAUCE[0] - X0) / ESCALA, (Y1 - ROTULO_CAUCE[1]) / ESCALA
+    p.append(f'<text class="t-cauce" x="{fmt(cx)}" y="{fmt(cy)}" text-anchor="middle" '
+             f'transform="rotate({-ROTULO_CAUCE_RUMBO} {fmt(cx)} {fmt(cy)})">Rambla Celumbres</text>')
 
     # rocas: rotulo junto al centro del acantilado
     for nombre, g in capas['rocas']:

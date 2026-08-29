@@ -461,8 +461,7 @@ a:hover .t-punto, a:hover .t-roca, a:focus .t-punto, a:focus .t-roca { text-deco
 <text class="t-camino" dy="-3"><textPath xlink:href="#camino-miradors-riu-celumbres" startOffset="50%" text-anchor="middle">Miradors riu Celumbres</textPath></text>
 <text class="t-camino" dy="-3"><textPath xlink:href="#camino-cam-de-la-roca-parda" startOffset="50%" text-anchor="middle">Camí de la Roca Parda</textPath></text>
 <text class="t-camino" dy="-3"><textPath xlink:href="#camino-cam-de-la-roca-parda" startOffset="50%" text-anchor="middle">Camí de la Roca Parda</textPath></text>
-<path id="cauce-rotulo" fill="none" stroke="none" d="M304.8 696.7 L308.8 670.8 L337.9 617.4 L320.7 606.9 L326 591.5 L323.3 564.1 L339.1 557 L356.9 583.9 L372 567.8 L399.7 568.2 L399.8 536.8 L406.3 535.7 L449.7 554.7 L471.8 553.8 L477.3 548.4 L471 531.9 L484.3 500.1 L508.6 500.2 L524.9 509.5 L542.8 496.2 L546.4 482.5 L540.5 457.3 L545.4 452.2 L565.2 468.6 L588.8 466.4 L580.3 439.3 L582.9 424.9 L591.1 419.9 L600.7 424.3 L605.2 445.2 L628.9 458.8 L631.1 465.9 L620.9 476.6 L624.4 483.5 L657.7 482.3 L691.8 459.3 L721.8 468.5 L724.4 495 L739.6 496.7 L751.6 478.9 L739.1 472.9 L736.1 464.3 L749.8 453.2 L750.6 410.4 L743.9 383.8"/>
-<text class="t-cauce" dy="-7"><textPath xlink:href="#cauce-rotulo" startOffset="45%" text-anchor="middle">Rambla Celumbres</textPath></text>
+<text class="t-cauce" x="485" y="470" text-anchor="middle" transform="rotate(-26 485 470)">Rambla Celumbres</text>
 <text class="t-roca" x="341.7" y="708.8" text-anchor="start">Roca del Corb</text>
 <a href="#guia:rapaces"><text class="t-roca" x="379.8" y="592.9" text-anchor="start">Roca Parda</text></a>
 <a href="#guia:el-paraje"><text class="t-roca" x="324.5" y="524.3" text-anchor="end">Roca Roja</text></a>
