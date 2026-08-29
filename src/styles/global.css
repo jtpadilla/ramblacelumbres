@@ -12,6 +12,7 @@
   --verde-suave: #e2e9d8;
   --ocre: #b4762a;
   --ocre-suave: #f2e4cb;
+  --mapa-agua: #5f8398;
   --sombra: 0 1px 2px rgb(29 34 26 / 6%), 0 12px 32px rgb(29 34 26 / 8%);
   --sombra-alta: 0 4px 10px rgb(29 34 26 / 10%), 0 24px 48px rgb(29 34 26 / 16%);
 
@@ -39,6 +40,7 @@
     --verde-suave: #253021;
     --ocre: #dea75a;
     --ocre-suave: #3a2f1c;
+    --mapa-agua: #8fb0c4;
     --sombra: 0 1px 2px rgb(0 0 0 / 35%), 0 12px 32px rgb(0 0 0 / 30%);
     --sombra-alta: 0 4px 10px rgb(0 0 0 / 40%), 0 24px 48px rgb(0 0 0 / 45%);
   }
@@ -412,3 +414,11 @@ em { font-style: italic; }
 :lang(zh-Hans) .portada-pagina .lema { max-width: 30em; }
 :lang(zh-Hans) .bloque-cabecera p { max-width: 32em; }
 :lang(zh-Hans) .homenaje p { max-width: 36em; }
+
+/* -------------------------------------------------------------------- mapa */
+/* SVG generado por tools/mapa.py e insertado en linea: usa los tokens del sitio */
+.mapa { max-width: var(--ancho-foto); margin: 3rem auto 0; padding: 0 1rem; }
+.mapa .bloque-cabecera { margin-bottom: 1.25rem; }
+.mapa svg { display: block; width: 100%; height: auto; border-radius: var(--radio); box-shadow: var(--sombra); border: 1px solid var(--linea); }
+.mapa svg a { cursor: pointer; }
+.mapa figcaption { margin-top: .65rem; font-size: .82rem; color: var(--tinta-3); text-align: center; text-wrap: pretty; }

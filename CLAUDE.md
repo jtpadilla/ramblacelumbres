@@ -118,9 +118,10 @@ src/
     zh/<key>.md             las mismas 23 en chino simplificado; `ruta` en pinyin
   data/flores.ts            catálogo de 69 flores: nombre científico, familia, comunes es/ca/en/zh
   assets/uploads/AAAA/MM/   fotografías originales, sin retocar
+  assets/mapa/rambla.svg    mapa de la rambla, generado por tools/mapa.py (no editar a mano)
   plugins/figuras.mjs       párrafos de imágenes → <figure>/<figcaption>/.galeria
   layouts/Base.astro        html, metadatos, hreflang, fuentes, cabecera y pie
-  components/               Cabecera, Pie, Tarjeta, Visor (lightbox), Catalogo (flores)
+  components/               Cabecera, Pie, Tarjeta, Visor (lightbox), Catalogo (flores), Mapa
   vistas/                   Inicio, Seccion, Articulo, Autores, Proyecto
   pages/
     [...ruta].astro         TODAS las páginas, en los dos idiomas, salen de aquí
@@ -128,6 +129,7 @@ src/
   styles/global.css         diseño completo (tokens, claro/oscuro, componentes, bloque :lang(zh-Hans))
 public/CNAME                www.ramblacelumbres.org
 tools/export-wp.py          migración desde el WordPress (histórico; ver abajo)
+tools/mapa.py               genera el mapa SVG desde OpenStreetMap y el IGN; caché en tools/_mapa/
 wordpress-export/*.xml      exportación oficial del WordPress, 2026-08-29
 ```
 
@@ -171,6 +173,29 @@ los textos de `Autores.astro` (también el slug de `rapaces`) y `Proyecto.astro`
 Las diez entradas alfabéticas de flores del blog («Flores a-b», «Flores c-d»...) se
 convirtieron en `src/data/flores.ts` y se muestran como catálogo con buscador y filtro por
 familia al final de la guía `flores-silvestres` (`layout: catalogo` en el frontmatter).
+
+### El mapa
+
+La guía `el-paraje` lleva `layout: mapa`: al final del texto se inserta en línea
+`src/assets/mapa/rambla.svg` mediante `components/Mapa.astro`. El SVG lo genera
+`tools/mapa.py` (biblioteca estándar + Pillow) a partir de datos abiertos, que quedan en
+`tools/_mapa/` para no depender de la red:
+
+- **OpenStreetMap** (ODbL): perímetro del Paratge Natural Municipal (relación 12598417, con
+  dos anillos exteriores y dos huecos), cauce de la «Rambla de Sellumbres» (así se llama
+  allí), acantilados con nombre (Roca Roja, Roca Parda, Roca del Corb), caminos y pistas con
+  nombre, carreteras, fuentes, pueblos y términos municipales.
+- **IGN** (CC BY 4.0): curvas de nivel en SVG vectorial del WMS INSPIRE de elevaciones y MDT
+  de 25 m en rejilla ASCII del WCS, del que el script calcula el sombreado (PNG con alfa
+  incrustado en base64).
+
+Marco: UTM 30 N, `X0,Y0 = 730800, 4485600`, 9 × 12 km, 1 px = 10 m (viewBox 900 × 1200).
+Los colores son variables CSS del sitio con valor de reserva, así que el mapa sigue el tema
+claro/oscuro; los rótulos usan Fraunces heredada. Los enlaces van en el SVG como
+`href="#guia:<key>"` y `Mapa.astro` los traduce a la URL de la guía en cada idioma. Qué
+puntos se rotulan y a qué guía enlazan está en `PUNTOS` y `CAMINOS_ROTULADOS` del script.
+Para regenerar: `python3 tools/mapa.py` (`--descargar` para volver a pedir los datos).
+Los textos del bloque (`mapaTitulo`, `mapaTexto`, `mapaFuentes`) están en `ui.ts`.
 
 ### Convenciones del markdown de las guías
 

@@ -11,6 +11,7 @@ originalDate: 2014-03-17
 cover: ../../../assets/uploads/2014/03/10.jpg
 coverAlt: "The Roca Roja above the Rambla Celumbres, carrying water after the rains"
 summary: "Where the rambla is, how the Roca Parda and the Roca Roja were formed, and why the landscape changes completely when it rains."
+layout: "mapa"
 ---
 
 ![Landscape of the Rambla Celumbres](../../../assets/uploads/2014/03/1.jpg)
