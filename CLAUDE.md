@@ -78,9 +78,8 @@ l’Arribassada) se dejan en latín, con glosa entre paréntesis la primera vez 
 lado la primera vez; Paquita y Tadeo son 帕基塔 y 塔德奥; las especies llevan el nombre chino
 solo cuando existe uno establecido (七星瓢虫, 西域兀鹫, 松乳菇...) y siempre el científico
 en cursiva; los nombres comunes españoles o valencianos sin equivalente se dejan en cursiva
-como préstamo (*palometes*, *rovelló*, *mantis palo*). Los términos que en castellano son
-«hermanos» sin más se traducen como 同胞 (no se sabe quién es mayor, y 兄妹/姐弟 lo
-afirmaría).
+como préstamo (*palometes*, *rovelló*, *mantis palo*). Paquita es la mayor: «dos hermanos» es 姐弟
+(hermana mayor y hermano menor) y «mi hermano», en boca de Paquita, 弟弟.
 
 ---
 

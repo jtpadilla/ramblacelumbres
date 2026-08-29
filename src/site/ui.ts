@@ -213,7 +213,7 @@ const zh: typeof es = {
   textosYFotos: '文字与摄影',
   homenaje: '塔德奥与帕基塔',
   homenajeTexto:
-    '本站汇集了 Cinctorres 一对同胞的作品。退休之后，他们带着相机和笔记本，多年行走于 Els Ports 山区。她写字，他拍照。',
+    '本站汇集了 Cinctorres 一对姐弟的作品。退休之后，他们带着相机和笔记本，多年行走于 Els Ports 山区。她写字，他拍照。',
   homenajeEnlace: '认识作者',
   portadaCta: '浏览图鉴',
   portadaCta2: '作者',
