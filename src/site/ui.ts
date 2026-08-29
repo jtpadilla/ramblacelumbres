@@ -38,7 +38,7 @@ const es = {
   sobreElSitio: 'Sobre el sitio',
   intro: 'Una guía fotográfica de la vida que hay en una rambla que casi nunca lleva agua: <b>flores, insectos, aves, mamíferos, hongos y líquenes</b>, observados durante tres años entre la Roca Parda y la Roca Roja.',
   textosYFotos: 'Textos y fotografías',
-  homenaje: 'Francisca y Tadeo',
+  homenaje: 'Tadeo y Paquita',
   homenajeTexto:
     'Este sitio recoge el trabajo de dos hermanos de Cinctorres que, ya jubilados, recorrieron durante años las montañas dels Ports con una cámara y un cuaderno. Ella escribía; él fotografiaba.',
   homenajeEnlace: 'Conocer a los autores',
@@ -93,7 +93,7 @@ const ca: typeof es = {
   sobreElSitio: 'Sobre el lloc',
   intro: 'Una guia fotogràfica de la vida que hi ha en una rambla que quasi mai porta aigua: <b>flors, insectes, aus, mamífers, fongs i líquens</b>, observats durant tres anys entre la Roca Parda i la Roca Roja.',
   textosYFotos: 'Textos i fotografies',
-  homenaje: 'Francisca i Tadeo',
+  homenaje: 'Tadeo i Paquita',
   homenajeTexto:
     'Aquest lloc recull el treball de dos germans de Cinctorres que, ja jubilats, van recórrer durant anys les muntanyes dels Ports amb una càmera i un quadern. Ella escrivia; ell fotografiava.',
   homenajeEnlace: 'Conéixer els autors',
@@ -148,7 +148,7 @@ const en: typeof es = {
   sobreElSitio: 'About this site',
   intro: 'A photographic guide to the life of a rambla that hardly ever carries water: <b>flowers, insects, birds, mammals, fungi and lichens</b>, observed over three years between the Roca Parda and the Roca Roja.',
   textosYFotos: 'Text and photographs',
-  homenaje: 'Francisca and Tadeo',
+  homenaje: 'Tadeo and Paquita',
   homenajeTexto:
     'This site gathers the work of two siblings from Cinctorres who, after retiring, spent years walking the Els Ports mountains with a camera and a notebook. She wrote; he photographed.',
   homenajeEnlace: 'Meet the authors',
