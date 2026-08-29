@@ -1,5 +1,5 @@
 ---
-import { SECCIONES, SECCION_KEYS, PAGINAS, SITIO, LANGS, urlInicio, urlSeccion, urlPagina, type Lang, type Alternativas } from '../site/config';
+import { SECCIONES, SECCION_KEYS, PAGINAS, SITIO, LANGS, CODIGO_IDIOMA, urlInicio, urlSeccion, urlPagina, type Lang, type Alternativas } from '../site/config';
 import { ui } from '../site/ui';
 
 interface Props { lang: Lang; alternativas?: Alternativas; activo?: string }
@@ -16,7 +16,7 @@ const t = ui(lang);
         <path d="M16 26c0-6.5-2.8-11-8.5-12.5C8.7 19.8 11.5 24.5 16 26z" fill="#8fae75" />
         <path d="M16 27v-7" stroke="#f4efe4" stroke-width="1.7" stroke-linecap="round" />
       </svg>
-      <span><b>{SITIO.nombre}</b><small>{lang === 'en' ? 'Ecosystem · Els Ports' : 'Ecosistema · Els Ports'}</small></span>
+      <span><b>{SITIO.nombre}</b><small>{t.marcaSub}</small></span>
     </a>
     <nav class="nav" aria-label={t.menu}>
       {SECCION_KEYS.map((key) => (
@@ -26,7 +26,7 @@ const t = ui(lang);
     </nav>
     <nav class="idiomas" aria-label={t.idiomaEtiqueta}>
       {LANGS.map((l) => (
-        <a href={alternativas?.[l] ?? urlInicio(l)} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined} title={ui(l).idioma}>{ui(l).idiomaCorto}</a>
+        <a href={alternativas?.[l] ?? urlInicio(l)} hreflang={CODIGO_IDIOMA[l]} lang={CODIGO_IDIOMA[l]} aria-current={l === lang ? 'true' : undefined} title={ui(l).idioma}>{ui(l).idiomaCorto}</a>
       ))}
     </nav>
   </div>

@@ -50,7 +50,7 @@ const alternativas = Object.fromEntries(LANGS.map((l) => [l, urlInicio(l)])) as 
     <div class="velo"></div>
     <div class="contenedor">
       <p class="antetitulo">Cinctorres · Castellfort · Portell de Morella</p>
-      <h1>{lang === 'en' ? <><i>Rambla Celumbres</i> Ecosystem</> : <>Ecosistema de la <i>Rambla Celumbres</i></>}</h1>
+      <h1 set:html={t.portadaTitulo} />
       <p>{SITIO.lema[lang]}.</p>
       <div class="botones">
         <a class="boton" href={urlSeccion(lang, 'la-rambla')}>{t.portadaCta}</a>

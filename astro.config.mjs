@@ -17,12 +17,12 @@ export default defineConfig({
   trailingSlash: 'always',
   i18n: {
     defaultLocale: 'es',
-    locales: ['es', 'ca', 'en'],
+    locales: ['es', 'ca', 'en', 'zh'],
     routing: { prefixDefaultLocale: false },
   },
   integrations: [
     sitemap({
-      i18n: { defaultLocale: 'es', locales: { es: 'es-ES', ca: 'ca-ES', en: 'en-GB' } },
+      i18n: { defaultLocale: 'es', locales: { es: 'es-ES', ca: 'ca-ES', en: 'en-GB', zh: 'zh-Hans' } },
     }),
   ],
   // Las fuentes se descargan en el build y se sirven desde el propio sitio:

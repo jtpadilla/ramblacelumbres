@@ -10,7 +10,8 @@ Leer este fichero completo antes de tocar nada.
 **Ecosistema de la Rambla Celumbres** ([www.ramblacelumbres.org](https://www.ramblacelumbres.org/)):
 guía fotográfica de la biodiversidad de la rambla de Celumbres (Cinctorres, Castellfort y
 Portell de Morella, comarca dels Ports). 23 guías y 315 fotografías, en castellano,
-valenciano e inglés, hechas a partir de un blog de WordPress publicado entre 2014 y 2016.
+valenciano, inglés y chino simplificado, hechas a partir de un blog de WordPress publicado
+entre 2014 y 2016.
 
 ### Quién está detrás
 
@@ -41,7 +42,8 @@ GitHub Pages con dominio propio.
    referencia: `tools/_wp-markdown/` (markdown del texto original), `tools/_wp-dump/`
    (API REST) y `wordpress-export/` (exportación oficial WXR).
 2. **Producto nuevo** (esta versión): el contenido se reorganizó por temas, se corrigieron
-   los textos, se tradujo todo al valenciano y al inglés y se diseñó el sitio desde cero. Lo pidió
+   los textos, se tradujo todo al valenciano, al inglés y al chino y se diseñó el sitio desde
+   cero. Lo pidió
    Juan Tadeo Padilla Julián expresamente: los autores estructuraron el blog sin
    conocimientos informáticos ni documentales, y quería «un producto nuevo y nativo como
    creado desde cero».
@@ -66,6 +68,18 @@ GitHub Pages con dominio propio.
 El inglés es británico. El valenciano es estándar con léxico de la comarca (*xicotet*, *hui*, *rovelló*, *roser
 gavarrer*, *pregadéu*, *rabosa*). Los términos que los propios autores usaban en valenciano
 dentro del castellano (*marges*, *tolls*, *xotos*, *abella*, *voltor*) se conservan.
+
+El chino es **simplificado** (`lang="zh-Hans"`, código interno `zh`), en registro llano y
+fiel, sin florituras: nadie de la familia puede revisarlo, así que se prefiere la traducción
+sobria a la brillante. Convenciones: puntuación de ancho completo (，。：“”（）), un espacio
+entre ideogramas y texto latino o cifras; los topónimos (Cinctorres, Roca Roja, Els Ports,
+l’Arribassada) se dejan en latín, con glosa entre paréntesis la primera vez si aporta algo
+(Roca Roja（“红岩”）); «Rambla Celumbres» se traduce como 塞伦布雷斯干河 con el original al
+lado la primera vez; Paquita y Tadeo son 帕基塔 y 塔德奥; las especies llevan el nombre chino
+solo cuando existe uno establecido (七星瓢虫, 西域兀鹫, 松乳菇...) y siempre el científico
+en cursiva; los nombres comunes españoles o valencianos sin equivalente se dejan en cursiva
+como préstamo (*palometes*, *rovelló*, *mantis palo*). Paquita es la mayor: «dos hermanos» es 姐弟
+(hermana mayor y hermano menor) y «mi hermano», en boca de Paquita, 弟弟.
 
 ---
 
@@ -92,7 +106,7 @@ src/
   site/
     config.ts               idiomas, secciones y grupos, páginas, constructores de URL,
                             tabla de redirecciones del WordPress
-    ui.ts                   textos de la interfaz en es y ca
+    ui.ts                   textos de la interfaz en es, ca, en y zh
     guias.ts                consultas a la colección: orden de lectura, hermanas, URL
     fotos.ts                acceso a las 315 fotos por ruta (import.meta.glob)
     rss.ts                  feed por idioma
@@ -101,7 +115,8 @@ src/
     es/<key>.md             23 guías en castellano
     ca/<key>.md             las mismas 23 en valenciano; misma `key`, distinta `ruta`
     en/<key>.md             las mismas 23 en inglés
-  data/flores.ts            catálogo de 69 flores: nombre científico, familia, comunes es/ca
+    zh/<key>.md             las mismas 23 en chino simplificado; `ruta` en pinyin
+  data/flores.ts            catálogo de 69 flores: nombre científico, familia, comunes es/ca/en/zh
   assets/uploads/AAAA/MM/   fotografías originales, sin retocar
   plugins/figuras.mjs       párrafos de imágenes → <figure>/<figcaption>/.galeria
   layouts/Base.astro        html, metadatos, hreflang, fuentes, cabecera y pie
@@ -109,8 +124,8 @@ src/
   vistas/                   Inicio, Seccion, Articulo, Autores, Proyecto
   pages/
     [...ruta].astro         TODAS las páginas, en los dos idiomas, salen de aquí
-    404.astro, rss.xml.ts, ca/rss.xml.ts
-  styles/global.css         diseño completo (tokens, claro/oscuro, componentes)
+    404.astro, rss.xml.ts, ca/rss.xml.ts, en/rss.xml.ts, zh/rss.xml.ts
+  styles/global.css         diseño completo (tokens, claro/oscuro, componentes, bloque :lang(zh-Hans))
 public/CNAME                www.ramblacelumbres.org
 tools/export-wp.py          migración desde el WordPress (histórico; ver abajo)
 wordpress-export/*.xml      exportación oficial del WordPress, 2026-08-29
@@ -118,25 +133,31 @@ wordpress-export/*.xml      exportación oficial del WordPress, 2026-08-29
 
 ### Rutas
 
-El castellano va en la raíz, el valenciano bajo `/ca/` y el inglés bajo `/en/`:
+El castellano va en la raíz, el valenciano bajo `/ca/`, el inglés bajo `/en/` y el chino bajo
+`/zh/` (slugs en pinyin, para que se puedan dictar y teclear):
 
 ```
-/                         /ca/                      /en/
-/flora/                   /ca/flora/                /en/flora/
-/flora/los-arboles/       /ca/flora/els-arbres/     /en/flora/the-trees/
-/hongos-y-liquenes/       /ca/fongs-i-liquens/      /en/fungi-and-lichens/
-/los-autores/             /ca/els-autors/           /en/the-authors/
-/el-proyecto/             /ca/el-projecte/          /en/the-project/
+/                         /ca/                      /en/                      /zh/
+/flora/                   /ca/flora/                /en/flora/                /zh/zhiwu/
+/flora/los-arboles/       /ca/flora/els-arbres/     /en/flora/the-trees/      /zh/zhiwu/shumu/
+/hongos-y-liquenes/       /ca/fongs-i-liquens/      /en/fungi-and-lichens/    /zh/zhenjun-he-diyi/
+/los-autores/             /ca/els-autors/           /en/the-authors/          /zh/zuozhe/
+/el-proyecto/             /ca/el-projecte/          /en/the-project/          /zh/xiangmu/
 ```
+
+El código interno del idioma (`Lang`, carpetas, prefijo de URL) es `zh`; el código BCP 47
+que va en `<html lang>`, en los `hreflang` y en el sitemap es `zh-Hans`, y sale de
+`CODIGO_IDIOMA` en `config.ts`. El `locale` para fechas y `og:locale` es `zh-CN`.
 
 Las URL se construyen **solo** con las funciones de `src/site/config.ts` (`urlSeccion`,
 `urlArticulo`, `urlPagina`...). Los slugs por idioma están en el frontmatter (campo `ruta`; no se llama `slug` porque el cargador de Astro usaría ese valor como id y las dos «primavera» chocarían) de cada guía y
 en `SECCIONES`/`PAGINAS`. Cada vista construye `alternativas` (misma página en cada idioma,
-localizada por `key`) y `Base.astro` emite los `hreflang` y el selector ES · CA · EN.
+localizada por `key`) y `Base.astro` emite los `hreflang` y el selector ES · CA · EN · 中文.
 
-Para añadir un idioma: `LANGS` y todos los `T` de `config.ts`, `ui.ts`, `content.config.ts`,
-`astro.config.mjs` (i18n y sitemap), `data/flores.ts` (nombres comunes), los textos de
-`Autores.astro` y `Proyecto.astro`, `pages/<lang>/rss.xml.ts` y las 23 guías.
+Para añadir un idioma: `LANGS`, `CODIGO_IDIOMA` y todos los `T` de `config.ts`, `ui.ts`,
+`content.config.ts`, `astro.config.mjs` (i18n y sitemap), `data/flores.ts` (nombres comunes),
+los textos de `Autores.astro` (también el slug de `rapaces`) y `Proyecto.astro`, `404.astro`,
+`pages/<lang>/rss.xml.ts`, `urlCatalogo` en `config.ts` y las 23 guías.
 
 ### Organización del contenido
 
@@ -181,6 +202,12 @@ familia al final de la guía `flores-silvestres` (`layout: catalogo` en el front
   texto absolutos encima.
 - **Tema claro y oscuro** solo con `prefers-color-scheme`. Tokens al principio de
   `global.css`.
+- **Fuentes para el chino**: Fraunces y Source Sans 3 no tienen ideogramas y no se descarga
+  ninguna fuente CJK (pesarían varios MB). El bloque `:lang(zh-Hans)` de `global.css` añade
+  detrás de ellas las fuentes CJK del sistema (PingFang, Noto Sans CJK SC, Microsoft YaHei...),
+  de modo que los nombres latinos siguen saliendo con las fuentes del sitio y los ideogramas
+  con las del lector; desactiva la cursiva sintética (el chino no tiene cursiva) y ensancha
+  los `max-width` en `ch`, que se miden con el «0» latino.
 - **Enlaces del WordPress antiguo** (`?p=`, `?page_id=`, `?cat=`): un host estático ignora
   la query, así que la portada lleva un script mínimo que los traduce con la tabla de
   `config.ts` (`WP_ENTRADAS`, `WP_PAGINAS`, `WP_CATEGORIAS`). La 404 reenvía a la portada
@@ -208,7 +235,7 @@ Mientras tanto, el dominio sirve el WordPress antiguo.
 ## Comprobaciones antes de dar algo por bueno
 
 ```bash
-npm run build                                    # 91 páginas, sin errores
+npm run build                                    # 121 páginas, sin errores
 grep -o '<p[^>]*><figure' -r dist | wc -l        # 0: <figure> nunca dentro de <p>
 python3 - <<'EOF'
 import re,glob,os
@@ -221,4 +248,18 @@ print('enlaces rotos:',len(rotos))
 EOF
 ```
 Y comprobar a ojo, en `npm run preview`, la portada, una sección, una guía con galerías,
-el catálogo de flores y la página de los autores, en los tres idiomas y en móvil.
+el catálogo de flores y la página de los autores, en los cuatro idiomas y en móvil.
+
+Para las guías en chino, además, que cada `zh/<key>.md` lleva las mismas fotos, en el mismo
+orden y con las mismas galerías que `es/<key>.md`:
+
+```bash
+python3 - <<'EOF'
+import re,glob,os
+for f in sorted(glob.glob('src/content/articulos/es/*.md')):
+    k=os.path.basename(f); es=open(f,encoding='utf-8').read(); zh=open('src/content/articulos/zh/'+k,encoding='utf-8').read()
+    im=lambda s: re.findall(r'\]\((\.\./[^ )]+)',s)
+    ga=lambda s: [len(b.strip().split('\n')) for b in re.findall(r'((?:^!\[.*\n?)+)',s,re.M)]
+    if im(es)!=im(zh) or ga(es)!=ga(zh): print('DIFF',k)
+EOF
+```
