@@ -335,6 +335,7 @@ em { font-style: italic; }
 }
 .catalogo-filtros input:focus, .catalogo-filtros select:focus { border-color: var(--verde); outline: none; }
 .catalogo-filtros output { margin-left: auto; font-size: .9rem; color: var(--tinta-3); align-self: center; }
+@media (max-width: 56rem) { .catalogo-filtros { position: static; } }
 .letras { display: flex; flex-wrap: wrap; gap: .25rem; margin: 0 0 1.75rem; padding: 0; list-style: none; }
 .letras a { display: inline-block; min-width: 2rem; text-align: center; padding: .3rem .4rem; border-radius: var(--radio-s); text-decoration: none; font-weight: 600; font-size: .9rem; color: var(--tinta-2); background: var(--superficie); border: 1px solid var(--linea); }
 .letras a:hover { border-color: var(--ocre); color: var(--ocre); }
