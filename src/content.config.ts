@@ -10,7 +10,7 @@ const articulos = defineCollection({
   schema: ({ image }) =>
     z.object({
       key: z.string(),
-      lang: z.enum(['es', 'ca']),
+      lang: z.enum(['es', 'ca', 'en']),
       ruta: z.string(),
       title: z.string(),
       subtitle: z.string().optional(),

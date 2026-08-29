@@ -2,7 +2,7 @@
 
 Guía fotográfica de la biodiversidad de la **rambla de Celumbres**, en la comarca dels Ports
 (Cinctorres, Castellfort y Portell de Morella): 23 guías y 315 fotografías sobre el paraje,
-las estaciones, la flora, la fauna, los hongos y los líquenes, en castellano y en valenciano.
+las estaciones, la flora, la fauna, los hongos y los líquenes, en castellano, valenciano e inglés.
 
 [www.ramblacelumbres.org](https://www.ramblacelumbres.org/)
 
@@ -12,7 +12,8 @@ las estaciones, la flora, la fauna, los hongos y los líquenes, en castellano y 
 
 Francisca y Tadeo son hermanos, nacidos en Cinctorres. Entre 2014 y 2016 recorrieron la
 rambla con una cámara y un cuaderno y publicaron su trabajo en un blog. Este sitio lo
-recoge íntegramente, reorganizado por temas, con los textos corregidos y traducidos, como
+recoge íntegramente, reorganizado por temas, con los textos corregidos y traducidos al
+valenciano y al inglés, como
 homenaje a su trabajo y para que el patrimonio natural de Cinctorres y de la comarca siga a
 la vista de quien quiera mirarlo. Sin publicidad, sin cookies, sin ánimo de lucro.
 

@@ -5,7 +5,7 @@ import Base from '../layouts/Base.astro';
 import Tarjeta from '../components/Tarjeta.astro';
 import Visor from '../components/Visor.astro';
 import Catalogo from '../components/Catalogo.astro';
-import { SECCIONES, AUTORES, urlInicio, urlSeccion, otroIdioma, formatoFecha, type Lang } from '../site/config';
+import { SECCIONES, AUTORES, LANGS, urlInicio, urlSeccion, formatoFecha, type Lang, type Alternativas } from '../site/config';
 import { ui } from '../site/ui';
 import { guiasDe, guiaPorClave, urlDe, type Guia } from '../site/guias';
 
@@ -24,10 +24,14 @@ const i = hermanas.findIndex((g) => g.id === guia.id);
 const anterior = hermanas[i - 1];
 const siguiente = hermanas[i + 1];
 const relacionadas = hermanas.filter((g) => g.id !== guia.id).slice(0, 3);
-const alternativa = await guiaPorClave(otroIdioma(lang), guia.data.key);
+const alternativas = {} as Alternativas;
+for (const l of LANGS) {
+  const otra = l === lang ? guia : await guiaPorClave(l, guia.data.key);
+  alternativas[l] = otra ? urlDe(otra) : urlSeccion(l, section);
+}
 ---
 
-<Base lang={lang} titulo={title} descripcion={summary} imagen={cover.src} tipo="article" fecha={originalDate} alternativa={alternativa ? urlDe(alternativa) : undefined} activo={section}>
+<Base lang={lang} titulo={title} descripcion={summary} imagen={cover.src} tipo="article" fecha={originalDate} alternativas={alternativas} activo={section}>
   <article>
     <header class="portada portada-pagina">
       <Image src={cover} alt={coverAlt} widths={[640, 1024, 1600, 2048]} sizes="100vw" loading="eager" fetchpriority="high" decoding="sync" />

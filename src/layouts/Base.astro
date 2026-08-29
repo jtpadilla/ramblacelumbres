@@ -2,7 +2,7 @@
 import { Font } from 'astro:assets';
 import Cabecera from '../components/Cabecera.astro';
 import Pie from '../components/Pie.astro';
-import { SITIO, urlRss, urlPublico, type Lang } from '../site/config';
+import { SITIO, LANGS, LANG_POR_DEFECTO, urlRss, urlPublico, type Lang, type Alternativas } from '../site/config';
 import { ui } from '../site/ui';
 import '../styles/global.css';
 
@@ -14,19 +14,18 @@ interface Props {
   imagen?: string;
   tipo?: 'website' | 'article';
   fecha?: Date;
-  /** misma pagina en el otro idioma */
-  alternativa?: string;
+  /** misma pagina en cada idioma (incluido el actual) */
+  alternativas?: Alternativas;
   /** seccion activa en el menu */
   activo?: string;
 }
 
-const { lang, titulo, descripcion = SITIO.descripcion[lang], imagen, tipo = 'website', fecha, alternativa, activo } = Astro.props;
+const { lang, titulo, descripcion = SITIO.descripcion[lang], imagen, tipo = 'website', fecha, alternativas, activo } = Astro.props;
 const t = ui(lang);
 const tituloCompleto = titulo ? `${titulo} · ${SITIO.titulo[lang]}` : SITIO.titulo[lang];
 const canonica = new URL(Astro.url.pathname, Astro.site);
 const imagenAbs = imagen ? new URL(imagen, Astro.site).href : undefined;
-const alternativaAbs = alternativa ? new URL(alternativa, Astro.site).href : undefined;
-const otro = lang === 'es' ? 'ca' : 'es';
+
 ---
 
 <!doctype html>
@@ -37,8 +36,8 @@ const otro = lang === 'es' ? 'ca' : 'es';
     <title>{tituloCompleto}</title>
     <meta name="description" content={descripcion} />
     <link rel="canonical" href={canonica.href} />
-    {alternativaAbs && <link rel="alternate" hreflang={otro} href={alternativaAbs} />}
-    {alternativaAbs && <link rel="alternate" hreflang={lang} href={canonica.href} />}
+    {alternativas && LANGS.map((l) => <link rel="alternate" hreflang={l} href={new URL(alternativas[l], Astro.site).href} />)}
+    {alternativas && <link rel="alternate" hreflang="x-default" href={new URL(alternativas[LANG_POR_DEFECTO], Astro.site).href} />}
     <link rel="icon" href={urlPublico('favicon.svg')} type="image/svg+xml" />
     <link rel="alternate" type="application/rss+xml" title={SITIO.titulo[lang]} href={urlRss(lang)} />
     <link rel="sitemap" href={urlPublico('sitemap-index.xml')} />
@@ -63,10 +62,10 @@ const otro = lang === 'es' ? 'ca' : 'es';
   </head>
   <body>
     <a class="saltar" href="#contenido">{t.saltar}</a>
-    <Cabecera lang={lang} alternativa={alternativa} activo={activo} />
+    <Cabecera lang={lang} alternativas={alternativas} activo={activo} />
     <main id="contenido">
       <slot />
     </main>
-    <Pie lang={lang} alternativa={alternativa} />
+    <Pie lang={lang} alternativas={alternativas} />
   </body>
 </html>

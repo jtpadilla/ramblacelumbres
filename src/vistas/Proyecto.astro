@@ -1,11 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
-import { PAGINAS, SITIO, AUTORES, urlInicio, urlPagina, otroIdioma, type Lang } from '../site/config';
+import { PAGINAS, SITIO, AUTORES, LANGS, urlInicio, urlPagina, type Lang, type Alternativas } from '../site/config';
 import { ui } from '../site/ui';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = ui(lang);
+const alternativas = Object.fromEntries(LANGS.map((l) => [l, urlPagina(l, 'proyecto')])) as Alternativas;
 
 const x = {
   es: {
@@ -34,10 +35,23 @@ const x = {
     hermano: 'Projecte germà',
     codigo: 'Codi font a GitHub',
   },
+  en: {
+    titulo: 'The project',
+    lema: 'How a blog from 2014 became this guide',
+    s: [
+      ['What it is', 'Rambla Celumbres Ecosystem is a photographic guide to the biodiversity of the Celumbres rambla, in the Els Ports region of Castellón (Spain). It contains, in full, the work that Francisca and Tadeo Julián Querol published between 2014 and 2016 on a WordPress blog: 33 posts and 315 photographs.'],
+      ['What was done in 2026', 'The blog was reorganised by subject rather than by date: the rambla and its seasons, the flora, the fauna, the fungi and the lichens. The ten alphabetical flower posts became a catalogue with a search box and a filter by family. The texts keep their author’s voice; only typos, accents and scientific names were corrected, and the wording was touched up where needed to read comfortably. Everything is available in Spanish, Valencian and English.'],
+      ['Why this way', 'Francisca and Tadeo can no longer maintain the blog, and a WordPress site demands constant updates. This site is static: no database, no server to administer, nothing to patch. It can be published as is for decades. It has no advertising, no cookies, and collects nobody’s data.'],
+      ['Who', `Text: ${AUTORES.textos}. Photographs: ${AUTORES.fotografias}. Programming, migration and contact for corrections: ${AUTORES.contacto}. All three are from Cinctorres, and this site, like its sister project santjoans.es, springs from a disinterested wish to preserve and make known the heritage of Cinctorres and its region.`],
+      ['Code and corrections', 'The source code of the site, together with the original photographs and the complete export of the old blog, is published on GitHub. Any correction or suggestion can be sent there or directly to Juan Tadeo Padilla Julián.'],
+    ],
+    hermano: 'Sister project',
+    codigo: 'Source code on GitHub',
+  },
 }[lang];
 ---
 
-<Base lang={lang} titulo={x.titulo} descripcion={x.lema} alternativa={urlPagina(otroIdioma(lang), 'proyecto')}>
+<Base lang={lang} titulo={x.titulo} descripcion={x.lema} alternativas={alternativas}>
   <div class="lectura" style="padding-top:3.5rem">
     <p class="antetitulo"><a href={urlInicio(lang)}>{t.inicio}</a> / {PAGINAS.proyecto.nombre[lang]}</p>
     <h1 style="font-size:clamp(2.2rem,5vw,3.4rem); margin:.4rem 0 .5rem">{x.titulo}</h1>

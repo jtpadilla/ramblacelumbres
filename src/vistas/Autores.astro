@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import { PAGINAS, SITIO, AUTORES, urlInicio, urlPagina, urlSeccion, otroIdioma, type Lang } from '../site/config';
+import { PAGINAS, SITIO, AUTORES, LANGS, urlInicio, urlPagina, urlSeccion, type Lang, type Alternativas } from '../site/config';
 import { ui } from '../site/ui';
 import { foto } from '../site/fotos';
 
@@ -11,7 +11,8 @@ const t = ui(lang);
 const paquita = foto('2014/03/2.jpg');
 const tadeo = foto('2014/03/12.jpg');
 const enElCampo = foto('2014/03/27.jpg');
-const rapaces = urlSeccion(lang, 'fauna') + (lang === 'es' ? 'rapaces-diurnas/' : 'rapinyaires-diurns/');
+const rapaces = urlSeccion(lang, 'fauna') + { es: 'rapaces-diurnas/', ca: 'rapinyaires-diurns/', en: 'birds-of-prey/' }[lang];
+const alternativas = Object.fromEntries(LANGS.map((l) => [l, urlPagina(l, 'autores')])) as Alternativas;
 
 const x = {
   es: {
@@ -56,10 +57,31 @@ const x = {
     proyecto: 'Més sobre com s’ha fet aquest lloc',
     verRapaces: 'Llegir la guia dels rapinyaires',
   },
+  en: {
+    titulo: 'The authors',
+    lema: 'Two siblings from Cinctorres, a camera and a notebook',
+    textos: 'Wrote the texts',
+    fotos: 'Took the photographs',
+    citaPie: 'Francisca Julián Querol, introducing the original blog (March 2014)',
+    cita1: 'My name is Paquita and my brother’s is Tadeo. We are retired. We both love nature, and whenever we can we walk the Els Ports mountains taking photographs: some of mine come out well, others so-so; having a master photographer like my brother beside you makes it complicated. I prefer writing, so it all stays in the family.',
+    cita2: 'The purpose of this blog is to share the biodiversity, our photographs and the beauty of this place, unknown to many and dear to us, for we know it well from the rambles we have made through it since childhood.',
+    fotoPie: 'Paquita in the rambla, with the Roca Roja behind.',
+    h1: 'Who they are',
+    p1: 'Francisca and Tadeo Julián Querol were born in Cinctorres and have known the Celumbres rambla since they were children. Between 2014 and 2016, after retiring, they walked again and again the terraces of l’Arribassada, the dels Bassis spring, the pine woods of the Roca Parda and the common woodlands of the region. She identified and described what they found; he photographed it. The result was 33 posts and more than three hundred photographs on a blog they called “Ecosistema de la Rambla Celumbres”.',
+    p2: 'For the vulture photographs they spent several mornings crouched at the top of the cliff under a camouflage net. For the Graellsia isabellae they rose early until they found it at seven, just after the rain, and photographed it on Tadeo’s hand before the sun woke it. That is the spirit of the whole work: patience, love for the place and a wish for others to know it.',
+    h2: 'Why this site exists',
+    p3: 'The original blog was a WordPress site that Francisca and Tadeo can no longer maintain. In 2026 the family turned it into this guide: the same texts —with typos corrected and the wording only lightly touched, so they still sound like her—, the same photographs, reorganised by subject and translated into Valencian and English, on a static site that needs neither a server nor maintenance and that can go on being read for many years.',
+    p4: 'It is a tribute to their work and, above all, a way of keeping the natural heritage of Cinctorres and the Els Ports region in view of anyone who cares to look.',
+    h3: 'The sister project',
+    p5: 'Francisca and Tadeo also took part in santjoans.es, the viewer of the zoomorphic ceramic pavement of the Palau Santjoans in Cinctorres: she with the study of the pavement and he with the photography of the tiles. It is a project with the same purpose as this one: to document and share what is valuable in Cinctorres.',
+    p6: 'The programming of both sites, and the contact for any correction, is Juan Tadeo Padilla Julián.',
+    proyecto: 'More about how this site was made',
+    verRapaces: 'Read the birds of prey guide',
+  },
 }[lang];
 ---
 
-<Base lang={lang} titulo={x.titulo} descripcion={x.lema} imagen={enElCampo.src} alternativa={urlPagina(otroIdioma(lang), 'autores')} activo="autores">
+<Base lang={lang} titulo={x.titulo} descripcion={x.lema} imagen={enElCampo.src} alternativas={alternativas} activo="autores">
   <div class="contenedor">
     <div class="lectura" style="text-align:center; padding-top:3.5rem">
       <p class="antetitulo"><a href={urlInicio(lang)}>{t.inicio}</a> / {PAGINAS.autores.nombre[lang]}</p>
@@ -71,13 +93,12 @@ const x = {
       <div class="autor">
         <Image src={paquita} alt="Francisca Julián Querol" width={480} height={480} loading="eager" />
         <h2>Francisca Julián Querol</h2>
-        <p>«Paquita»</p>
+        <p>{lang === 'en' ? '“Paquita”' : '«Paquita»'}</p>
         <p class="antetitulo">{x.textos}</p>
       </div>
       <div class="autor">
         <Image src={tadeo} alt="Tadeo Julián Querol" width={480} height={480} loading="eager" />
         <h2>Tadeo Julián Querol</h2>
-        <p>«Tadeo»</p>
         <p class="antetitulo">{x.fotos}</p>
       </div>
     </div>

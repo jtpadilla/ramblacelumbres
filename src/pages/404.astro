@@ -4,6 +4,7 @@ import { urlInicio } from '../site/config';
 import { ui } from '../site/ui';
 const es = ui('es');
 const ca = ui('ca');
+const en = ui('en');
 ---
 
 <Base lang="es" titulo={es.noEncontrada}>
@@ -21,6 +22,11 @@ const ca = ui('ca');
       <h2 style="font-size:1.5rem; margin-bottom:.5rem">{ca.noEncontrada}</h2>
       <p>{ca.noEncontradaTexto}</p>
       <p><a href={urlInicio('ca')}>{ca.volverInicio} →</a></p>
+    </div>
+    <div lang="en" style="margin-top:2rem">
+      <h2 style="font-size:1.5rem; margin-bottom:.5rem">{en.noEncontrada}</h2>
+      <p>{en.noEncontradaTexto}</p>
+      <p><a href={urlInicio('en')}>{en.volverInicio} →</a></p>
     </div>
   </div>
 </Base>

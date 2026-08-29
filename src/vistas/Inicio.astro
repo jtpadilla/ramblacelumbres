@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Tarjeta from '../components/Tarjeta.astro';
-import { SECCIONES, SECCION_KEYS, SITIO, urlInicio, urlSeccion, urlPagina, urlCatalogo, urlRss, otroIdioma, WP_ENTRADAS, WP_PAGINAS, WP_CATEGORIAS, type Lang } from '../site/config';
+import { SECCIONES, SECCION_KEYS, SITIO, LANGS, urlInicio, urlSeccion, urlPagina, urlCatalogo, urlRss, WP_ENTRADAS, WP_PAGINAS, WP_CATEGORIAS, type Lang, type Alternativas } from '../site/config';
 import { ui } from '../site/ui';
 import { foto, TOTAL_FOTOS } from '../site/fotos';
 import { guiasDe, guiaPorClave, urlDe } from '../site/guias';
@@ -32,9 +32,10 @@ redirecciones['?feed=rss'] = urlRss('es');
 const portada = foto('2015/03/1.jpg');
 const retratoTadeo = foto('2014/03/12.jpg');
 const retratoPaquita = foto('2014/03/2.jpg');
+const alternativas = Object.fromEntries(LANGS.map((l) => [l, urlInicio(l)])) as Alternativas;
 ---
 
-<Base lang={lang} imagen={portada.src} alternativa={urlInicio(otroIdioma(lang))}>
+<Base lang={lang} imagen={portada.src} alternativas={alternativas}>
   <script slot="head" is:inline define:vars={{ redirecciones }}>
     // Un alojamiento estatico ignora la query, asi que los enlaces del blog
     // antiguo llegan aqui: se traducen a la direccion nueva antes de pintar.
@@ -49,7 +50,7 @@ const retratoPaquita = foto('2014/03/2.jpg');
     <div class="velo"></div>
     <div class="contenedor">
       <p class="antetitulo">Cinctorres · Castellfort · Portell de Morella</p>
-      <h1>{lang === 'es' ? <>Ecosistema de la <i>Rambla Celumbres</i></> : <>Ecosistema de la <i>Rambla Celumbres</i></>}</h1>
+      <h1>{lang === 'en' ? <><i>Rambla Celumbres</i> Ecosystem</> : <>Ecosistema de la <i>Rambla Celumbres</i></>}</h1>
       <p>{SITIO.lema[lang]}.</p>
       <div class="botones">
         <a class="boton" href={urlSeccion(lang, 'la-rambla')}>{t.portadaCta}</a>
@@ -60,12 +61,10 @@ const retratoPaquita = foto('2014/03/2.jpg');
   </section>
 
   <section class="lectura intro">
-    <p set:html={lang === 'es'
-      ? 'Una guía fotográfica de la vida que hay en una rambla que casi nunca lleva agua: <b>flores, insectos, aves, mamíferos, hongos y líquenes</b>, observados durante tres años entre la Roca Parda y la Roca Roja.'
-      : 'Una guia fotogràfica de la vida que hi ha en una rambla que quasi mai porta aigua: <b>flors, insectes, aus, mamífers, fongs i líquens</b>, observats durant tres anys entre la Roca Parda i la Roca Roja.'} />
+    <p set:html={t.intro} />
   </section>
 
-  <section class="contenedor bloque" aria-label={lang === 'es' ? 'Secciones' : 'Seccions'}>
+  <section class="contenedor bloque" aria-label={t.laGuia}>
     <div class="puertas">
       {SECCION_KEYS.map((key) => {
         const s = SECCIONES[key];
@@ -112,7 +111,7 @@ const retratoPaquita = foto('2014/03/2.jpg');
         <Image src={retratoTadeo} alt="Tadeo Julián Querol" width={288} height={288} loading="lazy" />
       </div>
       <div>
-        <p class="antetitulo">{lang === 'es' ? 'Textos y fotografías' : 'Textos i fotografies'}</p>
+        <p class="antetitulo">{t.textosYFotos}</p>
         <h2>{t.homenaje}</h2>
         <p>{t.homenajeTexto}</p>
         <a class="boton" href={urlPagina(lang, 'autores')}>{t.homenajeEnlace}</a>

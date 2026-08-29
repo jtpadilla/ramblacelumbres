@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Tarjeta from '../components/Tarjeta.astro';
-import { SECCIONES, urlInicio, urlSeccion, otroIdioma, type Lang, type SeccionKey } from '../site/config';
+import { SECCIONES, LANGS, urlInicio, urlSeccion, type Lang, type SeccionKey, type Alternativas } from '../site/config';
 import { ui } from '../site/ui';
 import { foto } from '../site/fotos';
 import { guiasDe } from '../site/guias';
@@ -15,9 +15,10 @@ const guias = await guiasDe(lang, seccion);
 const grupos = Object.entries(s.grupos);
 const sinGrupo = guias.filter((g) => !g.data.group || !s.grupos[g.data.group]);
 const portada = foto(s.cover);
+const alternativas = Object.fromEntries(LANGS.map((l) => [l, urlSeccion(l, seccion)])) as Alternativas;
 ---
 
-<Base lang={lang} titulo={s.nombre[lang]} descripcion={s.lema[lang]} imagen={portada.src} alternativa={urlSeccion(otroIdioma(lang), seccion)} activo={seccion}>
+<Base lang={lang} titulo={s.nombre[lang]} descripcion={s.lema[lang]} imagen={portada.src} alternativas={alternativas} activo={seccion}>
   <section class="portada portada-pagina">
     <Image src={portada} alt="" widths={[640, 1024, 1600, 2048]} sizes="100vw" loading="eager" fetchpriority="high" decoding="sync" />
     <div class="velo"></div>

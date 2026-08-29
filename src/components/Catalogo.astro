@@ -48,7 +48,7 @@ const porLetra = letras.map((l) => ({ letra: l, flores: ordenadas.filter((f) => 
             <figure
               class="especie"
               data-familia={f.familia}
-              data-texto={`${f.cientifico} ${f.nombre.es} ${f.nombre.ca} ${f.familia}`.toLowerCase()}
+              data-texto={`${f.cientifico} ${f.nombre.es} ${f.nombre.ca} ${f.nombre.en} ${f.familia}`.toLowerCase()}
             >
               <Image src={foto(f.foto)} alt={f.nombre[lang] ? `${f.cientifico}, ${f.nombre[lang]}` : f.cientifico} widths={[320, 480, 720]} sizes="(max-width: 40rem) 50vw, 16rem" loading="lazy" />
               <figcaption>

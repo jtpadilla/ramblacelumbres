@@ -9,8 +9,8 @@ Leer este fichero completo antes de tocar nada.
 
 **Ecosistema de la Rambla Celumbres** ([www.ramblacelumbres.org](https://www.ramblacelumbres.org/)):
 guía fotográfica de la biodiversidad de la rambla de Celumbres (Cinctorres, Castellfort y
-Portell de Morella, comarca dels Ports). 23 guías y 315 fotografías, en castellano y en
-valenciano, hechas a partir de un blog de WordPress publicado entre 2014 y 2016.
+Portell de Morella, comarca dels Ports). 23 guías y 315 fotografías, en castellano,
+valenciano e inglés, hechas a partir de un blog de WordPress publicado entre 2014 y 2016.
 
 ### Quién está detrás
 
@@ -41,7 +41,7 @@ GitHub Pages con dominio propio.
    referencia: `tools/_wp-markdown/` (markdown del texto original), `tools/_wp-dump/`
    (API REST) y `wordpress-export/` (exportación oficial WXR).
 2. **Producto nuevo** (esta versión): el contenido se reorganizó por temas, se corrigieron
-   los textos, se tradujo todo al valenciano y se diseñó el sitio desde cero. Lo pidió
+   los textos, se tradujo todo al valenciano y al inglés y se diseñó el sitio desde cero. Lo pidió
    Juan Tadeo Padilla Julián expresamente: los autores estructuraron el blog sin
    conocimientos informáticos ni documentales, y quería «un producto nuevo y nativo como
    creado desde cero».
@@ -63,7 +63,7 @@ GitHub Pages con dominio propio.
 - Los originales sin corregir están en `tools/_wp-markdown/` por si hay que consultar qué
   decía exactamente el blog.
 
-El valenciano es estándar con léxico de la comarca (*xicotet*, *hui*, *rovelló*, *roser
+El inglés es británico. El valenciano es estándar con léxico de la comarca (*xicotet*, *hui*, *rovelló*, *roser
 gavarrer*, *pregadéu*, *rabosa*). Los términos que los propios autores usaban en valenciano
 dentro del castellano (*marges*, *tolls*, *xotos*, *abella*, *voltor*) se conservan.
 
@@ -99,7 +99,8 @@ src/
   content.config.ts         colección `articulos` y su esquema
   content/articulos/
     es/<key>.md             23 guías en castellano
-    ca/<key>.md             las mismas 23 en valenciano; misma `key`, distinto `slug`
+    ca/<key>.md             las mismas 23 en valenciano; misma `key`, distinta `ruta`
+    en/<key>.md             las mismas 23 en inglés
   data/flores.ts            catálogo de 69 flores: nombre científico, familia, comunes es/ca
   assets/uploads/AAAA/MM/   fotografías originales, sin retocar
   plugins/figuras.mjs       párrafos de imágenes → <figure>/<figcaption>/.galeria
@@ -117,21 +118,25 @@ wordpress-export/*.xml      exportación oficial del WordPress, 2026-08-29
 
 ### Rutas
 
-El castellano va en la raíz y el valenciano bajo `/ca/`:
+El castellano va en la raíz, el valenciano bajo `/ca/` y el inglés bajo `/en/`:
 
 ```
-/                         /ca/
-/flora/                   /ca/flora/
-/flora/los-arboles/       /ca/flora/els-arbres/
-/hongos-y-liquenes/       /ca/fongs-i-liquens/
-/los-autores/             /ca/els-autors/
-/el-proyecto/             /ca/el-projecte/
+/                         /ca/                      /en/
+/flora/                   /ca/flora/                /en/flora/
+/flora/los-arboles/       /ca/flora/els-arbres/     /en/flora/the-trees/
+/hongos-y-liquenes/       /ca/fongs-i-liquens/      /en/fungi-and-lichens/
+/los-autores/             /ca/els-autors/           /en/the-authors/
+/el-proyecto/             /ca/el-projecte/          /en/the-project/
 ```
 
 Las URL se construyen **solo** con las funciones de `src/site/config.ts` (`urlSeccion`,
 `urlArticulo`, `urlPagina`...). Los slugs por idioma están en el frontmatter (campo `ruta`; no se llama `slug` porque el cargador de Astro usaría ese valor como id y las dos «primavera» chocarían) de cada guía y
-en `SECCIONES`/`PAGINAS`. El selector de idioma enlaza con la misma página en el otro idioma
-(se localiza por `key`).
+en `SECCIONES`/`PAGINAS`. Cada vista construye `alternativas` (misma página en cada idioma,
+localizada por `key`) y `Base.astro` emite los `hreflang` y el selector ES · CA · EN.
+
+Para añadir un idioma: `LANGS` y todos los `T` de `config.ts`, `ui.ts`, `content.config.ts`,
+`astro.config.mjs` (i18n y sitemap), `data/flores.ts` (nombres comunes), los textos de
+`Autores.astro` y `Proyecto.astro`, `pages/<lang>/rss.xml.ts` y las 23 guías.
 
 ### Organización del contenido
 
@@ -155,8 +160,8 @@ familia al final de la guía `flores-silvestres` (`layout: catalogo` en el front
 - Frontmatter: `key`, `lang`, `slug`, `title`, `subtitle?`, `section`, `group?`, `order`,
   `originalDate`, `cover`, `coverAlt`, `summary`, `layout?`. Los textos van entre comillas
   dobles (los resúmenes llevan dos puntos y comillas tipográficas).
-- Para añadir una guía: crear `es/<key>.md` y `ca/<key>.md` con la misma `key` y la misma
-  secuencia de fotos, y elegir `section`/`group` de `SECCIONES`.
+- Para añadir una guía: crear `es/<key>.md`, `ca/<key>.md` y `en/<key>.md` con la misma
+  `key` y la misma secuencia de fotos, y elegir `section`/`group` de `SECCIONES`.
 
 ---
 
@@ -203,7 +208,7 @@ Mientras tanto, el dominio sirve el WordPress antiguo.
 ## Comprobaciones antes de dar algo por bueno
 
 ```bash
-npm run build                                    # 60 páginas, sin errores
+npm run build                                    # 91 páginas, sin errores
 grep -o '<p[^>]*><figure' -r dist | wc -l        # 0: <figure> nunca dentro de <p>
 python3 - <<'EOF'
 import re,glob,os
@@ -216,4 +221,4 @@ print('enlaces rotos:',len(rotos))
 EOF
 ```
 Y comprobar a ojo, en `npm run preview`, la portada, una sección, una guía con galerías,
-el catálogo de flores y la página de los autores, en los dos idiomas y en móvil.
+el catálogo de flores y la página de los autores, en los tres idiomas y en móvil.

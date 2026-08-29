@@ -1,5 +1,5 @@
-export type Lang = 'es' | 'ca';
-export const LANGS = ['es', 'ca'] as const satisfies readonly Lang[];
+export type Lang = 'es' | 'ca' | 'en';
+export const LANGS = ['es', 'ca', 'en'] as const satisfies readonly Lang[];
 export const LANG_POR_DEFECTO: Lang = 'es';
 
 /** Texto con una version por idioma. */
@@ -8,16 +8,18 @@ export type T = Record<Lang, string>;
 export const SITIO = {
   url: 'https://www.ramblacelumbres.org',
   nombre: 'Rambla Celumbres',
-  titulo: { es: 'Ecosistema de la Rambla Celumbres', ca: 'Ecosistema de la Rambla Celumbres' } as T,
+  titulo: { es: 'Ecosistema de la Rambla Celumbres', ca: 'Ecosistema de la Rambla Celumbres', en: 'Rambla Celumbres Ecosystem' } as T,
   lema: {
     es: 'Fauna, flora y paisaje de la rambla de Celumbres, en las montañas dels Ports',
     ca: 'Fauna, flora i paisatge de la rambla de Celumbres, a les muntanyes dels Ports',
+    en: 'Wildlife, flora and landscape of the Celumbres rambla, in the Els Ports mountains',
   } as T,
   descripcion: {
     es: 'Guía fotográfica de la biodiversidad de la rambla de Celumbres (Cinctorres, Castellfort y Portell, comarca dels Ports): flora, insectos, aves, mamíferos, hongos y líquenes, con los textos de Francisca Julián Querol y las fotografías de Tadeo Julián Querol.',
     ca: 'Guia fotogràfica de la biodiversitat de la rambla de Celumbres (Cinctorres, Castellfort i Portell, comarca dels Ports): flora, insectes, aus, mamífers, fongs i líquens, amb els textos de Francisca Julián Querol i les fotografies de Tadeo Julián Querol.',
+    en: 'A photographic guide to the biodiversity of the Celumbres rambla (Cinctorres, Castellfort and Portell, Els Ports, Castellón): flora, insects, birds, mammals, fungi and lichens, with texts by Francisca Julián Querol and photographs by Tadeo Julián Querol.',
   } as T,
-  locale: { es: 'es-ES', ca: 'ca-ES' } as T,
+  locale: { es: 'es-ES', ca: 'ca-ES', en: 'en-GB' } as T,
   repositorio: 'https://github.com/jtpadilla/ramblacelumbres',
   hermano: { nombre: 'santjoans.es', url: 'https://santjoans.es/', repositorio: 'https://github.com/jtpadilla/santjoans' },
 };
@@ -44,51 +46,55 @@ export interface Seccion {
 
 export const SECCIONES: Record<SeccionKey, Seccion> = {
   'la-rambla': {
-    slug: { es: 'la-rambla', ca: 'la-rambla' },
-    nombre: { es: 'La rambla', ca: 'La rambla' },
+    slug: { es: 'la-rambla', ca: 'la-rambla', en: 'the-rambla' },
+    nombre: { es: 'La rambla', ca: 'La rambla', en: 'The rambla' },
     lema: {
       es: 'El paraje, la piedra seca y las cuatro estaciones',
       ca: 'El paratge, la pedra seca i les quatre estacions',
+      en: 'The place, the dry-stone walls and the four seasons',
     },
     cover: '2014/03/10.jpg',
     grupos: {
-      paraje: { es: 'El lugar', ca: 'El lloc' },
-      estaciones: { es: 'Las estaciones', ca: 'Les estacions' },
+      paraje: { es: 'El lugar', ca: 'El lloc', en: 'The place' },
+      estaciones: { es: 'Las estaciones', ca: 'Les estacions', en: 'The seasons' },
     },
   },
   flora: {
-    slug: { es: 'flora', ca: 'flora' },
-    nombre: { es: 'Flora', ca: 'Flora' },
+    slug: { es: 'flora', ca: 'flora', en: 'flora' },
+    nombre: { es: 'Flora', ca: 'Flora', en: 'Flora' },
     lema: {
       es: 'Árboles, orquídeas y un catálogo de flores silvestres',
       ca: 'Arbres, orquídies i un catàleg de flors silvestres',
+      en: 'Trees, orchids and a catalogue of wildflowers',
     },
     cover: '2014/10/61-1.jpg',
     grupos: {
-      arboles: { es: 'Árboles', ca: 'Arbres' },
-      flores: { es: 'Flores', ca: 'Flors' },
+      arboles: { es: 'Árboles', ca: 'Arbres', en: 'Trees' },
+      flores: { es: 'Flores', ca: 'Flors', en: 'Flowers' },
     },
   },
   fauna: {
-    slug: { es: 'fauna', ca: 'fauna' },
-    nombre: { es: 'Fauna', ca: 'Fauna' },
+    slug: { es: 'fauna', ca: 'fauna', en: 'fauna' },
+    nombre: { es: 'Fauna', ca: 'Fauna', en: 'Fauna' },
     lema: {
       es: 'Buitres, cabras montesas, mariposas, arañas y otros vecinos',
       ca: 'Voltors, cabres salvatges, papallones, aranyes i altres veïns',
+      en: 'Vultures, ibex, butterflies, spiders and other neighbours',
     },
     cover: '2014/08/10.jpg',
     grupos: {
-      vertebrados: { es: 'Aves y mamíferos', ca: 'Aus i mamífers' },
-      insectos: { es: 'Insectos', ca: 'Insectes' },
-      'otros-invertebrados': { es: 'Arañas y miriápodos', ca: 'Aranyes i miriàpodes' },
+      vertebrados: { es: 'Aves y mamíferos', ca: 'Aus i mamífers', en: 'Birds and mammals' },
+      insectos: { es: 'Insectos', ca: 'Insectes', en: 'Insects' },
+      'otros-invertebrados': { es: 'Arañas y miriápodos', ca: 'Aranyes i miriàpodes', en: 'Spiders and myriapods' },
     },
   },
   'hongos-y-liquenes': {
-    slug: { es: 'hongos-y-liquenes', ca: 'fongs-i-liquens' },
-    nombre: { es: 'Hongos y líquenes', ca: 'Fongs i líquens' },
+    slug: { es: 'hongos-y-liquenes', ca: 'fongs-i-liquens', en: 'fungi-and-lichens' },
+    nombre: { es: 'Hongos y líquenes', ca: 'Fongs i líquens', en: 'Fungi and lichens' },
     lema: {
       es: 'Setas del bosque y líquenes de las rocas',
       ca: 'Bolets del bosc i líquens de les roques',
+      en: 'Mushrooms of the woods and lichens of the rocks',
     },
     cover: '2014/09/0-1.jpg',
     grupos: {},
@@ -102,8 +108,8 @@ export const SECCION_KEYS = Object.keys(SECCIONES) as SeccionKey[];
 export type PaginaKey = 'autores' | 'proyecto';
 
 export const PAGINAS: Record<PaginaKey, { slug: T; nombre: T }> = {
-  autores: { slug: { es: 'los-autores', ca: 'els-autors' }, nombre: { es: 'Los autores', ca: 'Els autors' } },
-  proyecto: { slug: { es: 'el-proyecto', ca: 'el-projecte' }, nombre: { es: 'El proyecto', ca: 'El projecte' } },
+  autores: { slug: { es: 'los-autores', ca: 'els-autors', en: 'the-authors' }, nombre: { es: 'Los autores', ca: 'Els autors', en: 'The authors' } },
+  proyecto: { slug: { es: 'el-proyecto', ca: 'el-projecte', en: 'the-project' }, nombre: { es: 'El proyecto', ca: 'El projecte', en: 'The project' } },
 };
 
 // ---------------------------------------------------------------------- urls
@@ -121,9 +127,11 @@ export const urlArticulo = (lang: Lang, seccion: SeccionKey, slug: string) =>
   `${prefijo(lang)}/${SECCIONES[seccion].slug[lang]}/${slug}/`;
 export const urlPagina = (lang: Lang, key: PaginaKey) => `${prefijo(lang)}/${PAGINAS[key].slug[lang]}/`;
 export const urlCatalogo = (lang: Lang) =>
-  urlArticulo(lang, 'flora', lang === 'es' ? 'flores-silvestres' : 'flors-silvestres');
+  urlArticulo(lang, 'flora', { es: 'flores-silvestres', ca: 'flors-silvestres', en: 'wildflowers' }[lang]);
 
-export const otroIdioma = (lang: Lang): Lang => (lang === 'es' ? 'ca' : 'es');
+/** Misma pagina en cada idioma, para el selector y los hreflang. */
+export type Alternativas = Record<Lang, string>;
+export const otrosIdiomas = (lang: Lang): Lang[] => LANGS.filter((l) => l !== lang);
 
 // ------------------------------------------------------ enlaces del WordPress
 

@@ -1,12 +1,10 @@
 ---
-import { SECCIONES, SECCION_KEYS, PAGINAS, SITIO, urlInicio, urlSeccion, urlPagina, otroIdioma, type Lang } from '../site/config';
+import { SECCIONES, SECCION_KEYS, PAGINAS, SITIO, LANGS, urlInicio, urlSeccion, urlPagina, type Lang, type Alternativas } from '../site/config';
 import { ui } from '../site/ui';
 
-interface Props { lang: Lang; alternativa?: string; activo?: string }
-const { lang, alternativa, activo } = Astro.props;
+interface Props { lang: Lang; alternativas?: Alternativas; activo?: string }
+const { lang, alternativas, activo } = Astro.props;
 const t = ui(lang);
-const otro = otroIdioma(lang);
-const enlaceIdioma = alternativa ?? urlInicio(otro);
 ---
 
 <header class="cabecera">
@@ -18,7 +16,7 @@ const enlaceIdioma = alternativa ?? urlInicio(otro);
         <path d="M16 26c0-6.5-2.8-11-8.5-12.5C8.7 19.8 11.5 24.5 16 26z" fill="#8fae75" />
         <path d="M16 27v-7" stroke="#f4efe4" stroke-width="1.7" stroke-linecap="round" />
       </svg>
-      <span><b>{SITIO.nombre}</b><small>{lang === 'es' ? 'Ecosistema · Els Ports' : 'Ecosistema · Els Ports'}</small></span>
+      <span><b>{SITIO.nombre}</b><small>{lang === 'en' ? 'Ecosystem · Els Ports' : 'Ecosistema · Els Ports'}</small></span>
     </a>
     <nav class="nav" aria-label={t.menu}>
       {SECCION_KEYS.map((key) => (
@@ -26,9 +24,10 @@ const enlaceIdioma = alternativa ?? urlInicio(otro);
       ))}
       <a href={urlPagina(lang, 'autores')} aria-current={activo === 'autores' ? 'true' : undefined}>{PAGINAS.autores.nombre[lang]}</a>
     </nav>
-    <a class="idioma" href={enlaceIdioma} hreflang={otro} lang={otro} title={t.cambiarIdioma}>
-      <span aria-hidden="true">{ui(otro).idiomaCorto}</span>
-      <span class="visualmente-oculto">{t.cambiarIdioma}</span>
-    </a>
+    <nav class="idiomas" aria-label={t.idiomaEtiqueta}>
+      {LANGS.map((l) => (
+        <a href={alternativas?.[l] ?? urlInicio(l)} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined} title={ui(l).idioma}>{ui(l).idiomaCorto}</a>
+      ))}
+    </nav>
   </div>
 </header>

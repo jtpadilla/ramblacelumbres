@@ -1,11 +1,10 @@
 ---
-import { SECCIONES, SECCION_KEYS, PAGINAS, SITIO, AUTORES, urlSeccion, urlPagina, urlCatalogo, urlInicio, urlRss, otroIdioma, type Lang } from '../site/config';
+import { SECCIONES, SECCION_KEYS, PAGINAS, SITIO, AUTORES, LANGS, urlSeccion, urlPagina, urlCatalogo, urlInicio, urlRss, type Lang, type Alternativas } from '../site/config';
 import { ui } from '../site/ui';
 
-interface Props { lang: Lang; alternativa?: string }
-const { lang, alternativa } = Astro.props;
+interface Props { lang: Lang; alternativas?: Alternativas }
+const { lang, alternativas } = Astro.props;
 const t = ui(lang);
-const otro = otroIdioma(lang);
 const anio = new Date().getFullYear();
 ---
 
@@ -17,18 +16,18 @@ const anio = new Date().getFullYear();
       <p>{t.pieNota}</p>
     </div>
     <div>
-      <h3>{lang === 'es' ? 'La guía' : 'La guia'}</h3>
+      <h3>{t.laGuia}</h3>
       <ul>
         {SECCION_KEYS.map((key) => <li><a href={urlSeccion(lang, key)}>{SECCIONES[key].nombre[lang]}</a></li>)}
         <li><a href={urlCatalogo(lang)}>{t.catalogo}</a></li>
       </ul>
     </div>
     <div>
-      <h3>{lang === 'es' ? 'Sobre el sitio' : 'Sobre el lloc'}</h3>
+      <h3>{t.sobreElSitio}</h3>
       <ul>
         <li><a href={urlPagina(lang, 'autores')}>{PAGINAS.autores.nombre[lang]}</a></li>
         <li><a href={urlPagina(lang, 'proyecto')}>{PAGINAS.proyecto.nombre[lang]}</a></li>
-        <li><a href={alternativa ?? urlInicio(otro)} hreflang={otro} lang={otro}>{ui(otro).idioma}</a></li>
+        {LANGS.filter((l) => l !== lang).map((l) => <li><a href={alternativas?.[l] ?? urlInicio(l)} hreflang={l} lang={l}>{ui(l).idioma}</a></li>)}
         <li><a href={SITIO.hermano.url} rel="noopener">{t.hermano}: {SITIO.hermano.nombre}</a></li>
         <li><a href={SITIO.repositorio} rel="noopener">{t.codigo}</a></li>
         <li><a href={urlRss(lang)}>{t.rss}</a></li>
