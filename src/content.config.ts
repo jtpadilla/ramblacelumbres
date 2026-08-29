@@ -21,7 +21,7 @@ const articulos = defineCollection({
       cover: image(),
       coverAlt: z.string(),
       summary: z.string(),
-      layout: z.enum(['catalogo']).optional(),
+      layout: z.enum(['catalogo', 'mapa']).optional(),
     }),
 });
 

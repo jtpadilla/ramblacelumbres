@@ -11,6 +11,7 @@ originalDate: 2014-03-17
 cover: ../../../assets/uploads/2014/03/10.jpg
 coverAlt: "雨后流水的塞伦布雷斯干河上方的 Roca Roja"
 summary: "干河在哪里，Roca Parda 和 Roca Roja 是如何形成的，以及为什么一下雨，风景就完全变了样。"
+layout: "mapa"
 ---
 
 ![塞伦布雷斯干河的风景](../../../assets/uploads/2014/03/1.jpg)

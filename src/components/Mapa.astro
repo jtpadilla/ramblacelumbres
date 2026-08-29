@@ -1,0 +1,38 @@
+---
+/**
+ * Mapa de la rambla: src/assets/mapa/rambla.svg, generado por tools/mapa.py a
+ * partir de OpenStreetMap y del IGN. Se inserta en linea para que herede las
+ * fuentes y los tokens de color (claro/oscuro) del sitio, y los enlaces
+ * `#guia:<key>` del SVG se traducen aqui a la URL de la guia en cada idioma.
+ */
+import svgBruto from '../assets/mapa/rambla.svg?raw';
+import { urlSeccion, type Lang } from '../site/config';
+import { guiaPorClave, urlDe } from '../site/guias';
+import { ui } from '../site/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui(lang);
+
+const claves = [...new Set([...svgBruto.matchAll(/#guia:([a-z-]+)/g)].map((m) => m[1]))];
+const urls: Record<string, string> = {};
+for (const key of claves) {
+  const g = await guiaPorClave(lang, key);
+  urls[key] = g ? urlDe(g) : urlSeccion(lang, 'la-rambla');
+}
+const svg = svgBruto
+  .replace(/href="#guia:([a-z-]+)"/g, (_, key) => `href="${urls[key]}"`)
+  .replace(/^<\?xml[^>]*>\s*/, '')
+  .replace(/ width="\d+" height="\d+"/, '');
+---
+
+<figure class="mapa">
+  <div class="bloque-cabecera">
+    <div>
+      <h2>{t.mapaTitulo}</h2>
+      <p>{t.mapaTexto}</p>
+    </div>
+  </div>
+  <div set:html={svg} />
+  <figcaption>{t.mapaFuentes}</figcaption>
+</figure>

@@ -11,6 +11,7 @@ originalDate: 2014-03-17
 cover: ../../../assets/uploads/2014/03/10.jpg
 coverAlt: "La Roca Roja sobre la Rambla Celumbres, amb aigua després de les pluges"
 summary: "On és la rambla, com es van formar la Roca Parda i la Roca Roja, i per què el paisatge canvia del tot quan plou."
+layout: "mapa"
 ---
 
 ![Paisatge de la Rambla Celumbres](../../../assets/uploads/2014/03/1.jpg)

@@ -55,6 +55,9 @@ const es = {
   noEncontradaTexto: 'La dirección que buscas no existe o cambió al renovar el sitio.',
   volverInicio: 'Volver a la portada',
   rss: 'Novedades (RSS)',
+  mapaTitulo: 'Dónde está',
+  mapaTexto: 'El Paraje Natural Municipal (línea verde discontinua), el cauce de la rambla, la Roca Roja y la Roca Parda, los bancales de l’Arribassada y la fuente dels Bassis. Los nombres en cursiva llevan a su guía.',
+  mapaFuentes: 'Datos de OpenStreetMap (ODbL). Relieve y curvas de nivel del Instituto Geográfico Nacional (CC BY 4.0). Norte arriba; 1 px = 10 m.',
 };
 
 const ca: typeof es = {
@@ -112,6 +115,9 @@ const ca: typeof es = {
   noEncontradaTexto: 'L’adreça que busques no existeix o va canviar en renovar el lloc.',
   volverInicio: 'Tornar a la portada',
   rss: 'Novetats (RSS)',
+  mapaTitulo: 'On és',
+  mapaTexto: 'El Paratge Natural Municipal (línia verda discontínua), el llit de la rambla, la Roca Roja i la Roca Parda, els bancals de l’Arribassada i la font dels Bassis. Els noms en cursiva porten a la seua guia.',
+  mapaFuentes: 'Dades d’OpenStreetMap (ODbL). Relleu i corbes de nivell de l’Instituto Geográfico Nacional (CC BY 4.0). Nord amunt; 1 px = 10 m.',
 };
 
 const en: typeof es = {
@@ -169,6 +175,9 @@ const en: typeof es = {
   noEncontradaTexto: 'The address you are looking for does not exist or changed when the site was rebuilt.',
   volverInicio: 'Back to the home page',
   rss: 'Updates (RSS)',
+  mapaTitulo: 'Where it is',
+  mapaTexto: 'The municipal nature reserve (dashed green line), the bed of the rambla, the Roca Roja and the Roca Parda, the terraces of l’Arribassada and the dels Bassis spring. Names in italics link to their guide.',
+  mapaFuentes: 'Data from OpenStreetMap (ODbL). Relief and contour lines from the Instituto Geográfico Nacional (CC BY 4.0). North is up; 1 px = 10 m.',
 };
 
 const zh: typeof es = {
@@ -226,6 +235,9 @@ const zh: typeof es = {
   noEncontradaTexto: '您要找的地址不存在，或在网站改版时已经变更。',
   volverInicio: '返回首页',
   rss: '更新（RSS）',
+  mapaTitulo: '位置',
+  mapaTexto: '市级自然保护区（绿色虚线）、干河河床、Roca Roja 和 Roca Parda、l’Arribassada 的梯田以及 dels Bassis 泉。斜体的名称可点击进入相应篇目。',
+  mapaFuentes: '数据来自 OpenStreetMap（ODbL）。地形与等高线来自西班牙国家地理研究所 Instituto Geográfico Nacional（CC BY 4.0）。上方为北；1 像素 = 10 米。',
 };
 
 export const UI: Record<Lang, typeof es> = { es, ca, en, zh };

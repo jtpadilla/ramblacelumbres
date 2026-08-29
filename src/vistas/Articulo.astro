@@ -5,6 +5,7 @@ import Base from '../layouts/Base.astro';
 import Tarjeta from '../components/Tarjeta.astro';
 import Visor from '../components/Visor.astro';
 import Catalogo from '../components/Catalogo.astro';
+import Mapa from '../components/Mapa.astro';
 import { SECCIONES, AUTORES, LANGS, urlInicio, urlSeccion, formatoFecha, type Lang, type Alternativas } from '../site/config';
 import { ui } from '../site/ui';
 import { guiasDe, guiaPorClave, urlDe, type Guia } from '../site/guias';
@@ -71,6 +72,7 @@ for (const l of LANGS) {
         <Catalogo lang={lang} />
       </div>
     )}
+    {layout === 'mapa' && <Mapa lang={lang} />}
 
     <div class="lectura">
       <ul class="navega">
