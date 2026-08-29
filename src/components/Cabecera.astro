@@ -1,29 +1,34 @@
 ---
-import { getCollection } from 'astro:content';
-import { SITIO, nombreCategoria } from '../site';
+import { SECCIONES, SECCION_KEYS, PAGINAS, SITIO, urlInicio, urlSeccion, urlPagina, otroIdioma, type Lang } from '../site/config';
+import { ui } from '../site/ui';
 
-const posts = await getCollection('posts');
-const usadas = new Set(posts.flatMap((p) => p.data.categories));
-const categorias = [...usadas].sort((a, b) => nombreCategoria(a).localeCompare(nombreCategoria(b), 'es'));
-
-const ruta = Astro.url.pathname;
-const activo = (href: string) => (ruta === href ? 'page' : undefined);
+interface Props { lang: Lang; alternativa?: string; activo?: string }
+const { lang, alternativa, activo } = Astro.props;
+const t = ui(lang);
+const otro = otroIdioma(lang);
+const enlaceIdioma = alternativa ?? urlInicio(otro);
 ---
 
 <header class="cabecera">
-  <div class="contenedor">
-    <a class="marca" href="/">
-      Rambla Celumbres
-      <span>Ecosistema</span>
+  <div class="contenedor cabecera-fila">
+    <a class="marca" href={urlInicio(lang)} aria-label={SITIO.titulo[lang]}>
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#3b5733" />
+        <path d="M16 26c0-8 3.5-13 10-15-1 9-4.5 13.5-10 15z" fill="#c9dcae" />
+        <path d="M16 26c0-6.5-2.8-11-8.5-12.5C8.7 19.8 11.5 24.5 16 26z" fill="#8fae75" />
+        <path d="M16 27v-7" stroke="#f4efe4" stroke-width="1.7" stroke-linecap="round" />
+      </svg>
+      <span><b>{SITIO.nombre}</b><small>{lang === 'es' ? 'Ecosistema · Els Ports' : 'Ecosistema · Els Ports'}</small></span>
     </a>
-    <nav class="menu" aria-label="Principal">
-      <a href="/" aria-current={activo('/')}>Inicio</a>
-      {categorias.map((c) => (
-        <a href={`/categoria/${c}/`} aria-current={activo(`/categoria/${c}/`)}>{nombreCategoria(c)}</a>
+    <nav class="nav" aria-label={t.menu}>
+      {SECCION_KEYS.map((key) => (
+        <a href={urlSeccion(lang, key)} aria-current={activo === key ? 'true' : undefined}>{SECCIONES[key].nombre[lang]}</a>
       ))}
-      <a href="/blog/" aria-current={activo('/blog/')}>Todas</a>
-      <a href="/quien-somos/" aria-current={activo('/quien-somos/')}>Quiénes somos</a>
-      <a href="/el-proyecto/" aria-current={activo('/el-proyecto/')}>El proyecto</a>
+      <a href={urlPagina(lang, 'autores')} aria-current={activo === 'autores' ? 'true' : undefined}>{PAGINAS.autores.nombre[lang]}</a>
     </nav>
+    <a class="idioma" href={enlaceIdioma} hreflang={otro} lang={otro} title={t.cambiarIdioma}>
+      <span aria-hidden="true">{ui(otro).idiomaCorto}</span>
+      <span class="visualmente-oculto">{t.cambiarIdioma}</span>
+    </a>
   </div>
 </header>

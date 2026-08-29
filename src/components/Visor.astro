@@ -1,28 +1,37 @@
 ---
-// Visor a pantalla completa para las fotos del articulo. Sin dependencias:
-// un <dialog> nativo, que ya trae cierre con Escape y gestion del foco.
+import type { Lang } from '../site/config';
+import { ui } from '../site/ui';
+interface Props { lang: Lang }
+const t = ui(Astro.props.lang);
 ---
-<dialog class="visor" aria-label="Fotografía ampliada">
-  <button class="cerrar" type="button" aria-label="Cerrar">×</button>
-  <img alt="" />
+<dialog class="visor" aria-label={t.ampliar}>
+  <figure class="visor-cuerpo">
+    <img alt="" />
+    <figcaption></figcaption>
+  </figure>
+  <button class="cerrar" type="button" aria-label={t.cerrar}>×</button>
 </dialog>
 
 <script>
+  // Visor a pantalla completa: un <dialog> nativo, que ya cierra con Escape y
+  // gestiona el foco. Se abre desde las fotos de las guias y del catalogo.
   const visor = document.querySelector<HTMLDialogElement>('.visor');
   const grande = visor?.querySelector('img');
-  if (visor && grande) {
-    for (const img of document.querySelectorAll<HTMLImageElement>('.prosa .figura img')) {
+  const pie = visor?.querySelector('figcaption');
+  if (visor && grande && pie) {
+    for (const img of document.querySelectorAll<HTMLImageElement>('.figura img, .especie img')) {
       img.addEventListener('click', () => {
         grande.src = img.currentSrc || img.src;
         grande.alt = img.alt;
+        const cap = img.closest('figure')?.querySelector('figcaption');
+        pie.innerHTML = cap ? cap.innerHTML : '';
         visor.showModal();
       });
     }
     visor.addEventListener('click', (e) => {
-      if (e.target === visor || (e.target as HTMLElement).classList.contains('cerrar')) {
-        visor.close();
-      }
+      const objetivo = e.target as HTMLElement;
+      if (objetivo === visor || objetivo.classList.contains('cerrar') || objetivo.tagName === 'FIGURE') visor.close();
     });
-    visor.addEventListener('close', () => { grande.removeAttribute('src'); });
+    visor.addEventListener('close', () => grande.removeAttribute('src'));
   }
 </script>

@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """Extrae el contenido de ramblacelumbres.org (WordPress) via API REST publica
-y lo convierte en el arbol de contenido de Astro:
+y lo convierte en markdown de referencia y en las fotos originales del sitio:
 
-  src/content/posts/<slug>.md
-  src/content/pages/<slug>.md
+  tools/_wp-markdown/posts/<slug>.md   (texto original, sin corregir)
+  tools/_wp-markdown/pages/<slug>.md
   src/assets/uploads/YYYY/MM/<fichero>.jpg
-  src/data/redirects.json
 
 Es idempotente: no vuelve a descargar imagenes que ya existen.
 Uso:  python3 tools/export-wp.py [--skip-media]
@@ -27,9 +26,8 @@ SITE = "https://www.ramblacelumbres.org"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DUMP = os.path.join(ROOT, "tools", "_wp-dump")
 ASSETS = os.path.join(ROOT, "src", "assets")
-POSTS_DIR = os.path.join(ROOT, "src", "content", "posts")
-PAGES_DIR = os.path.join(ROOT, "src", "content", "pages")
-DATA_DIR = os.path.join(ROOT, "src", "data")
+POSTS_DIR = os.path.join(ROOT, "tools", "_wp-markdown", "posts")
+PAGES_DIR = os.path.join(ROOT, "tools", "_wp-markdown", "pages")
 UA = "Mozilla/5.0 (migracion ramblacelumbres.org)"
 WXR = os.path.join(ROOT, "wordpress-export", "*.xml")
 WXR_NS = {"wp": "http://wordpress.org/export/1.2/"}
@@ -378,7 +376,7 @@ def write_doc(directory, doc, cats_by_id, tags_by_id, images):
 
 def main():
     skip_media = "--skip-media" in sys.argv
-    for d in (DUMP, ASSETS, POSTS_DIR, PAGES_DIR, DATA_DIR):
+    for d in (DUMP, ASSETS, POSTS_DIR, PAGES_DIR):
         os.makedirs(d, exist_ok=True)
 
     print("1/4  Descargando contenido de la API REST...")
@@ -398,24 +396,15 @@ def main():
     tags_by_id = {t["id"]: t["slug"] for t in tags}
 
     print("2/4  Convirtiendo a markdown...")
-    redirects, used = {}, set()
+    used = set()
     for p in posts:
         body, imgs = to_markdown(p["content"]["rendered"])
         used.update(imgs)
-        slug = write_doc(POSTS_DIR, p, cats_by_id, tags_by_id, imgs)
-        redirects["/?p=%d" % p["id"]] = "/blog/%s/" % slug
+        write_doc(POSTS_DIR, p, cats_by_id, tags_by_id, imgs)
     for p in pages:
         body, imgs = to_markdown(p["content"]["rendered"])
         used.update(imgs)
-        slug = write_doc(PAGES_DIR, p, cats_by_id, tags_by_id, imgs)
-        redirects["/?page_id=%d" % p["id"]] = "/%s/" % slug
-    for c in cats:
-        if c["slug"] != "uncategorized" and c["count"]:
-            redirects["/?cat=%d" % c["id"]] = "/categoria/%s/" % c["slug"]
-    redirects["/?feed=rss2"] = "/rss.xml"
-    redirects["/?feed=rss"] = "/rss.xml"
-    with open(os.path.join(DATA_DIR, "redirects.json"), "w", encoding="utf-8") as f:
-        json.dump(redirects, f, ensure_ascii=False, indent=1)
+        write_doc(PAGES_DIR, p, cats_by_id, tags_by_id, imgs)
     print("     %d documentos, %d imagenes referenciadas" % (len(posts) + len(pages), len(used)))
 
     if skip_media:

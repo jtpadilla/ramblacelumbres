@@ -1,0 +1,105 @@
+---
+import { Image } from 'astro:assets';
+import { FLORES } from '../data/flores';
+import { foto } from '../site/fotos';
+import type { Lang } from '../site/config';
+import { ui } from '../site/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui(lang);
+
+const ordenadas = [...FLORES].sort((a, b) => a.cientifico.localeCompare(b.cientifico, 'la'));
+const letras = [...new Set(ordenadas.map((f) => f.cientifico[0].toUpperCase()))];
+const familias = [...new Set(ordenadas.map((f) => f.familia))].sort();
+const porLetra = letras.map((l) => ({ letra: l, flores: ordenadas.filter((f) => f.cientifico[0].toUpperCase() === l) }));
+---
+
+<section class="catalogo" id="catalogo" aria-labelledby="catalogo-titulo">
+  <h2 id="catalogo-titulo" class="visualmente-oculto">{t.catalogo}</h2>
+
+  <div class="catalogo-filtros">
+    <label>
+      {t.buscar}
+      <input type="search" id="buscar-flor" placeholder={t.buscarAyuda} autocomplete="off" />
+    </label>
+    <label>
+      {t.familia}
+      <select id="filtro-familia">
+        <option value="">{t.todasFamilias}</option>
+        {familias.map((f) => <option value={f}>{f}</option>)}
+      </select>
+    </label>
+    <output for="buscar-flor filtro-familia" id="cuenta-flores">{t.resultados(ordenadas.length)}</output>
+  </div>
+
+  <nav aria-label={t.letras}>
+    <ul class="letras">
+      {letras.map((l) => <li><a href={`#letra-${l}`}>{l}</a></li>)}
+    </ul>
+  </nav>
+
+  {porLetra.map(({ letra, flores }) => (
+    <>
+      <h3 class="letra-titulo" id={`letra-${letra}`} data-letra={letra}>{letra}</h3>
+      <ul class="especies" data-letra={letra}>
+        {flores.map((f) => (
+          <li>
+            <figure
+              class="especie"
+              data-familia={f.familia}
+              data-texto={`${f.cientifico} ${f.nombre.es} ${f.nombre.ca} ${f.familia}`.toLowerCase()}
+            >
+              <Image src={foto(f.foto)} alt={f.nombre[lang] ? `${f.cientifico}, ${f.nombre[lang]}` : f.cientifico} widths={[320, 480, 720]} sizes="(max-width: 40rem) 50vw, 16rem" loading="lazy" />
+              <figcaption>
+                <em class="cientifico">{f.cientifico}</em>
+                {f.nombre[lang] && <span class="comun">{f.nombre[lang]}</span>}
+                <span class="familia">{f.familia}</span>
+              </figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </>
+  ))}
+  <p class="sin-resultados" id="sin-flores" hidden>{t.sinResultados}</p>
+</section>
+
+<script>
+  const buscar = document.getElementById('buscar-flor') as HTMLInputElement | null;
+  const familia = document.getElementById('filtro-familia') as HTMLSelectElement | null;
+  const cuenta = document.getElementById('cuenta-flores');
+  const vacio = document.getElementById('sin-flores');
+  const listas = [...document.querySelectorAll<HTMLElement>('.especies')];
+
+  function normaliza(s: string) {
+    return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  }
+
+  function filtra() {
+    const q = normaliza(buscar?.value ?? '').trim();
+    const fam = familia?.value ?? '';
+    let visibles = 0;
+    for (const lista of listas) {
+      let enLista = 0;
+      for (const li of lista.querySelectorAll<HTMLLIElement>('li')) {
+        const fig = li.querySelector<HTMLElement>('.especie')!;
+        const ok = (!fam || fig.dataset.familia === fam) && (!q || normaliza(fig.dataset.texto ?? '').includes(q));
+        li.hidden = !ok;
+        if (ok) enLista++;
+      }
+      visibles += enLista;
+      const titulo = document.querySelector<HTMLElement>(`.letra-titulo[data-letra="${lista.dataset.letra}"]`);
+      if (titulo) titulo.hidden = enLista === 0;
+      lista.hidden = enLista === 0;
+    }
+    if (cuenta) {
+      const plantilla = cuenta.dataset.plantilla ?? (cuenta.dataset.plantilla = cuenta.textContent ?? '');
+      cuenta.textContent = plantilla.replace(/^\d+/, String(visibles));
+    }
+    if (vacio) vacio.hidden = visibles > 0;
+  }
+
+  buscar?.addEventListener('input', filtra);
+  familia?.addEventListener('change', filtra);
+</script>

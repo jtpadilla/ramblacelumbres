@@ -1,22 +1,26 @@
 ---
 import Base from '../layouts/Base.astro';
-import redirecciones from '../data/redirects.json';
+import { urlInicio } from '../site/config';
+import { ui } from '../site/ui';
+const es = ui('es');
+const ca = ui('ca');
 ---
 
-<Base titulo="Página no encontrada">
-  <script is:inline define:vars={{ redirecciones }}>
-    // Direcciones antiguas del tipo /?p=123 que hayan llegado hasta aqui.
-    if (location.search) {
-      const destino = redirecciones['/' + location.search];
-      if (destino) location.replace(destino);
-    }
+<Base lang="es" titulo={es.noEncontrada}>
+  <script is:inline>
+    // Enlaces del WordPress antiguo (?p=123) que hayan llegado aqui: la portada
+    // sabe traducirlos, asi que se le pasa la consulta tal cual.
+    if (location.search && location.pathname !== '/') location.replace('/' + location.search);
   </script>
-  <div class="lectura entradilla">
-    <h1>Aquí no hay nada</h1>
-    <p>
-      La página que buscas no existe o ha cambiado de dirección al renovar el sitio.
-      Prueba con <a href="/blog/">el listado de entradas</a> o vuelve a
-      <a href="/">la portada</a>.
-    </p>
+  <div class="lectura no-encontrada">
+    <h1>{es.noEncontrada}</h1>
+    <p>{es.noEncontradaTexto}</p>
+    <p><a class="boton" href={urlInicio('es')}>{es.volverInicio}</a></p>
+    <hr />
+    <div lang="ca">
+      <h2 style="font-size:1.5rem; margin-bottom:.5rem">{ca.noEncontrada}</h2>
+      <p>{ca.noEncontradaTexto}</p>
+      <p><a href={urlInicio('ca')}>{ca.volverInicio} →</a></p>
+    </div>
   </div>
 </Base>

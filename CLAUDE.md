@@ -7,13 +7,10 @@ Leer este fichero completo antes de tocar nada.
 
 ## Qué es este proyecto
 
-Sitio web de **Ecosistema de la Rambla Celumbres** ([www.ramblacelumbres.org](https://www.ramblacelumbres.org/)):
-33 entradas y 315 fotografías sobre la flora, la fauna y el paisaje de la rambla de
-Celumbres, en las montañas dels Ports, publicadas entre 2014 y 2016.
-
-Originalmente era un **WordPress**. En 2026 se migró a un **sitio estático con Astro**,
-sin base de datos ni PHP, para que el contenido se conserve a largo plazo sin
-mantenimiento de servidor ni parches de seguridad.
+**Ecosistema de la Rambla Celumbres** ([www.ramblacelumbres.org](https://www.ramblacelumbres.org/)):
+guía fotográfica de la biodiversidad de la rambla de Celumbres (Cinctorres, Castellfort y
+Portell de Morella, comarca dels Ports). 23 guías y 315 fotografías, en castellano y en
+valenciano, hechas a partir de un blog de WordPress publicado entre 2014 y 2016.
 
 ### Quién está detrás
 
@@ -23,9 +20,10 @@ mantenimiento de servidor ni parches de seguridad.
 | **Tadeo Julián Querol** | Fotografías |
 | **Juan Tadeo Padilla Julián** | Programación, migración y contacto para correcciones |
 
-Francisca y Tadeo son hermanos, nacidos en Cinctorres. El sitio es una iniciativa
-desinteresada, sin publicidad ni ánimo de lucro, para divulgar y conservar el patrimonio
-natural de Cinctorres y de la comarca dels Ports.
+Francisca y Tadeo son hermanos, nacidos en Cinctorres, y ya no pueden mantener el blog. El
+sitio es una iniciativa familiar desinteresada, sin publicidad ni ánimo de lucro, para
+divulgar y conservar el patrimonio natural de Cinctorres y de la comarca dels Ports, y un
+homenaje a su trabajo.
 
 ### Proyecto hermano
 
@@ -36,155 +34,176 @@ GitHub Pages con dominio propio.
 
 ---
 
-## Regla de oro: el contenido no se reescribe
+## Historia en dos pasos
 
-Los textos y las fotos son obra de sus autores. Al trabajar en el sitio:
+1. **Migración fiel** (rama `main`, agosto de 2026): el WordPress se volcó tal cual a Astro,
+   entrada por entrada, sin tocar una coma. Ese material sigue en el repositorio como
+   referencia: `tools/_wp-markdown/` (markdown del texto original), `tools/_wp-dump/`
+   (API REST) y `wordpress-export/` (exportación oficial WXR).
+2. **Producto nuevo** (esta versión): el contenido se reorganizó por temas, se corrigieron
+   los textos, se tradujo todo al valenciano y se diseñó el sitio desde cero. Lo pidió
+   Juan Tadeo Padilla Julián expresamente: los autores estructuraron el blog sin
+   conocimientos informáticos ni documentales, y quería «un producto nuevo y nativo como
+   creado desde cero».
 
-- **No corregir** la ortografía, la puntuación ni la redacción de las entradas. Los textos
-  se han migrado tal cual estaban en WordPress, con sus rarezas (títulos en mayúsculas,
-  párrafos enteros en negrita, dobles espacios). Es su voz.
-- **No recortar ni retocar** las fotografías originales de `src/assets/uploads/`. Astro
-  genera las versiones optimizadas en cada build; los originales son el archivo.
-- Cualquier cambio de contenido lo decide Juan Tadeo Padilla Julián, no la máquina.
+---
+
+## Cómo se ha tratado el texto de los autores
+
+- Se corrigen erratas, acentos, puntuación, espacios dobles y nombres científicos
+  (`Querqus` → `Quercus`, `Alcon` → `halcón`, `mitología friega` → `griega`, `21 de julio`
+  → `21 de junio` para el solsticio...).
+- Se retoca la redacción **solo lo justo** para que se lea con comodidad. La voz es la de
+  Francisca: primera persona, «mi hermano Tadeo y yo, Paquita», «me gusta llamarlas
+  *palometes*, como cuando era niña». Eso no se toca.
+- No se añade información nueva ni se «mejora» científicamente el contenido. Si un nombre
+  de especie del original no se puede identificar con seguridad, se deja el género
+  (`Linaria`, `Tragopogon`), no se inventa.
+- Los seis borradores que nunca se publicaron en WordPress siguen sin publicarse.
+- Los originales sin corregir están en `tools/_wp-markdown/` por si hay que consultar qué
+  decía exactamente el blog.
+
+El valenciano es estándar con léxico de la comarca (*xicotet*, *hui*, *rovelló*, *roser
+gavarrer*, *pregadéu*, *rabosa*). Los términos que los propios autores usaban en valenciano
+dentro del castellano (*marges*, *tolls*, *xotos*, *abella*, *voltor*) se conservan.
 
 ---
 
 ## Entorno de desarrollo
 
 ```bash
-npm install        # dependencias
-npm run dev        # servidor de desarrollo en http://localhost:4321
-npm run build      # build de producción a dist/ (~30 s en frío, ~3 s con caché de imágenes)
-npm run preview    # sirve dist/ en http://localhost:4321
+npm install
+npm run dev        # http://localhost:4321
+npm run build      # dist/ (~30 s en frío; ~2 s con la caché de imágenes)
+npm run preview    # sirve dist/
 ```
 
-Requiere Node LTS (desarrollado con Node 22). `sharp` compila las imágenes; la primera
-build procesa 388 variantes WebP y tarda del orden de medio minuto, las siguientes
-reutilizan la caché de `node_modules/.astro`.
+Node LTS (desarrollado con Node 22). Las fuentes (Fraunces y Source Sans 3) se descargan de
+Fontsource **en el build** y se sirven desde el propio sitio: el sitio publicado no hace
+ninguna petición a terceros. Hace falta red al compilar.
 
 ---
 
 ## Estructura
 
 ```
-astro.config.mjs          configuración: sitio, sitemap, plugin de figuras, imágenes
+astro.config.mjs            sitio, i18n, fuentes, sitemap, plugin de figuras, imágenes
 src/
-  site.ts                 título, lema, descripción y nombres de las categorías
-  content.config.ts       colecciones de Astro (posts y pages) y su esquema
-  content/
-    posts/*.md            33 entradas migradas (frontmatter + markdown)
-    pages/quien-somos.md  la única página del WordPress original
-  assets/uploads/AAAA/MM/ 315 fotografías originales, tal como estaban en WordPress
-  data/redirects.json     URLs antiguas (?p=123, ?cat=4) → direcciones nuevas
-  plugins/figuras.mjs     convierte los párrafos de solo imágenes en <figure> con pie
-  layouts/Base.astro      html, metadatos, Open Graph, cabecera y pie
-  components/             Cabecera, Pie, Tarjeta, Visor (lightbox nativo con <dialog>)
+  site/
+    config.ts               idiomas, secciones y grupos, páginas, constructores de URL,
+                            tabla de redirecciones del WordPress
+    ui.ts                   textos de la interfaz en es y ca
+    guias.ts                consultas a la colección: orden de lectura, hermanas, URL
+    fotos.ts                acceso a las 315 fotos por ruta (import.meta.glob)
+    rss.ts                  feed por idioma
+  content.config.ts         colección `articulos` y su esquema
+  content/articulos/
+    es/<key>.md             23 guías en castellano
+    ca/<key>.md             las mismas 23 en valenciano; misma `key`, distinto `slug`
+  data/flores.ts            catálogo de 69 flores: nombre científico, familia, comunes es/ca
+  assets/uploads/AAAA/MM/   fotografías originales, sin retocar
+  plugins/figuras.mjs       párrafos de imágenes → <figure>/<figcaption>/.galeria
+  layouts/Base.astro        html, metadatos, hreflang, fuentes, cabecera y pie
+  components/               Cabecera, Pie, Tarjeta, Visor (lightbox), Catalogo (flores)
+  vistas/                   Inicio, Seccion, Articulo, Autores, Proyecto
   pages/
-    index.astro           portada
-    blog/index.astro      archivo por años
-    blog/[slug].astro     entrada
-    categoria/[categoria].astro
-    [pagina].astro        páginas de la colección pages
-    el-proyecto.astro     quién, por qué y contacto
-    404.astro
-    rss.xml.ts
-  styles/global.css       paleta y estilos (claro y oscuro según el sistema)
-public/
-  CNAME                   www.ramblacelumbres.org
-  robots.txt, favicon.svg
-tools/
-  export-wp.py            migración desde WordPress (ver abajo)
-  _wp-dump/*.json         volcado íntegro de la API REST del WordPress original
-wordpress-export/
-  *.xml                   exportación oficial de WordPress (WXR), 2026-08-29
+    [...ruta].astro         TODAS las páginas, en los dos idiomas, salen de aquí
+    404.astro, rss.xml.ts, ca/rss.xml.ts
+  styles/global.css         diseño completo (tokens, claro/oscuro, componentes)
+public/CNAME                www.ramblacelumbres.org
+tools/export-wp.py          migración desde el WordPress (histórico; ver abajo)
+wordpress-export/*.xml      exportación oficial del WordPress, 2026-08-29
 ```
 
----
+### Rutas
 
-## La migración desde WordPress
+El castellano va en la raíz y el valenciano bajo `/ca/`:
 
-`tools/export-wp.py` reconstruye `src/content/` y `src/assets/` desde cero leyendo la API
-REST pública del WordPress original. Es idempotente y no descarga dos veces la misma foto.
-
-```bash
-python3 tools/export-wp.py               # contenido + imágenes
-python3 tools/export-wp.py --skip-media  # solo contenido (rápido, para iterar)
+```
+/                         /ca/
+/flora/                   /ca/flora/
+/flora/los-arboles/       /ca/flora/els-arbres/
+/hongos-y-liquenes/       /ca/fongs-i-liquens/
+/los-autores/             /ca/els-autors/
+/el-proyecto/             /ca/el-projecte/
 ```
 
-**Solo tiene sentido mientras el WordPress original siga en pie.** Cuando se apague, el
-volcado de `tools/_wp-dump/`, la exportación de `wordpress-export/` y lo que hay en `src/`
-pasan a ser la única copia: son parte del repositorio precisamente por eso.
+Las URL se construyen **solo** con las funciones de `src/site/config.ts` (`urlSeccion`,
+`urlArticulo`, `urlPagina`...). Los slugs por idioma están en el frontmatter de cada guía y
+en `SECCIONES`/`PAGINAS`. El selector de idioma enlaza con la misma página en el otro idioma
+(se localiza por `key`).
 
-La exportación XML (WXR) sirvió para verificar la migración y coincide con ella: las mismas
-33 entradas publicadas, los mismos identificadores y los 315 adjuntos. Si el fichero está
-presente, el script también lee de él las URLs de los adjuntos, porque la API REST dejaba
-fuera alguno (`MG_9614.jpg`, que solo usaba un borrador).
+### Organización del contenido
 
-**Los 6 borradores no se publican.** El WordPress tenía seis entradas en estado `draft`
-que nunca vieron la luz; cinco son versiones previas de entradas ya publicadas y la sexta
-es un «ÁRBOLES» inacabado. No aparecen en el sitio, a propósito, pero quedan guardados en
-el XML por si algún día se quieren recuperar. Esa decisión es de Juan Tadeo Padilla Julián,
-no de la máquina.
+| Sección | Grupos | Guías |
+|---|---|---|
+| La rambla | El lugar · Las estaciones | el-paraje, piedra-seca, primavera, verano, otono, invierno |
+| Flora | Árboles · Flores | arboles, orquideas, flores-silvestres (con el catálogo) |
+| Fauna | Aves y mamíferos · Insectos · Arañas y miriápodos | rapaces, cabra-montes, mariposas, polillas, escarabajos, mantis, chinches, abejas-avispas-hormigas, libelulas, saltamontes-grillos, aranas, miriapodos |
+| Hongos y líquenes | — | hongos, liquenes |
 
-Lo que resuelve el script, por si hay que retocarlo:
+Las diez entradas alfabéticas de flores del blog («Flores a-b», «Flores c-d»...) se
+convirtieron en `src/data/flores.ts` y se muestran como catálogo con buscador y filtro por
+familia al final de la guía `flores-silvestres` (`layout: catalogo` en el frontmatter).
 
-- Pagina por la cabecera `X-WP-TotalPages`, no por el tamaño de la respuesta (WordPress
-  devuelve páginas incompletas).
-- Codifica las rutas con eñes y acentos antes de pedirlas (`araña.jpg`).
-- Usa siempre la imagen **original**, no la variante redimensionada que enlaza el HTML.
-- Convierte el HTML del editor clásico a markdown equilibrando negritas y cursivas: las
-  cierra y reabre cuando una imagen parte un párrafo, descarta el énfasis vacío, saca los
-  espacios de dentro de las marcas y, cuando el énfasis cae a mitad de palabra (markdown no
-  lo admite), lo emite como `<strong>`/`<em>` en línea.
-- Los pies de foto viajan como título de la imagen: `![alt](ruta "pie")`. El plugin
-  `src/plugins/figuras.mjs` los convierte en `<figure><figcaption>` en el build.
-- `SLUG_OVERRIDES` renombra cuatro slugs heredados ilegibles (`32` → `aracnidos`,
-  `tercera` → `quien-somos`, ...). Los enlaces antiguos siguen funcionando por `redirects.json`.
+### Convenciones del markdown de las guías
 
-### Enlaces antiguos
-
-El WordPress usaba enlaces con query (`?p=123`, `?page_id=23`, `?cat=4`). Un alojamiento
-estático ignora la query, así que la portada y la página 404 llevan un script mínimo que
-traduce esas direcciones con `src/data/redirects.json` y redirige. Si se añade contenido
-nuevo, ese fichero no hay que tocarlo.
+- Pie de foto como título de la imagen: `![alt](ruta "pie")`. Dentro del pie, `*Genus
+  species*` se convierte en cursiva.
+- Varias imágenes en líneas consecutivas (sin línea en blanco) forman una galería.
+- Las rutas de imagen son relativas: `../../../assets/uploads/AAAA/MM/fichero.jpg`.
+- Frontmatter: `key`, `lang`, `slug`, `title`, `subtitle?`, `section`, `group?`, `order`,
+  `originalDate`, `cover`, `coverAlt`, `summary`, `layout?`. Los textos van entre comillas
+  dobles (los resúmenes llevan dos puntos y comillas tipográficas).
+- Para añadir una guía: crear `es/<key>.md` y `ca/<key>.md` con la misma `key` y la misma
+  secuencia de fotos, y elegir `section`/`group` de `SECCIONES`.
 
 ---
 
 ## Detalles técnicos que conviene saber
 
-- **Astro 7** usa **Sätteri** como procesador de markdown por defecto, no unified. Los
-  plugins van en `markdown.processor: satteri({ hastPlugins: [...] })` con la API de
-  `defineHastPlugin`, no en `rehypePlugins`. El plugin de figuras se ejecuta *antes* que el
-  marcador de imágenes de Astro, por eso las fotos siguen optimizándose.
-- **Peso de las imágenes**: los JPEG originales están muy comprimidos; sin bajar la calidad
-  el WebP equivalente sale más pesado que el original. Por eso `figuras.mjs` fija
-  `quality: 68` y tres anchos (480/900/1400) para las fotos del artículo, y
-  `astro.config.mjs` limita los breakpoints. Con eso `dist/` pesa unos 89 MB en vez de 333.
-- **Tema claro y oscuro**: solo con `prefers-color-scheme`, sin selector manual. La paleta
-  está en variables CSS al principio de `global.css`.
-- **Las etiquetas de WordPress** (`tags` en el frontmatter) se conservan en los datos pero
-  no se muestran: venían desordenadas y con erratas (`Ec`, `Biodiiversidad`). Las
-  categorías sí se usan como navegación.
+- **Astro 7** usa **Sätteri** como procesador de markdown, no unified: los plugins van en
+  `markdown.processor: satteri({ hastPlugins: [...] })` con `defineHastPlugin`, no en
+  `rehypePlugins`. El plugin de figuras corre antes que el marcador de imágenes de Astro,
+  por eso las fotos siguen optimizándose.
+- **Imágenes**: los JPEG originales están muy comprimidos; sin bajar la calidad, el WebP
+  sale más pesado. `figuras.mjs` fija `quality: 68` y tres anchos (480/900/1400) para las
+  fotos del artículo; `astro.config.mjs` limita los breakpoints. `dist/` ronda los 150 MB.
+- **`isolation: isolate` NO** en contenedores con foto y velo degradado encima: Chrome deja
+  de pintar la foto. La portada y las «puertas» apilan foto/velo/texto con `grid-area: 1/1`.
+- **Tema claro y oscuro** solo con `prefers-color-scheme`. Tokens al principio de
+  `global.css`.
+- **Enlaces del WordPress antiguo** (`?p=`, `?page_id=`, `?cat=`): un host estático ignora
+  la query, así que la portada lleva un script mínimo que los traduce con la tabla de
+  `config.ts` (`WP_ENTRADAS`, `WP_PAGINAS`, `WP_CATEGORIAS`). La 404 reenvía a la portada
+  conservando la query.
 
 ---
 
 ## Despliegue
 
 GitHub Pages mediante `.github/workflows/deploy.yml`: cada `push` a `main` compila y
-publica. El dominio propio sale de `public/CNAME` (`www.ramblacelumbres.org`).
-
-Para que el dominio apunte aquí hay que cambiar el DNS del registrador a GitHub Pages
-(registros A a las IP de Pages y `CNAME` de `www` a `jtpadilla.github.io`), y activar
-Pages con origen «GitHub Actions» en la configuración del repositorio. Mientras eso no se
-haga, el dominio sigue sirviendo el WordPress antiguo.
+publica. Dominio propio en `public/CNAME`. Falta: mover el DNS del registrador a GitHub
+Pages (`www` → `CNAME jtpadilla.github.io`) y declarar el dominio en Pages
+(`gh api -X PUT repos/jtpadilla/ramblacelumbres/pages -f cname=www.ramblacelumbres.org`).
+Mientras tanto, el dominio sirve el WordPress antiguo.
 
 ---
 
 ## Comprobaciones antes de dar algo por bueno
 
 ```bash
-npm run build                                   # debe terminar sin errores
-grep -rl '\*\*' --include="*.html" dist | wc -l # 0: no debe quedar markdown sin convertir
-grep -o '<p[^>]*><figure' -r dist | wc -l       # 0: <figure> nunca dentro de <p>
-python3 tools/export-wp.py --skip-media         # debe decir "OK: las 255 imagenes ... descargadas"
+npm run build                                    # 60 páginas, sin errores
+grep -o '<p[^>]*><figure' -r dist | wc -l        # 0: <figure> nunca dentro de <p>
+python3 - <<'EOF'
+import re,glob,os
+rotos=[]
+for f in glob.glob('dist/**/*.html',recursive=True):
+    for h in set(re.findall(r'href="(/[^"#?]*)"',open(f,encoding='utf-8').read())):
+        if h.startswith('/_') : continue
+        if not (os.path.exists('dist'+h) or os.path.exists('dist'+h+'index.html')): rotos.append((f,h))
+print('enlaces rotos:',len(rotos))
+EOF
 ```
+Y comprobar a ojo, en `npm run preview`, la portada, una sección, una guía con galerías,
+el catálogo de flores y la página de los autores, en los dos idiomas y en móvil.

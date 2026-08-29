@@ -1,0 +1,109 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { PAGINAS, SITIO, AUTORES, urlInicio, urlPagina, urlSeccion, otroIdioma, type Lang } from '../site/config';
+import { ui } from '../site/ui';
+import { foto } from '../site/fotos';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui(lang);
+const paquita = foto('2014/03/2.jpg');
+const tadeo = foto('2014/03/12.jpg');
+const enElCampo = foto('2014/03/27.jpg');
+const rapaces = urlSeccion(lang, 'fauna') + (lang === 'es' ? 'rapaces-diurnas/' : 'rapinyaires-diurns/');
+
+const x = {
+  es: {
+    titulo: 'Los autores',
+    lema: 'Dos hermanos de Cinctorres, una cámara y un cuaderno',
+    textos: 'Escribía los textos',
+    fotos: 'Hacía las fotografías',
+    citaPie: 'Francisca Julián Querol, en la presentación del blog original (marzo de 2014)',
+    cita1: 'Mi nombre es Paquita y el de mi hermano, Tadeo. Estamos jubilados. A los dos nos gusta la naturaleza, y siempre que podemos recorremos las montañas dels Ports haciendo fotos: algunas me salen bien, otras regular; llevar al lado a un maestro de la fotografía como mi hermano es complicado. A mí me gusta más escribir, así que todo queda en casa.',
+    cita2: 'El motivo de este blog es compartir su biodiversidad, nuestras fotografías y la belleza de este lugar, desconocido para muchos y entrañable para nosotros, pues lo conocemos bien por las correrías que hemos hecho por él desde nuestra infancia.',
+    fotoPie: 'Paquita en la rambla, con la Roca Roja al fondo.',
+    h1: 'Quiénes son',
+    p1: 'Francisca y Tadeo Julián Querol nacieron en Cinctorres y conocen la rambla de Celumbres desde niños. Entre 2014 y 2016, ya jubilados, recorrieron una y otra vez los bancales de l’Arribassada, la fuente dels Bassis, los pinares de la Roca Parda y los montes comunales de la comarca. Ella identificaba y describía lo que encontraban; él lo fotografiaba. El resultado fueron 33 entradas y más de trescientas fotografías en un blog que llamaron «Ecosistema de la Rambla Celumbres».',
+    p2: 'Para las fotos de los buitres pasaron varias mañanas agazapados en lo alto del acantilado bajo una malla de camuflaje. Para las de la Graellsia isabellae madrugaron hasta encontrarla a las siete, recién llovido, y la fotografiaron sobre la mano de Tadeo antes de que el sol la despertara. Ese es el espíritu de todo el trabajo: paciencia, cariño por el lugar y ganas de que otros lo conozcan.',
+    h2: 'Por qué existe este sitio',
+    p3: 'El blog original era un WordPress que Francisca y Tadeo ya no pueden mantener. En 2026 la familia lo ha convertido en esta guía: los mismos textos —con las erratas corregidas y la redacción apenas retocada, para que siga sonando a ellos—, las mismas fotografías, reordenadas por temas y traducidas al valenciano, en un sitio estático que no necesita servidor ni mantenimiento y que podrá seguir consultándose durante muchos años.',
+    p4: 'Es un homenaje a su trabajo y, sobre todo, una forma de que el patrimonio natural de Cinctorres y de la comarca dels Ports siga a la vista de quien quiera mirarlo.',
+    h3: 'El proyecto hermano',
+    p5: 'Francisca y Tadeo participaron también en santjoans.es, el visor del pavimento cerámico zoo-mórfico del Palau Santjoans de Cinctorres: ella con el estudio del pavimento y él con la fotografía de las piezas. Es un proyecto con la misma vocación que este, documentar y difundir lo que Cinctorres tiene de valioso.',
+    p6: 'La programación de ambos sitios y el contacto para cualquier corrección es de Juan Tadeo Padilla Julián.',
+    proyecto: 'Más sobre cómo se ha hecho este sitio',
+    verRapaces: 'Leer la guía de las rapaces',
+  },
+  ca: {
+    titulo: 'Els autors',
+    lema: 'Dos germans de Cinctorres, una càmera i un quadern',
+    textos: 'Escrivia els textos',
+    fotos: 'Feia les fotografies',
+    citaPie: 'Francisca Julián Querol, en la presentació del blog original (març de 2014)',
+    cita1: 'Em dic Paquita i el meu germà, Tadeo. Estem jubilats. A tots dos ens agrada la natura, i sempre que podem recorrem les muntanyes dels Ports fent fotos: algunes m’ixen bé, altres regular; portar al costat un mestre de la fotografia com el meu germà és complicat. A mi m’agrada més escriure, així que tot queda a casa.',
+    cita2: 'El motiu d’aquest blog és compartir la seua biodiversitat, les nostres fotografies i la bellesa d’aquest lloc, desconegut per a molts i entranyable per a nosaltres, perquè el coneixem bé per les correries que hi hem fet des de la infantesa.',
+    fotoPie: 'Paquita a la rambla, amb la Roca Roja al fons.',
+    h1: 'Qui són',
+    p1: 'Francisca i Tadeo Julián Querol van nàixer a Cinctorres i coneixen la rambla de Celumbres des de xiquets. Entre 2014 i 2016, ja jubilats, van recórrer una vegada i una altra els bancals de l’Arribassada, la font dels Bassis, les pinedes de la Roca Parda i els monts comunals de la comarca. Ella identificava i descrivia el que trobaven; ell ho fotografiava. El resultat van ser 33 entrades i més de tres-centes fotografies en un blog que van anomenar «Ecosistema de la Rambla Celumbres».',
+    p2: 'Per a les fotos dels voltors van passar diversos matins ajupits a dalt del penya-segat sota una malla de camuflatge. Per a les de la Graellsia isabellae van matinar fins a trobar-la a les set, acabat de ploure, i la van fotografiar sobre la mà de Tadeo abans que el sol la despertara. Aquest és l’esperit de tot el treball: paciència, estima pel lloc i ganes que altres el coneguen.',
+    h2: 'Per què existeix aquest lloc',
+    p3: 'El blog original era un WordPress que Francisca i Tadeo ja no poden mantindre. El 2026 la família l’ha convertit en aquesta guia: els mateixos textos —amb les errates corregides i la redacció a penes retocada, perquè continue sonant a ells—, les mateixes fotografies, reordenades per temes i traduïdes al valencià, en un lloc estàtic que no necessita servidor ni manteniment i que es podrà continuar consultant durant molts anys.',
+    p4: 'És un homenatge al seu treball i, sobretot, una manera que el patrimoni natural de Cinctorres i de la comarca dels Ports continue a la vista de qui vulga mirar-lo.',
+    h3: 'El projecte germà',
+    p5: 'Francisca i Tadeo van participar també en santjoans.es, el visor del paviment ceràmic zoomòrfic del Palau Santjoans de Cinctorres: ella amb l’estudi del paviment i ell amb la fotografia de les peces. És un projecte amb la mateixa vocació que aquest, documentar i difondre allò que Cinctorres té de valuós.',
+    p6: 'La programació dels dos llocs i el contacte per a qualsevol correcció és de Juan Tadeo Padilla Julián.',
+    proyecto: 'Més sobre com s’ha fet aquest lloc',
+    verRapaces: 'Llegir la guia dels rapinyaires',
+  },
+}[lang];
+---
+
+<Base lang={lang} titulo={x.titulo} descripcion={x.lema} imagen={enElCampo.src} alternativa={urlPagina(otroIdioma(lang), 'autores')} activo="autores">
+  <div class="contenedor">
+    <div class="lectura" style="text-align:center; padding-top:3.5rem">
+      <p class="antetitulo"><a href={urlInicio(lang)}>{t.inicio}</a> / {PAGINAS.autores.nombre[lang]}</p>
+      <h1 style="font-size:clamp(2.2rem,5vw,3.6rem); margin:.4rem 0 .5rem">{x.titulo}</h1>
+      <p class="lema" style="font-family:var(--titulos); font-style:italic; font-size:1.25rem; color:var(--tinta-2)">{x.lema}</p>
+    </div>
+
+    <div class="autores-cabecera" style="padding-top:1.5rem">
+      <div class="autor">
+        <Image src={paquita} alt="Francisca Julián Querol" width={480} height={480} loading="eager" />
+        <h2>Francisca Julián Querol</h2>
+        <p>«Paquita»</p>
+        <p class="antetitulo">{x.textos}</p>
+      </div>
+      <div class="autor">
+        <Image src={tadeo} alt="Tadeo Julián Querol" width={480} height={480} loading="eager" />
+        <h2>Tadeo Julián Querol</h2>
+        <p>«Tadeo»</p>
+        <p class="antetitulo">{x.fotos}</p>
+      </div>
+    </div>
+
+    <blockquote class="cita lectura">
+      <p>{x.cita1}</p>
+      <p>{x.cita2}</p>
+      <footer>— {x.citaPie}</footer>
+    </blockquote>
+
+    <figure class="foto-ancha">
+      <Image src={enElCampo} alt={x.fotoPie} widths={[640, 1024, 1600]} sizes="(max-width: 78rem) 100vw, 78rem" loading="lazy" />
+      <figcaption>{x.fotoPie}</figcaption>
+    </figure>
+
+    <div class="lectura prosa-pagina">
+      <h2>{x.h1}</h2>
+      <p>{x.p1}</p>
+      <p>{x.p2} <a href={rapaces}>{x.verRapaces} →</a></p>
+      <h2>{x.h2}</h2>
+      <p>{x.p3}</p>
+      <p>{x.p4}</p>
+      <h2>{x.h3}</h2>
+      <p set:html={x.p5.replace('santjoans.es', `<a href="${SITIO.hermano.url}" rel="noopener">santjoans.es</a>`)} />
+      <p>{x.p6}</p>
+      <p><a class="boton" href={urlPagina(lang, 'proyecto')}>{x.proyecto}</a></p>
+    </div>
+  </div>
+</Base>

@@ -1,0 +1,135 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Tarjeta from '../components/Tarjeta.astro';
+import { SECCIONES, SECCION_KEYS, SITIO, urlInicio, urlSeccion, urlPagina, urlCatalogo, otroIdioma, WP_ENTRADAS, WP_PAGINAS, WP_CATEGORIAS, type Lang } from '../site/config';
+import { ui } from '../site/ui';
+import { foto, TOTAL_FOTOS } from '../site/fotos';
+import { guiasDe, guiaPorClave, urlDe } from '../site/guias';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui(lang);
+
+const guias = await guiasDe(lang);
+const estaciones = ['primavera', 'verano', 'otono', 'invierno']
+  .map((k) => guias.find((g) => g.data.key === k)!)
+  .filter(Boolean);
+const destacadasKeys = ['cabra-montes', 'polillas', 'rapaces', 'orquideas', 'aranas', 'hongos'];
+const destacadas = destacadasKeys.map((k) => guias.find((g) => g.data.key === k)!).filter(Boolean);
+
+// Enlaces del WordPress antiguo (?p=123, ?cat=4...) traducidos a la URL nueva.
+const redirecciones: Record<string, string> = {};
+for (const [id, key] of Object.entries(WP_ENTRADAS)) {
+  const g = await guiaPorClave('es', key);
+  if (g) redirecciones[`?p=${id}`] = urlDe(g);
+}
+for (const [id, key] of Object.entries(WP_PAGINAS)) redirecciones[`?page_id=${id}`] = urlPagina('es', key);
+for (const [id, key] of Object.entries(WP_CATEGORIAS)) redirecciones[`?cat=${id}`] = urlSeccion('es', key);
+redirecciones['?feed=rss2'] = '/rss.xml';
+redirecciones['?feed=rss'] = '/rss.xml';
+
+const portada = foto('2015/03/1.jpg');
+const retratoTadeo = foto('2014/03/12.jpg');
+const retratoPaquita = foto('2014/03/2.jpg');
+---
+
+<Base lang={lang} imagen={portada.src} alternativa={urlInicio(otroIdioma(lang))}>
+  <script slot="head" is:inline define:vars={{ redirecciones }}>
+    // Un alojamiento estatico ignora la query, asi que los enlaces del blog
+    // antiguo llegan aqui: se traducen a la direccion nueva antes de pintar.
+    if (location.search) {
+      const destino = redirecciones[location.search];
+      if (destino) location.replace(destino);
+    }
+  </script>
+
+  <section class="portada portada-inicio">
+    <Image src={portada} alt="" widths={[640, 1024, 1600, 2048]} sizes="100vw" loading="eager" fetchpriority="high" />
+    <div class="velo"></div>
+    <div class="contenedor">
+      <p class="antetitulo">Cinctorres · Castellfort · Portell de Morella</p>
+      <h1>{lang === 'es' ? <>Ecosistema de la <i>Rambla Celumbres</i></> : <>Ecosistema de la <i>Rambla Celumbres</i></>}</h1>
+      <p>{SITIO.lema[lang]}.</p>
+      <div class="botones">
+        <a class="boton" href={urlSeccion(lang, 'la-rambla')}>{t.portadaCta}</a>
+        <a class="boton boton-secundario" href={urlPagina(lang, 'autores')}>{t.portadaCta2}</a>
+      </div>
+      <p class="portada-cifras">{t.cifras(guias.length, TOTAL_FOTOS)}</p>
+    </div>
+  </section>
+
+  <section class="lectura intro">
+    <p set:html={lang === 'es'
+      ? 'Una guía fotográfica de la vida que hay en una rambla que casi nunca lleva agua: <b>flores, insectos, aves, mamíferos, hongos y líquenes</b>, observados durante tres años entre la Roca Parda y la Roca Roja.'
+      : 'Una guia fotogràfica de la vida que hi ha en una rambla que quasi mai porta aigua: <b>flors, insectes, aus, mamífers, fongs i líquens</b>, observats durant tres anys entre la Roca Parda i la Roca Roja.'} />
+  </section>
+
+  <section class="contenedor bloque" aria-label={lang === 'es' ? 'Secciones' : 'Seccions'}>
+    <div class="puertas">
+      {SECCION_KEYS.map((key) => {
+        const s = SECCIONES[key];
+        const n = guias.filter((g) => g.data.section === key).length;
+        return (
+          <a class="puerta" href={urlSeccion(lang, key)}>
+            <Image src={foto(s.cover)} alt="" widths={[640, 960, 1400]} sizes="(max-width: 44rem) 100vw, 50vw" loading="lazy" />
+            <div class="puerta-texto">
+              <p class="antetitulo">{n} {n === 1 ? t.guia : t.guias}</p>
+              <h3>{s.nombre[lang]}</h3>
+              <p>{s.lema[lang]}</p>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <section class="contenedor bloque">
+    <div class="bloque-cabecera">
+      <div>
+        <h2>{t.estaciones}</h2>
+        <p>{t.estacionesTexto}</p>
+      </div>
+      <a class="enlace" href={urlSeccion(lang, 'la-rambla')}>{t.verSeccion}</a>
+    </div>
+    <div class="estaciones">
+      {estaciones.map((g) => (
+        <a class="estacion" href={urlDe(g)}>
+          <Image src={g.data.cover} alt="" widths={[360, 640]} sizes="(max-width: 44rem) 50vw, 25vw" loading="lazy" />
+          <div>
+            <h3>{g.data.title}</h3>
+            <p>{g.data.subtitle}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="contenedor">
+    <div class="homenaje">
+      <div class="retratos">
+        <Image src={retratoPaquita} alt="Francisca Julián Querol" width={288} height={288} loading="lazy" />
+        <Image src={retratoTadeo} alt="Tadeo Julián Querol" width={288} height={288} loading="lazy" />
+      </div>
+      <div>
+        <p class="antetitulo">{lang === 'es' ? 'Textos y fotografías' : 'Textos i fotografies'}</p>
+        <h2>{t.homenaje}</h2>
+        <p>{t.homenajeTexto}</p>
+        <a class="boton" href={urlPagina(lang, 'autores')}>{t.homenajeEnlace}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="contenedor bloque">
+    <div class="bloque-cabecera">
+      <div>
+        <h2>{t.descubre}</h2>
+        <p>{t.descubreTexto}</p>
+      </div>
+      <a class="enlace" href={urlCatalogo(lang)}>{t.catalogo}</a>
+    </div>
+    <ul class="rejilla">
+      {destacadas.map((g) => <Tarjeta guia={g} />)}
+    </ul>
+  </section>
+</Base>

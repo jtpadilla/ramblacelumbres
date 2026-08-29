@@ -1,18 +1,42 @@
 ---
-import { SITIO } from '../site';
+import { SECCIONES, SECCION_KEYS, PAGINAS, SITIO, AUTORES, urlSeccion, urlPagina, urlCatalogo, urlInicio, otroIdioma, type Lang } from '../site/config';
+import { ui } from '../site/ui';
+
+interface Props { lang: Lang; alternativa?: string }
+const { lang, alternativa } = Astro.props;
+const t = ui(lang);
+const otro = otroIdioma(lang);
 const anio = new Date().getFullYear();
 ---
 
 <footer class="pie">
-  <div class="contenedor">
-    <p>
-      © 2014–{anio} {SITIO.titulo}. Textos de Francisca Julián Querol y
-      fotografías de Tadeo Julián Querol.
-    </p>
-    <nav aria-label="Pie">
-      <a href="/quien-somos/">Quiénes somos</a>
-      <a href="/el-proyecto/">El proyecto</a>
-      <a href="/rss.xml">RSS</a>
-    </nav>
+  <div class="contenedor pie-cuerpo">
+    <div>
+      <h3>{SITIO.titulo[lang]}</h3>
+      <p>{t.pieTextos}</p>
+      <p>{t.pieNota}</p>
+    </div>
+    <div>
+      <h3>{lang === 'es' ? 'La guía' : 'La guia'}</h3>
+      <ul>
+        {SECCION_KEYS.map((key) => <li><a href={urlSeccion(lang, key)}>{SECCIONES[key].nombre[lang]}</a></li>)}
+        <li><a href={urlCatalogo(lang)}>{t.catalogo}</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>{lang === 'es' ? 'Sobre el sitio' : 'Sobre el lloc'}</h3>
+      <ul>
+        <li><a href={urlPagina(lang, 'autores')}>{PAGINAS.autores.nombre[lang]}</a></li>
+        <li><a href={urlPagina(lang, 'proyecto')}>{PAGINAS.proyecto.nombre[lang]}</a></li>
+        <li><a href={alternativa ?? urlInicio(otro)} hreflang={otro} lang={otro}>{ui(otro).idioma}</a></li>
+        <li><a href={SITIO.hermano.url} rel="noopener">{t.hermano}: {SITIO.hermano.nombre}</a></li>
+        <li><a href={SITIO.repositorio} rel="noopener">{t.codigo}</a></li>
+        <li><a href={lang === 'es' ? '/rss.xml' : '/ca/rss.xml'}>{t.rss}</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="contenedor pie-final">
+    <span>© 2014–{anio} {AUTORES.textos} · {AUTORES.fotografias}</span>
+    <span>Cinctorres · Els Ports</span>
   </div>
 </footer>

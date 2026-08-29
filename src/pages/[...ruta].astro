@@ -1,0 +1,56 @@
+---
+/**
+ * Todas las paginas del sitio, en los dos idiomas, salen de esta ruta.
+ *
+ * El castellano va en la raiz (/flora/los-arboles/) y el valenciano bajo /ca/
+ * (/ca/flora/els-arbres/). Las direcciones se construyen en src/site/config.ts,
+ * y aqui solo se enumeran y se despacha a la vista que toca.
+ */
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import { LANGS, SECCION_KEYS, PAGINAS, urlInicio, urlSeccion, urlPagina, urlArticulo, type Lang, type SeccionKey, type PaginaKey } from '../site/config';
+import type { Guia } from '../site/guias';
+import Inicio from '../vistas/Inicio.astro';
+import Seccion from '../vistas/Seccion.astro';
+import Articulo from '../vistas/Articulo.astro';
+import Autores from '../vistas/Autores.astro';
+import Proyecto from '../vistas/Proyecto.astro';
+
+type Props =
+  | { tipo: 'inicio'; lang: Lang }
+  | { tipo: 'seccion'; lang: Lang; seccion: SeccionKey }
+  | { tipo: 'pagina'; lang: Lang; pagina: PaginaKey }
+  | { tipo: 'articulo'; lang: Lang; guia: Guia };
+
+export const getStaticPaths = (async () => {
+  // Astro espera el parametro sin barras; la raiz es `undefined`.
+  const param = (url: string) => url.replace(/^\/|\/$/g, '') || undefined;
+  const todas = await getCollection('articulos');
+  const rutas: { params: { ruta: string | undefined }; props: Props }[] = [];
+
+  for (const lang of LANGS) {
+    rutas.push({ params: { ruta: param(urlInicio(lang)) }, props: { tipo: 'inicio', lang } });
+    for (const seccion of SECCION_KEYS) {
+      rutas.push({ params: { ruta: param(urlSeccion(lang, seccion)) }, props: { tipo: 'seccion', lang, seccion } });
+    }
+    for (const pagina of Object.keys(PAGINAS) as PaginaKey[]) {
+      rutas.push({ params: { ruta: param(urlPagina(lang, pagina)) }, props: { tipo: 'pagina', lang, pagina } });
+    }
+    for (const guia of todas.filter((g) => g.data.lang === lang)) {
+      rutas.push({
+        params: { ruta: param(urlArticulo(lang, guia.data.section, guia.data.slug)) },
+        props: { tipo: 'articulo', lang, guia },
+      });
+    }
+  }
+  return rutas;
+}) satisfies GetStaticPaths;
+
+const p = Astro.props as Props;
+---
+
+{p.tipo === 'inicio' && <Inicio lang={p.lang} />}
+{p.tipo === 'seccion' && <Seccion lang={p.lang} seccion={p.seccion} />}
+{p.tipo === 'articulo' && <Articulo lang={p.lang} guia={p.guia} />}
+{p.tipo === 'pagina' && p.pagina === 'autores' && <Autores lang={p.lang} />}
+{p.tipo === 'pagina' && p.pagina === 'proyecto' && <Proyecto lang={p.lang} />}

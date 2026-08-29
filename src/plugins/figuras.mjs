@@ -1,18 +1,32 @@
 import { defineHastPlugin } from 'satteri';
 
 /**
- * El contenido migrado de WordPress escribe los pies de foto como titulo de la
- * imagen en markdown:  ![alt](ruta "pie de foto")
+ * Convierte los parrafos que solo contienen imagenes en <figure> con pie.
  *
- * Este plugin convierte los parrafos que solo contienen imagenes en <figure>
- * con su <figcaption>. Un <p> no puede contener un <figure> en HTML valido, de
- * ahi que se sustituya el parrafo entero en vez de envolver la imagen.
+ * En el markdown de las guias:
+ *   - el pie de foto va como titulo de la imagen:  ![alt](ruta "pie")
+ *   - dentro del pie, *asi* marca un nombre cientifico, que se emite en <em>
+ *   - varias imagenes seguidas en el mismo parrafo (lineas consecutivas, sin
+ *     linea en blanco) forman una galeria: <div class="galeria" data-n="3">
  *
- * Se ejecuta antes que el marcador de imagenes de Astro, asi que las imagenes
- * resultantes las sigue optimizando astro:assets con normalidad.
+ * Un <p> no puede contener un <figure> en HTML valido, de ahi que se sustituya
+ * el parrafo entero. El plugin corre antes que el marcador de imagenes de
+ * Astro, asi que las fotos las sigue optimizando astro:assets.
  */
+
+function pieConCursivas(texto) {
+  const partes = texto.split(/\*([^*]+)\*/);
+  return partes
+    .map((parte, i) =>
+      i % 2 === 1
+        ? { type: 'element', tagName: 'em', properties: {}, children: [{ type: 'text', value: parte }] }
+        : { type: 'text', value: parte },
+    )
+    .filter((n) => n.type === 'element' || n.value !== '');
+}
+
 export default defineHastPlugin({
-  name: 'figuras-wp',
+  name: 'figuras',
   element: {
     filter: ['p'],
     visit(node, ctx) {
@@ -28,11 +42,10 @@ export default defineHastPlugin({
           ...img,
           properties: {
             ...resto,
-            // Los JPEG originales rondan los 300 KB y estan muy comprimidos:
-            // sin bajar la calidad, el webp equivalente sale mas pesado que el
-            // original. Tres anchos cubren de sobra la columna del articulo.
+            // Los JPEG originales estan muy comprimidos: sin bajar la calidad,
+            // el webp sale mas pesado que el original. Tres anchos bastan.
             widths: [480, 900, 1400],
-            sizes: '(max-width: 56rem) 100vw, 54rem',
+            sizes: '(max-width: 60rem) 100vw, 58rem',
             quality: 68,
           },
         };
@@ -42,20 +55,11 @@ export default defineHastPlugin({
           tagName: 'figure',
           properties: { className: ['figura'] },
           children: pie
-            ? [
-                imagen,
-                {
-                  type: 'element',
-                  tagName: 'figcaption',
-                  properties: {},
-                  children: [{ type: 'text', value: pie }],
-                },
-              ]
+            ? [imagen, { type: 'element', tagName: 'figcaption', properties: {}, children: pieConCursivas(pie) }]
             : [imagen],
         };
       });
 
-      // varias fotos seguidas dentro del mismo parrafo se maquetan como galeria
       ctx.replaceNode(
         node,
         figuras.length === 1
@@ -63,7 +67,7 @@ export default defineHastPlugin({
           : {
               type: 'element',
               tagName: 'div',
-              properties: { className: ['galeria'] },
+              properties: { className: ['galeria'], dataN: String(figuras.length) },
               children: figuras,
             },
       );

@@ -1,24 +1,28 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-const camposComunes = ({ image }: { image: () => any }) =>
-  z.object({
-    title: z.string(),
-    date: z.coerce.date(),
-    wpId: z.number(),
-    categories: z.array(z.string()).default([]),
-    tags: z.array(z.string()).default([]),
-    cover: image().optional(),
-  });
-
-const posts = defineCollection({
-  loader: glob({ base: './src/content/posts', pattern: '**/*.md' }),
-  schema: camposComunes,
+/**
+ * Cada guia existe en castellano y en valenciano como dos ficheros con la
+ * misma `key` (src/content/articulos/es/<key>.md y .../ca/<key>.md).
+ */
+const articulos = defineCollection({
+  loader: glob({ base: './src/content/articulos', pattern: '**/*.md' }),
+  schema: ({ image }) =>
+    z.object({
+      key: z.string(),
+      lang: z.enum(['es', 'ca']),
+      slug: z.string(),
+      title: z.string(),
+      subtitle: z.string().optional(),
+      section: z.enum(['la-rambla', 'flora', 'fauna', 'hongos-y-liquenes']),
+      group: z.string().optional(),
+      order: z.number().default(99),
+      originalDate: z.coerce.date(),
+      cover: image(),
+      coverAlt: z.string(),
+      summary: z.string(),
+      layout: z.enum(['catalogo']).optional(),
+    }),
 });
 
-const pages = defineCollection({
-  loader: glob({ base: './src/content/pages', pattern: '**/*.md' }),
-  schema: camposComunes,
-});
-
-export const collections = { posts, pages };
+export const collections = { articulos };

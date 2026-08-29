@@ -1,0 +1,97 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Tarjeta from '../components/Tarjeta.astro';
+import Visor from '../components/Visor.astro';
+import Catalogo from '../components/Catalogo.astro';
+import { SECCIONES, AUTORES, urlInicio, urlSeccion, otroIdioma, formatoFecha, type Lang } from '../site/config';
+import { ui } from '../site/ui';
+import { guiasDe, guiaPorClave, urlDe, type Guia } from '../site/guias';
+
+interface Props { lang: Lang; guia: Guia }
+const { lang, guia } = Astro.props;
+const t = ui(lang);
+const { title, subtitle, summary, cover, coverAlt, section, group, originalDate, layout } = guia.data;
+const s = SECCIONES[section];
+const grupo = group ? s.grupos[group]?.[lang] : undefined;
+
+const { Content, headings } = await render(guia);
+const secciones = headings.filter((h) => h.depth === 2);
+
+const hermanas = await guiasDe(lang, section);
+const i = hermanas.findIndex((g) => g.id === guia.id);
+const anterior = hermanas[i - 1];
+const siguiente = hermanas[i + 1];
+const relacionadas = hermanas.filter((g) => g.id !== guia.id).slice(0, 3);
+const alternativa = await guiaPorClave(otroIdioma(lang), guia.data.key);
+---
+
+<Base lang={lang} titulo={title} descripcion={summary} imagen={cover.src} tipo="article" fecha={originalDate} alternativa={alternativa ? urlDe(alternativa) : undefined} activo={section}>
+  <article>
+    <header class="portada portada-pagina">
+      <Image src={cover} alt={coverAlt} widths={[640, 1024, 1600, 2048]} sizes="100vw" loading="eager" fetchpriority="high" />
+      <div class="velo"></div>
+      <div class="contenedor">
+        <nav class="migas" aria-label="Migas de pan">
+          <a href={urlInicio(lang)}>{t.inicio}</a>
+          <span><a href={urlSeccion(lang, section)}>{s.nombre[lang]}</a></span>
+          {grupo && <span>{grupo}</span>}
+        </nav>
+        <h1>{title}</h1>
+        {subtitle && <p class="lema">{subtitle}</p>}
+      </div>
+    </header>
+
+    <div class="lectura">
+      <p class="articulo-meta">
+        <span>{t.textosDe}: <b>{AUTORES.textos}</b></span>
+        <span>{t.fotosDe}: <b>{AUTORES.fotografias}</b></span>
+        <span>{t.publicadoEn} <time datetime={originalDate.toISOString()}>{formatoFecha(originalDate, lang)}</time></span>
+      </p>
+      <div class="entradilla"><p>{summary}</p></div>
+      {secciones.length >= 3 && (
+        <nav class="toc" aria-label={t.enEstaGuia}>
+          <strong>{t.enEstaGuia}</strong>
+          <ol>{secciones.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+        </nav>
+      )}
+    </div>
+
+    <div class="lectura prosa">
+      <Content />
+    </div>
+
+    {layout === 'catalogo' && (
+      <div class="contenedor">
+        <Catalogo lang={lang} />
+      </div>
+    )}
+
+    <div class="lectura">
+      <ul class="navega">
+        {anterior && (
+          <li class="anterior">
+            <a href={urlDe(anterior)} rel="prev"><span>← {t.anterior}</span><strong>{anterior.data.title}</strong></a>
+          </li>
+        )}
+        {siguiente && (
+          <li class="siguiente">
+            <a href={urlDe(siguiente)} rel="next"><span>{t.siguiente} →</span><strong>{siguiente.data.title}</strong></a>
+          </li>
+        )}
+      </ul>
+    </div>
+
+    {relacionadas.length > 0 && (
+      <section class="contenedor relacionados">
+        <div class="bloque-cabecera">
+          <h2>{t.masEnSeccion} {s.nombre[lang]}</h2>
+          <a class="enlace" href={urlSeccion(lang, section)}>{t.verSeccion}</a>
+        </div>
+        <ul class="rejilla">{relacionadas.map((g) => <Tarjeta guia={g} />)}</ul>
+      </section>
+    )}
+  </article>
+  <Visor lang={lang} />
+</Base>

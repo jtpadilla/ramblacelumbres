@@ -1,30 +1,23 @@
 ---
 import { Image } from 'astro:assets';
-import { nombreCategoria, formatoFecha } from '../site';
-import type { CollectionEntry } from 'astro:content';
+import { SECCIONES, type Lang } from '../site/config';
+import { urlDe, type Guia } from '../site/guias';
 
-interface Props { entrada: CollectionEntry<'posts'>; destacada?: boolean }
-const { entrada, destacada = false } = Astro.props;
-const { title, date, cover, categories } = entrada.data;
+interface Props { guia: Guia; prioridad?: boolean; conGrupo?: boolean }
+const { guia, prioridad = false, conGrupo = false } = Astro.props;
+const { title, subtitle, summary, cover, coverAlt, section, group } = guia.data;
+const lang = guia.data.lang as Lang;
+const grupo = group ? SECCIONES[section].grupos[group]?.[lang] : undefined;
 ---
 
 <li class="tarjeta">
-  {cover && (
-    <a href={`/blog/${entrada.id}/`} tabindex="-1" aria-hidden="true">
-      <Image
-        src={cover}
-        alt=""
-        widths={[320, 640, 960]}
-        sizes="(max-width: 40rem) 100vw, (max-width: 70rem) 45vw, 22rem"
-        loading={destacada ? 'eager' : 'lazy'}
-      />
-    </a>
-  )}
-  <div class="cuerpo">
-    <p class="meta">
-      <time datetime={date.toISOString()}>{formatoFecha(date)}</time>
-      {categories.length > 0 && <> · {nombreCategoria(categories[0])}</>}
-    </p>
-    <h3><a href={`/blog/${entrada.id}/`}>{title}</a></h3>
+  <a href={urlDe(guia)} tabindex="-1" aria-hidden="true">
+    <Image src={cover} alt="" widths={[360, 640, 960]} sizes="(max-width: 40rem) 100vw, (max-width: 64rem) 50vw, 24rem" loading={prioridad ? 'eager' : 'lazy'} />
+  </a>
+  <div class="tarjeta-cuerpo">
+    {conGrupo && grupo && <span class="antetitulo">{grupo}</span>}
+    <h3><a href={urlDe(guia)}>{title}</a></h3>
+    {subtitle && <p class="subtitulo">{subtitle}</p>}
+    <p>{summary}</p>
   </div>
 </li>

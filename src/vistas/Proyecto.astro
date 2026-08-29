@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import { PAGINAS, SITIO, AUTORES, urlInicio, urlPagina, otroIdioma, type Lang } from '../site/config';
+import { ui } from '../site/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui(lang);
+
+const x = {
+  es: {
+    titulo: 'El proyecto',
+    lema: 'Cómo un blog de 2014 se ha convertido en esta guía',
+    s: [
+      ['Qué es', 'Ecosistema de la Rambla Celumbres es una guía fotográfica de la biodiversidad de la rambla de Celumbres, en la comarca dels Ports. Recoge íntegramente el trabajo que Francisca y Tadeo Julián Querol publicaron entre 2014 y 2016 en un blog de WordPress: 33 entradas y 315 fotografías.'],
+      ['Qué se ha hecho en 2026', 'El blog se ha reorganizado por temas en lugar de por fechas: la rambla y sus estaciones, la flora, la fauna, los hongos y los líquenes. Las diez entradas alfabéticas de flores se han convertido en un catálogo con buscador y filtro por familias. Los textos conservan la voz de su autora; solo se han corregido erratas, acentos y nombres científicos, y se ha retocado la redacción donde hacía falta para leerse con comodidad. Todo el contenido está en castellano y en valenciano.'],
+      ['Por qué así', 'Francisca y Tadeo ya no pueden mantener el blog, y un WordPress exige actualizaciones constantes. Este sitio es estático: no tiene base de datos, ni servidor que administrar, ni nada que parchear. Puede publicarse tal cual durante décadas. Tampoco tiene publicidad, ni cookies, ni recoge datos de nadie.'],
+      ['Quién', `Textos: ${AUTORES.textos}. Fotografías: ${AUTORES.fotografias}. Programación, migración y contacto para correcciones: ${AUTORES.contacto}. Los tres son de Cinctorres, y este sitio, como su proyecto hermano santjoans.es, nace del interés desinteresado por conservar y dar a conocer el patrimonio de Cinctorres y de la comarca.`],
+      ['Código y correcciones', 'El código fuente del sitio, junto con las fotografías originales y la exportación completa del blog antiguo, está publicado en GitHub. Cualquier corrección o sugerencia puede enviarse allí o directamente a Juan Tadeo Padilla Julián.'],
+    ],
+    hermano: 'Proyecto hermano',
+    codigo: 'Código fuente en GitHub',
+  },
+  ca: {
+    titulo: 'El projecte',
+    lema: 'Com un blog de 2014 s’ha convertit en aquesta guia',
+    s: [
+      ['Què és', 'Ecosistema de la Rambla Celumbres és una guia fotogràfica de la biodiversitat de la rambla de Celumbres, a la comarca dels Ports. Recull íntegrament el treball que Francisca i Tadeo Julián Querol van publicar entre 2014 i 2016 en un blog de WordPress: 33 entrades i 315 fotografies.'],
+      ['Què s’ha fet el 2026', 'El blog s’ha reorganitzat per temes en lloc de per dates: la rambla i les seues estacions, la flora, la fauna, els fongs i els líquens. Les deu entrades alfabètiques de flors s’han convertit en un catàleg amb cercador i filtre per famílies. Els textos conserven la veu de la seua autora; només s’han corregit errates, accents i noms científics, i s’ha retocat la redacció on calia per a llegir-se amb comoditat. Tot el contingut està en castellà i en valencià.'],
+      ['Per què així', 'Francisca i Tadeo ja no poden mantindre el blog, i un WordPress exigeix actualitzacions constants. Aquest lloc és estàtic: no té base de dades, ni servidor que administrar, ni res a pegar. Es pot publicar tal qual durant dècades. Tampoc té publicitat, ni galetes, ni recull dades de ningú.'],
+      ['Qui', `Textos: ${AUTORES.textos}. Fotografies: ${AUTORES.fotografias}. Programació, migració i contacte per a correccions: ${AUTORES.contacto}. Els tres són de Cinctorres, i aquest lloc, com el seu projecte germà santjoans.es, naix de l’interés desinteressat per conservar i donar a conéixer el patrimoni de Cinctorres i de la comarca.`],
+      ['Codi i correccions', 'El codi font del lloc, juntament amb les fotografies originals i l’exportació completa del blog antic, està publicat a GitHub. Qualsevol correcció o suggeriment es pot enviar allí o directament a Juan Tadeo Padilla Julián.'],
+    ],
+    hermano: 'Projecte germà',
+    codigo: 'Codi font a GitHub',
+  },
+}[lang];
+---
+
+<Base lang={lang} titulo={x.titulo} descripcion={x.lema} alternativa={urlPagina(otroIdioma(lang), 'proyecto')}>
+  <div class="lectura" style="padding-top:3.5rem">
+    <p class="antetitulo"><a href={urlInicio(lang)}>{t.inicio}</a> / {PAGINAS.proyecto.nombre[lang]}</p>
+    <h1 style="font-size:clamp(2.2rem,5vw,3.4rem); margin:.4rem 0 .5rem">{x.titulo}</h1>
+    <p style="font-family:var(--titulos); font-style:italic; font-size:1.25rem; color:var(--tinta-2)">{x.lema}</p>
+    <div class="prosa-pagina">
+      {x.s.map(([h, p]) => (
+        <>
+          <h2>{h}</h2>
+          <p set:html={p.replace('santjoans.es', `<a href="${SITIO.hermano.url}" rel="noopener">santjoans.es</a>`)} />
+        </>
+      ))}
+      <p style="display:flex; flex-wrap:wrap; gap:.75rem; margin-top:2rem">
+        <a class="boton" href={SITIO.repositorio} rel="noopener">{x.codigo}</a>
+        <a class="boton boton-secundario" href={SITIO.hermano.url} rel="noopener">{x.hermano}: santjoans.es</a>
+      </p>
+    </div>
+  </div>
+</Base>

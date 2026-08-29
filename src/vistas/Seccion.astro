@@ -1,0 +1,47 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Tarjeta from '../components/Tarjeta.astro';
+import { SECCIONES, urlInicio, urlSeccion, otroIdioma, type Lang, type SeccionKey } from '../site/config';
+import { ui } from '../site/ui';
+import { foto } from '../site/fotos';
+import { guiasDe } from '../site/guias';
+
+interface Props { lang: Lang; seccion: SeccionKey }
+const { lang, seccion } = Astro.props;
+const t = ui(lang);
+const s = SECCIONES[seccion];
+const guias = await guiasDe(lang, seccion);
+const grupos = Object.entries(s.grupos);
+const sinGrupo = guias.filter((g) => !g.data.group || !s.grupos[g.data.group]);
+const portada = foto(s.cover);
+---
+
+<Base lang={lang} titulo={s.nombre[lang]} descripcion={s.lema[lang]} imagen={portada.src} alternativa={urlSeccion(otroIdioma(lang), seccion)} activo={seccion}>
+  <section class="portada portada-pagina">
+    <Image src={portada} alt="" widths={[640, 1024, 1600, 2048]} sizes="100vw" loading="eager" fetchpriority="high" />
+    <div class="velo"></div>
+    <div class="contenedor">
+      <nav class="migas" aria-label="Migas de pan"><a href={urlInicio(lang)}>{t.inicio}</a><span>{guias.length} {t.guias}</span></nav>
+      <h1>{s.nombre[lang]}</h1>
+      <p class="lema">{s.lema[lang]}</p>
+    </div>
+  </section>
+
+  <div class="contenedor">
+    {grupos.map(([key, nombre]) => {
+      const del = guias.filter((g) => g.data.group === key);
+      return del.length > 0 && (
+        <section class="grupo" aria-labelledby={`grupo-${key}`}>
+          <h2 id={`grupo-${key}`}>{nombre[lang]}</h2>
+          <ul class="rejilla">{del.map((g, i) => <Tarjeta guia={g} prioridad={i < 3} />)}</ul>
+        </section>
+      );
+    })}
+    {sinGrupo.length > 0 && (
+      <section class="grupo">
+        <ul class="rejilla">{sinGrupo.map((g, i) => <Tarjeta guia={g} prioridad={i < 3} />)}</ul>
+      </section>
+    )}
+  </div>
+</Base>
