@@ -1,7 +1,7 @@
 ---
 key: "mariposas"
 lang: "ca"
-slug: "papallones"
+ruta: "papallones"
 title: "Papallones"
 subtitle: "Palometes"
 section: "fauna"

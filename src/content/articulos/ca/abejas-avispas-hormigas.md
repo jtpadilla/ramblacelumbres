@@ -1,7 +1,7 @@
 ---
 key: "abejas-avispas-hormigas"
 lang: "ca"
-slug: "abelles-vespes-i-formigues"
+ruta: "abelles-vespes-i-formigues"
 title: "Abelles, vespes i formigues"
 subtitle: "Himenòpters"
 section: "fauna"

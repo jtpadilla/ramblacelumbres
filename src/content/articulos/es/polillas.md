@@ -1,7 +1,7 @@
 ---
 key: "polillas"
 lang: "es"
-slug: "polillas"
+ruta: "polillas"
 title: "Polillas"
 subtitle: "La primera polilla de la temporada"
 section: "fauna"

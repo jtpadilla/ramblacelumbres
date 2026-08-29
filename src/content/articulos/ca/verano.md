@@ -1,7 +1,7 @@
 ---
 key: "verano"
 lang: "ca"
-slug: "estiu"
+ruta: "estiu"
 title: "Estiu"
 subtitle: "Temps de collita"
 section: "la-rambla"

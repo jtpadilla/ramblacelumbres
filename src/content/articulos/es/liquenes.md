@@ -1,7 +1,7 @@
 ---
 key: "liquenes"
 lang: "es"
-slug: "liquenes"
+ruta: "liquenes"
 title: "Líquenes"
 subtitle: "Un alga y un hongo"
 section: "hongos-y-liquenes"

@@ -1,7 +1,7 @@
 ---
 key: "rapaces"
 lang: "ca"
-slug: "rapinyaires-diurns"
+ruta: "rapinyaires-diurns"
 title: "Rapinyaires diürns"
 subtitle: "Voltor comú i falcó pelegrí"
 section: "fauna"

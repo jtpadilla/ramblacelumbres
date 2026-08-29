@@ -1,7 +1,7 @@
 ---
 key: "saltamontes-grillos"
 lang: "ca"
-slug: "llagostes-i-grills"
+ruta: "llagostes-i-grills"
 title: "Llagostes i grills"
 subtitle: "Ortòpters"
 section: "fauna"

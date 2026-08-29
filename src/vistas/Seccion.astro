@@ -19,7 +19,7 @@ const portada = foto(s.cover);
 
 <Base lang={lang} titulo={s.nombre[lang]} descripcion={s.lema[lang]} imagen={portada.src} alternativa={urlSeccion(otroIdioma(lang), seccion)} activo={seccion}>
   <section class="portada portada-pagina">
-    <Image src={portada} alt="" widths={[640, 1024, 1600, 2048]} sizes="100vw" loading="eager" fetchpriority="high" />
+    <Image src={portada} alt="" widths={[640, 1024, 1600, 2048]} sizes="100vw" loading="eager" fetchpriority="high" decoding="sync" />
     <div class="velo"></div>
     <div class="contenedor">
       <nav class="migas" aria-label="Migas de pan"><a href={urlInicio(lang)}>{t.inicio}</a><span>{guias.length} {t.guias}</span></nav>

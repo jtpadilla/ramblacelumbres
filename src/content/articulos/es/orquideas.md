@@ -1,7 +1,7 @@
 ---
 key: "orquideas"
 lang: "es"
-slug: "orquideas-silvestres"
+ruta: "orquideas-silvestres"
 title: "Orquídeas silvestres"
 subtitle: "Ocho variedades en los bancales de l'Arribassada"
 section: "flora"

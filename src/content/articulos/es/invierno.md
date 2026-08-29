@@ -1,7 +1,7 @@
 ---
 key: "invierno"
 lang: "es"
-slug: "invierno"
+ruta: "invierno"
 title: "Invierno"
 subtitle: "La tierra aletargada"
 section: "la-rambla"

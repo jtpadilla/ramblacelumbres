@@ -1,7 +1,7 @@
 ---
 key: "orquideas"
 lang: "ca"
-slug: "orquidies-silvestres"
+ruta: "orquidies-silvestres"
 title: "Orquídies silvestres"
 subtitle: "Huit varietats als bancals de l'Arribassada"
 section: "flora"

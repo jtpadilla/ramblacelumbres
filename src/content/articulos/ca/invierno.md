@@ -1,7 +1,7 @@
 ---
 key: "invierno"
 lang: "ca"
-slug: "hivern"
+ruta: "hivern"
 title: "Hivern"
 subtitle: "La terra endormiscada"
 section: "la-rambla"

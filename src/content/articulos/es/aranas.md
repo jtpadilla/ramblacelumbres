@@ -1,7 +1,7 @@
 ---
 key: "aranas"
 lang: "es"
-slug: "aranas"
+ruta: "aranas"
 title: "Arañas"
 subtitle: "Arácnidos"
 section: "fauna"

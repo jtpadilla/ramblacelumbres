@@ -1,7 +1,7 @@
 ---
 key: "mantis"
 lang: "es"
-slug: "mantis"
+ruta: "mantis"
 title: "Mantis"
 subtitle: "Mantodeos"
 section: "fauna"

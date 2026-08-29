@@ -38,7 +38,7 @@ export const getStaticPaths = (async () => {
     }
     for (const guia of todas.filter((g) => g.data.lang === lang)) {
       rutas.push({
-        params: { ruta: param(urlArticulo(lang, guia.data.section, guia.data.slug)) },
+        params: { ruta: param(urlArticulo(lang, guia.data.section, guia.data.ruta)) },
         props: { tipo: 'articulo', lang, guia },
       });
     }

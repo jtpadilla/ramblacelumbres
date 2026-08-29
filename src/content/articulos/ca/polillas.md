@@ -1,7 +1,7 @@
 ---
 key: "polillas"
 lang: "ca"
-slug: "arnes"
+ruta: "arnes"
 title: "Arnes"
 subtitle: "La primera arna de la temporada"
 section: "fauna"

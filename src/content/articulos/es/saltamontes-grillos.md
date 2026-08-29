@@ -1,7 +1,7 @@
 ---
 key: "saltamontes-grillos"
 lang: "es"
-slug: "saltamontes-y-grillos"
+ruta: "saltamontes-y-grillos"
 title: "Saltamontes y grillos"
 subtitle: "Ortópteros"
 section: "fauna"

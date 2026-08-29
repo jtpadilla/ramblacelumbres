@@ -1,7 +1,7 @@
 ---
 key: "abejas-avispas-hormigas"
 lang: "es"
-slug: "abejas-avispas-y-hormigas"
+ruta: "abejas-avispas-y-hormigas"
 title: "Abejas, avispas y hormigas"
 subtitle: "Himenópteros"
 section: "fauna"

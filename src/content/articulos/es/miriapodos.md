@@ -1,7 +1,7 @@
 ---
 key: "miriapodos"
 lang: "es"
-slug: "miriapodos"
+ruta: "miriapodos"
 title: "Miriápodos"
 subtitle: "Con muchos pies"
 section: "fauna"

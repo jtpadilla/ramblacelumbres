@@ -11,7 +11,7 @@ const articulos = defineCollection({
     z.object({
       key: z.string(),
       lang: z.enum(['es', 'ca']),
-      slug: z.string(),
+      ruta: z.string(),
       title: z.string(),
       subtitle: z.string().optional(),
       section: z.enum(['la-rambla', 'flora', 'fauna', 'hongos-y-liquenes']),

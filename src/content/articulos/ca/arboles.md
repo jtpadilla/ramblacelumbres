@@ -1,7 +1,7 @@
 ---
 key: "arboles"
 lang: "ca"
-slug: "els-arbres"
+ruta: "els-arbres"
 title: "Els arbres"
 subtitle: "Els éssers vius d'edat més avançada"
 section: "flora"

@@ -24,7 +24,7 @@ export async function guiaPorClave(lang: Lang, key: string): Promise<Guia | unde
   return g;
 }
 
-export const urlDe = (g: Guia) => urlArticulo(g.data.lang, g.data.section, g.data.slug);
+export const urlDe = (g: Guia) => urlArticulo(g.data.lang, g.data.section, g.data.ruta);
 
 /** Numero de fotografias que aparecen en el cuerpo de una guia. */
 export const fotosDe = (g: Guia) => (g.body?.match(/^!\[/gm) ?? []).length;

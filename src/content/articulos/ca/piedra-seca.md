@@ -1,7 +1,7 @@
 ---
 key: "piedra-seca"
 lang: "ca"
-slug: "pedra-seca"
+ruta: "pedra-seca"
 title: "Parets i refugis de pedra seca"
 section: "la-rambla"
 group: "paraje"

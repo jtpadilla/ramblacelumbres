@@ -1,7 +1,7 @@
 ---
 key: "flores-silvestres"
 lang: "ca"
-slug: "flors-silvestres"
+ruta: "flors-silvestres"
 title: "Flors silvestres"
 subtitle: "Catàleg de la A a la Z"
 section: "flora"

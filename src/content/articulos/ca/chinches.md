@@ -1,7 +1,7 @@
 ---
 key: "chinches"
 lang: "ca"
-slug: "xinxes"
+ruta: "xinxes"
 title: "Xinxes"
 subtitle: "Hemípters"
 section: "fauna"

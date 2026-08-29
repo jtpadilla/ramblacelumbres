@@ -30,7 +30,7 @@ const alternativa = await guiaPorClave(otroIdioma(lang), guia.data.key);
 <Base lang={lang} titulo={title} descripcion={summary} imagen={cover.src} tipo="article" fecha={originalDate} alternativa={alternativa ? urlDe(alternativa) : undefined} activo={section}>
   <article>
     <header class="portada portada-pagina">
-      <Image src={cover} alt={coverAlt} widths={[640, 1024, 1600, 2048]} sizes="100vw" loading="eager" fetchpriority="high" />
+      <Image src={cover} alt={coverAlt} widths={[640, 1024, 1600, 2048]} sizes="100vw" loading="eager" fetchpriority="high" decoding="sync" />
       <div class="velo"></div>
       <div class="contenedor">
         <nav class="migas" aria-label="Migas de pan">

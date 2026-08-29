@@ -1,7 +1,7 @@
 ---
 key: "rapaces"
 lang: "es"
-slug: "rapaces-diurnas"
+ruta: "rapaces-diurnas"
 title: "Rapaces diurnas"
 subtitle: "Buitre leonado y halcón peregrino"
 section: "fauna"

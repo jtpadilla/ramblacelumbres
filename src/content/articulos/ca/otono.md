@@ -1,7 +1,7 @@
 ---
 key: "otono"
 lang: "ca"
-slug: "tardor"
+ruta: "tardor"
 title: "Tardor"
 subtitle: "Sempre la mateixa i sempre diferent"
 section: "la-rambla"

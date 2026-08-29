@@ -1,7 +1,7 @@
 ---
 key: "chinches"
 lang: "es"
-slug: "chinches"
+ruta: "chinches"
 title: "Chinches"
 subtitle: "Hemípteros"
 section: "fauna"

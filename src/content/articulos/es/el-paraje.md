@@ -1,7 +1,7 @@
 ---
 key: "el-paraje"
 lang: "es"
-slug: "el-paraje-natural"
+ruta: "el-paraje-natural"
 title: "El paraje natural"
 subtitle: "Verde, grises y ocres"
 section: "la-rambla"

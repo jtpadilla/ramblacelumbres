@@ -1,7 +1,7 @@
 ---
 key: "verano"
 lang: "es"
-slug: "verano"
+ruta: "verano"
 title: "Verano"
 subtitle: "Tiempo de cosecha"
 section: "la-rambla"

@@ -1,7 +1,7 @@
 ---
 key: "hongos"
 lang: "ca"
-slug: "fongs-i-bolets"
+ruta: "fongs-i-bolets"
 title: "Fongs i bolets"
 subtitle: "Núpcies ocultes"
 section: "hongos-y-liquenes"

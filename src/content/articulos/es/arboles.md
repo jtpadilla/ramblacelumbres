@@ -1,7 +1,7 @@
 ---
 key: "arboles"
 lang: "es"
-slug: "los-arboles"
+ruta: "los-arboles"
 title: "Los árboles"
 subtitle: "Los seres vivos de edad más avanzada"
 section: "flora"

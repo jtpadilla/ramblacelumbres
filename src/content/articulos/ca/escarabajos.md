@@ -1,7 +1,7 @@
 ---
 key: "escarabajos"
 lang: "ca"
-slug: "escarabats"
+ruta: "escarabats"
 title: "Escarabats"
 subtitle: "Coleòpters"
 section: "fauna"

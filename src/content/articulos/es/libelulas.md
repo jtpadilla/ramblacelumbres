@@ -1,7 +1,7 @@
 ---
 key: "libelulas"
 lang: "es"
-slug: "libelulas"
+ruta: "libelulas"
 title: "Libélulas"
 subtitle: "Odonatos"
 section: "fauna"

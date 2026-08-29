@@ -1,7 +1,7 @@
 ---
 key: "libelulas"
 lang: "ca"
-slug: "libellules"
+ruta: "libellules"
 title: "Libèl·lules"
 subtitle: "Odonats"
 section: "fauna"

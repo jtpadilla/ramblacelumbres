@@ -1,7 +1,7 @@
 ---
 key: "cabra-montes"
 lang: "ca"
-slug: "cabra-salvatge"
+ruta: "cabra-salvatge"
 title: "Cabra salvatge"
 subtitle: "Capra pyrenaica"
 section: "fauna"

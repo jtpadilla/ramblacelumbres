@@ -1,7 +1,7 @@
 ---
 key: "hongos"
 lang: "es"
-slug: "hongos-y-setas"
+ruta: "hongos-y-setas"
 title: "Hongos y setas"
 subtitle: "Nupcias ocultas"
 section: "hongos-y-liquenes"

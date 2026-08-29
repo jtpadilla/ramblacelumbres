@@ -129,7 +129,7 @@ El castellano va en la raíz y el valenciano bajo `/ca/`:
 ```
 
 Las URL se construyen **solo** con las funciones de `src/site/config.ts` (`urlSeccion`,
-`urlArticulo`, `urlPagina`...). Los slugs por idioma están en el frontmatter de cada guía y
+`urlArticulo`, `urlPagina`...). Los slugs por idioma están en el frontmatter (campo `ruta`; no se llama `slug` porque el cargador de Astro usaría ese valor como id y las dos «primavera» chocarían) de cada guía y
 en `SECCIONES`/`PAGINAS`. El selector de idioma enlaza con la misma página en el otro idioma
 (se localiza por `key`).
 
@@ -169,8 +169,11 @@ familia al final de la guía `flores-silvestres` (`layout: catalogo` en el front
 - **Imágenes**: los JPEG originales están muy comprimidos; sin bajar la calidad, el WebP
   sale más pesado. `figuras.mjs` fija `quality: 68` y tres anchos (480/900/1400) para las
   fotos del artículo; `astro.config.mjs` limita los breakpoints. `dist/` ronda los 150 MB.
-- **`isolation: isolate` NO** en contenedores con foto y velo degradado encima: Chrome deja
-  de pintar la foto. La portada y las «puertas» apilan foto/velo/texto con `grid-area: 1/1`.
+- **Fotos de portada con `decoding="sync"`**: con `async` (el valor por defecto de `<Image>`),
+  Chrome aplaza la decodificación de una imagen grande en una pestaña en segundo plano y las
+  capturas automatizadas salen sin la foto; para la imagen LCP, `sync` es además lo
+  recomendable. La foto va en flujo normal dimensionada con `aspect-ratio`, y el velo y el
+  texto absolutos encima.
 - **Tema claro y oscuro** solo con `prefers-color-scheme`. Tokens al principio de
   `global.css`.
 - **Enlaces del WordPress antiguo** (`?p=`, `?page_id=`, `?cat=`): un host estático ignora

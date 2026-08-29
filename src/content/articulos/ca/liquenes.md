@@ -1,7 +1,7 @@
 ---
 key: "liquenes"
 lang: "ca"
-slug: "liquens"
+ruta: "liquens"
 title: "Líquens"
 subtitle: "Una alga i un fong"
 section: "hongos-y-liquenes"

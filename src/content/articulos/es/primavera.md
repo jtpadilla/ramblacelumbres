@@ -1,7 +1,7 @@
 ---
 key: "primavera"
 lang: "es"
-slug: "primavera"
+ruta: "primavera"
 title: "Primavera"
 subtitle: "El primer verdor"
 section: "la-rambla"

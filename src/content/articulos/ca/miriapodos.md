@@ -1,7 +1,7 @@
 ---
 key: "miriapodos"
 lang: "ca"
-slug: "miriapodes"
+ruta: "miriapodes"
 title: "Miriàpodes"
 subtitle: "Amb molts peus"
 section: "fauna"

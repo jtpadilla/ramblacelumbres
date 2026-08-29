@@ -1,7 +1,7 @@
 ---
 key: "mantis"
 lang: "ca"
-slug: "pregadeus"
+ruta: "pregadeus"
 title: "Pregadéus"
 subtitle: "Mantodeus"
 section: "fauna"

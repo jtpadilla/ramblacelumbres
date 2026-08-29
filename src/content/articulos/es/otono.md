@@ -1,7 +1,7 @@
 ---
 key: "otono"
 lang: "es"
-slug: "otono"
+ruta: "otono"
 title: "Otoño"
 subtitle: "Siempre el mismo y siempre distinto"
 section: "la-rambla"
