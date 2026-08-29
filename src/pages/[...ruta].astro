@@ -8,7 +8,7 @@
  */
 import { getCollection } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
-import { LANGS, SECCION_KEYS, PAGINAS, urlInicio, urlSeccion, urlPagina, urlArticulo, type Lang, type SeccionKey, type PaginaKey } from '../site/config';
+import { BASE, LANGS, SECCION_KEYS, PAGINAS, urlInicio, urlSeccion, urlPagina, urlArticulo, type Lang, type SeccionKey, type PaginaKey } from '../site/config';
 import type { Guia } from '../site/guias';
 import Inicio from '../vistas/Inicio.astro';
 import Seccion from '../vistas/Seccion.astro';
@@ -23,8 +23,8 @@ type Props =
   | { tipo: 'articulo'; lang: Lang; guia: Guia };
 
 export const getStaticPaths = (async () => {
-  // Astro espera el parametro sin barras; la raiz es `undefined`.
-  const param = (url: string) => url.replace(/^\/|\/$/g, '') || undefined;
+  // Astro espera el parametro sin la base del sitio ni barras; la raiz es `undefined`.
+  const param = (url: string) => url.slice(BASE.length).replace(/^\/|\/$/g, '') || undefined;
   const todas = await getCollection('articulos');
   const rutas: { params: { ruta: string | undefined }; props: Props }[] = [];
 

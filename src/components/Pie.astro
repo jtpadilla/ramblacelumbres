@@ -1,5 +1,5 @@
 ---
-import { SECCIONES, SECCION_KEYS, PAGINAS, SITIO, AUTORES, urlSeccion, urlPagina, urlCatalogo, urlInicio, otroIdioma, type Lang } from '../site/config';
+import { SECCIONES, SECCION_KEYS, PAGINAS, SITIO, AUTORES, urlSeccion, urlPagina, urlCatalogo, urlInicio, urlRss, otroIdioma, type Lang } from '../site/config';
 import { ui } from '../site/ui';
 
 interface Props { lang: Lang; alternativa?: string }
@@ -31,7 +31,7 @@ const anio = new Date().getFullYear();
         <li><a href={alternativa ?? urlInicio(otro)} hreflang={otro} lang={otro}>{ui(otro).idioma}</a></li>
         <li><a href={SITIO.hermano.url} rel="noopener">{t.hermano}: {SITIO.hermano.nombre}</a></li>
         <li><a href={SITIO.repositorio} rel="noopener">{t.codigo}</a></li>
-        <li><a href={lang === 'es' ? '/rss.xml' : '/ca/rss.xml'}>{t.rss}</a></li>
+        <li><a href={urlRss(lang)}>{t.rss}</a></li>
       </ul>
     </div>
   </div>

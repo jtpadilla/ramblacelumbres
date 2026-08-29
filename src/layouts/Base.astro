@@ -2,7 +2,7 @@
 import { Font } from 'astro:assets';
 import Cabecera from '../components/Cabecera.astro';
 import Pie from '../components/Pie.astro';
-import { SITIO, type Lang } from '../site/config';
+import { SITIO, urlRss, urlPublico, type Lang } from '../site/config';
 import { ui } from '../site/ui';
 import '../styles/global.css';
 
@@ -39,9 +39,9 @@ const otro = lang === 'es' ? 'ca' : 'es';
     <link rel="canonical" href={canonica.href} />
     {alternativaAbs && <link rel="alternate" hreflang={otro} href={alternativaAbs} />}
     {alternativaAbs && <link rel="alternate" hreflang={lang} href={canonica.href} />}
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="alternate" type="application/rss+xml" title={SITIO.titulo[lang]} href={lang === 'es' ? '/rss.xml' : '/ca/rss.xml'} />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" href={urlPublico('favicon.svg')} type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title={SITIO.titulo[lang]} href={urlRss(lang)} />
+    <link rel="sitemap" href={urlPublico('sitemap-index.xml')} />
     <meta name="generator" content={Astro.generator} />
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#f4efe4" media="(prefers-color-scheme: light)" />

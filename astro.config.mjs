@@ -4,8 +4,16 @@ import sitemap from '@astrojs/sitemap';
 import { satteri } from '@astrojs/markdown-satteri';
 import figuras from './src/plugins/figuras.mjs';
 
+// Mientras el dominio no apunte a GitHub Pages, el sitio se sirve en
+// jtpadilla.github.io/ramblacelumbres/: el workflow pasa SITE_URL y BASE_PATH.
+// Cuando www.ramblacelumbres.org este activo, basta con quitar esas dos
+// variables del workflow y el sitio vuelve a compilarse para la raiz.
+const site = process.env.SITE_URL || 'https://www.ramblacelumbres.org';
+const base = process.env.BASE_PATH || '/';
+
 export default defineConfig({
-  site: 'https://www.ramblacelumbres.org',
+  site,
+  base,
   trailingSlash: 'always',
   i18n: {
     defaultLocale: 'es',

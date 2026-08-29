@@ -108,8 +108,13 @@ export const PAGINAS: Record<PaginaKey, { slug: T; nombre: T }> = {
 
 // ---------------------------------------------------------------------- urls
 
+/** Base del sitio ('' en produccion; '/ramblacelumbres' en la URL provisional de GitHub Pages). */
+export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 /** El castellano va en la raiz; el catalan, bajo /ca/. */
-export const prefijo = (lang: Lang) => (lang === LANG_POR_DEFECTO ? '' : `/${lang}`);
+export const prefijo = (lang: Lang) => `${BASE}${lang === LANG_POR_DEFECTO ? '' : `/${lang}`}`;
+export const urlRss = (lang: Lang) => `${prefijo(lang)}/rss.xml`;
+export const urlPublico = (fichero: string) => `${BASE}/${fichero}`;
 export const urlInicio = (lang: Lang) => `${prefijo(lang)}/`;
 export const urlSeccion = (lang: Lang, key: SeccionKey) => `${prefijo(lang)}/${SECCIONES[key].slug[lang]}/`;
 export const urlArticulo = (lang: Lang, seccion: SeccionKey, slug: string) =>

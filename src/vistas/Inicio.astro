@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Tarjeta from '../components/Tarjeta.astro';
-import { SECCIONES, SECCION_KEYS, SITIO, urlInicio, urlSeccion, urlPagina, urlCatalogo, otroIdioma, WP_ENTRADAS, WP_PAGINAS, WP_CATEGORIAS, type Lang } from '../site/config';
+import { SECCIONES, SECCION_KEYS, SITIO, urlInicio, urlSeccion, urlPagina, urlCatalogo, urlRss, otroIdioma, WP_ENTRADAS, WP_PAGINAS, WP_CATEGORIAS, type Lang } from '../site/config';
 import { ui } from '../site/ui';
 import { foto, TOTAL_FOTOS } from '../site/fotos';
 import { guiasDe, guiaPorClave, urlDe } from '../site/guias';
@@ -26,8 +26,8 @@ for (const [id, key] of Object.entries(WP_ENTRADAS)) {
 }
 for (const [id, key] of Object.entries(WP_PAGINAS)) redirecciones[`?page_id=${id}`] = urlPagina('es', key);
 for (const [id, key] of Object.entries(WP_CATEGORIAS)) redirecciones[`?cat=${id}`] = urlSeccion('es', key);
-redirecciones['?feed=rss2'] = '/rss.xml';
-redirecciones['?feed=rss'] = '/rss.xml';
+redirecciones['?feed=rss2'] = urlRss('es');
+redirecciones['?feed=rss'] = urlRss('es');
 
 const portada = foto('2015/03/1.jpg');
 const retratoTadeo = foto('2014/03/12.jpg');

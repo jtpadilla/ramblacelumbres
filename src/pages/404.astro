@@ -7,10 +7,10 @@ const ca = ui('ca');
 ---
 
 <Base lang="es" titulo={es.noEncontrada}>
-  <script is:inline>
+  <script is:inline define:vars={{ inicio: urlInicio('es') }}>
     // Enlaces del WordPress antiguo (?p=123) que hayan llegado aqui: la portada
     // sabe traducirlos, asi que se le pasa la consulta tal cual.
-    if (location.search && location.pathname !== '/') location.replace('/' + location.search);
+    if (location.search && location.pathname !== inicio) location.replace(inicio + location.search);
   </script>
   <div class="lectura no-encontrada">
     <h1>{es.noEncontrada}</h1>

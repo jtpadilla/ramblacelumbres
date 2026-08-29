@@ -186,7 +186,14 @@ familia al final de la guía `flores-silvestres` (`layout: catalogo` en el front
 ## Despliegue
 
 GitHub Pages mediante `.github/workflows/deploy.yml`: cada `push` a `main` compila y
-publica. Dominio propio en `public/CNAME`. Falta: mover el DNS del registrador a GitHub
+publica. Dominio propio en `public/CNAME`.
+
+**Estado provisional:** el workflow compila con `SITE_URL=https://jtpadilla.github.io` y
+`BASE_PATH=/ramblacelumbres/` para que la URL provisional
+<https://jtpadilla.github.io/ramblacelumbres/> funcione entera. Todas las URL internas
+salen de `prefijo()`/`urlPublico()` en `src/site/config.ts`, que anteponen
+`import.meta.env.BASE_URL`; nunca escribir rutas absolutas a mano en las vistas. Al activar
+el dominio hay que **borrar esas dos variables del workflow**. Falta: mover el DNS del registrador a GitHub
 Pages (`www` → `CNAME jtpadilla.github.io`) y declarar el dominio en Pages
 (`gh api -X PUT repos/jtpadilla/ramblacelumbres/pages -f cname=www.ramblacelumbres.org`).
 Mientras tanto, el dominio sirve el WordPress antiguo.
