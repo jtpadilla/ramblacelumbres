@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.ramblacelumbres.org/sitemap-index.xml

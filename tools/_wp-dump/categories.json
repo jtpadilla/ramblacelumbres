@@ -1,0 +1,50 @@
+[
+ {
+  "id": 8,
+  "count": 0,
+  "name": "Animales",
+  "slug": "animales"
+ },
+ {
+  "id": 16,
+  "count": 1,
+  "name": "Aves.",
+  "slug": "aves"
+ },
+ {
+  "id": 2,
+  "count": 7,
+  "name": "Biodiversitat",
+  "slug": "biodiversitat"
+ },
+ {
+  "id": 3,
+  "count": 13,
+  "name": "Flora",
+  "slug": "flora"
+ },
+ {
+  "id": 4,
+  "count": 10,
+  "name": "Invertebrados",
+  "slug": "invertebrados"
+ },
+ {
+  "id": 6,
+  "count": 2,
+  "name": "Microorganismos",
+  "slug": "microorganismos"
+ },
+ {
+  "id": 1,
+  "count": 0,
+  "name": "Uncategorized",
+  "slug": "uncategorized"
+ },
+ {
+  "id": 5,
+  "count": 2,
+  "name": "Vertebrados",
+  "slug": "vertebrados"
+ }
+]

@@ -1,0 +1,26 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Visor from '../components/Visor.astro';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async () => {
+  const paginas = await getCollection('pages');
+  return paginas.map((pagina) => ({ params: { pagina: pagina.id }, props: { pagina } }));
+}) satisfies GetStaticPaths;
+
+const { pagina } = Astro.props;
+const { Content } = await render(pagina);
+---
+
+<Base titulo={pagina.data.title} imagen={pagina.data.cover?.src}>
+  <article>
+    <div class="lectura entradilla">
+      <h1>{pagina.data.title}</h1>
+    </div>
+    <div class="lectura prosa">
+      <Content />
+    </div>
+  </article>
+  <Visor />
+</Base>

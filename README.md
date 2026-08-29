@@ -21,7 +21,8 @@ zoo-mórfico del Palau Santjoans de Cinctorres.
 El blog vivía en un WordPress. En 2026 se migró a un sitio estático generado con
 [Astro](https://astro.build/): mismo contenido y mismas fotografías, pero sin base de
 datos, sin PHP y sin nada que parchear. `tools/export-wp.py` hizo la extracción y sigue en
-el repositorio como documentación de la migración.
+el repositorio como documentación de la migración; en `wordpress-export/` está además la
+exportación oficial de WordPress con la que se verificó que no faltara nada.
 
 ## Desarrollo
 

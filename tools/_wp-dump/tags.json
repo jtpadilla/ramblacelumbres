@@ -1,0 +1,62 @@
+[
+ {
+  "id": 14,
+  "count": 0,
+  "name": "arañas",
+  "slug": "aranas"
+ },
+ {
+  "id": 11,
+  "count": 1,
+  "name": "ARBOLES",
+  "slug": "arboles"
+ },
+ {
+  "id": 13,
+  "count": 1,
+  "name": "Artrópodos",
+  "slug": "artropodos"
+ },
+ {
+  "id": 17,
+  "count": 0,
+  "name": "Biodiiversidad",
+  "slug": "biodiiversidad"
+ },
+ {
+  "id": 18,
+  "count": 1,
+  "name": "Ec",
+  "slug": "ec"
+ },
+ {
+  "id": 10,
+  "count": 13,
+  "name": "ECOSISTEMA",
+  "slug": "ecosistema"
+ },
+ {
+  "id": 12,
+  "count": 1,
+  "name": "FLORES",
+  "slug": "flores"
+ },
+ {
+  "id": 15,
+  "count": 6,
+  "name": "Insectos",
+  "slug": "insectos"
+ },
+ {
+  "id": 9,
+  "count": 2,
+  "name": "LEPIDOPTEROS",
+  "slug": "lepidopteros"
+ },
+ {
+  "id": 19,
+  "count": 1,
+  "name": "MAMIFEROS",
+  "slug": "mamiferos"
+ }
+]

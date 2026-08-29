@@ -1,0 +1,15 @@
+# Node
+node_modules/
+
+# Salida del build de Astro
+dist/
+.astro/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Sistema
+.DS_Store
+*.log

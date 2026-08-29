@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import redirecciones from '../data/redirects.json';
+---
+
+<Base titulo="Página no encontrada">
+  <script is:inline define:vars={{ redirecciones }}>
+    // Direcciones antiguas del tipo /?p=123 que hayan llegado hasta aqui.
+    if (location.search) {
+      const destino = redirecciones['/' + location.search];
+      if (destino) location.replace(destino);
+    }
+  </script>
+  <div class="lectura entradilla">
+    <h1>Aquí no hay nada</h1>
+    <p>
+      La página que buscas no existe o ha cambiado de dirección al renovar el sitio.
+      Prueba con <a href="/blog/">el listado de entradas</a> o vuelve a
+      <a href="/">la portada</a>.
+    </p>
+  </div>
+</Base>

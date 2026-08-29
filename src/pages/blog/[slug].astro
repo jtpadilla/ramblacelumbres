@@ -1,0 +1,73 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Visor from '../../components/Visor.astro';
+import { nombreCategoria, formatoFecha } from '../../site';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async () => {
+  const entradas = (await getCollection('posts')).sort(
+    (a, b) => a.data.date.valueOf() - b.data.date.valueOf(),
+  );
+  return entradas.map((entrada, i) => ({
+    params: { slug: entrada.id },
+    props: {
+      entrada,
+      anterior: entradas[i - 1] ?? null,
+      siguiente: entradas[i + 1] ?? null,
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { entrada, anterior, siguiente } = Astro.props;
+const { Content } = await render(entrada);
+const { title, date, cover, categories } = entrada.data;
+
+// primer parrafo de texto como descripcion para buscadores y redes
+const resumen =
+  entrada.body
+    ?.split('\n\n')
+    .map((b) => b.trim())
+    .find((b) => b && !b.startsWith('!['))
+    ?.replace(/\*\*|\\/g, '')
+    .slice(0, 180) ?? undefined;
+---
+
+<Base titulo={title} descripcion={resumen} imagen={cover?.src} tipo="article" fecha={date}>
+  <article>
+    <div class="lectura entradilla">
+      <p class="meta">
+        <time datetime={date.toISOString()}>{formatoFecha(date)}</time>
+        {categories.map((c) => <> · <a href={`/categoria/${c}/`}>{nombreCategoria(c)}</a></>)}
+      </p>
+      <h1>{title}</h1>
+    </div>
+
+    <div class="lectura prosa">
+      <Content />
+    </div>
+
+    <div class="lectura">
+      <ul class="navega-entradas">
+        {anterior && (
+          <li>
+            <a href={`/blog/${anterior.id}/`} rel="prev">
+              <span>← Anterior</span>
+              <strong>{anterior.data.title}</strong>
+            </a>
+          </li>
+        )}
+        {siguiente && (
+          <li>
+            <a href={`/blog/${siguiente.id}/`} rel="next">
+              <span>Siguiente →</span>
+              <strong>{siguiente.data.title}</strong>
+            </a>
+          </li>
+        )}
+      </ul>
+    </div>
+  </article>
+  <Visor />
+</Base>

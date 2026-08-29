@@ -1,0 +1,30 @@
+---
+import { Image } from 'astro:assets';
+import { nombreCategoria, formatoFecha } from '../site';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { entrada: CollectionEntry<'posts'>; destacada?: boolean }
+const { entrada, destacada = false } = Astro.props;
+const { title, date, cover, categories } = entrada.data;
+---
+
+<li class="tarjeta">
+  {cover && (
+    <a href={`/blog/${entrada.id}/`} tabindex="-1" aria-hidden="true">
+      <Image
+        src={cover}
+        alt=""
+        widths={[320, 640, 960]}
+        sizes="(max-width: 40rem) 100vw, (max-width: 70rem) 45vw, 22rem"
+        loading={destacada ? 'eager' : 'lazy'}
+      />
+    </a>
+  )}
+  <div class="cuerpo">
+    <p class="meta">
+      <time datetime={date.toISOString()}>{formatoFecha(date)}</time>
+      {categories.length > 0 && <> · {nombreCategoria(categories[0])}</>}
+    </p>
+    <h3><a href={`/blog/${entrada.id}/`}>{title}</a></h3>
+  </div>
+</li>

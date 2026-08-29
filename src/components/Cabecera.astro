@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+import { SITIO, nombreCategoria } from '../site';
+
+const posts = await getCollection('posts');
+const usadas = new Set(posts.flatMap((p) => p.data.categories));
+const categorias = [...usadas].sort((a, b) => nombreCategoria(a).localeCompare(nombreCategoria(b), 'es'));
+
+const ruta = Astro.url.pathname;
+const activo = (href: string) => (ruta === href ? 'page' : undefined);
+---
+
+<header class="cabecera">
+  <div class="contenedor">
+    <a class="marca" href="/">
+      Rambla Celumbres
+      <span>Ecosistema</span>
+    </a>
+    <nav class="menu" aria-label="Principal">
+      <a href="/" aria-current={activo('/')}>Inicio</a>
+      {categorias.map((c) => (
+        <a href={`/categoria/${c}/`} aria-current={activo(`/categoria/${c}/`)}>{nombreCategoria(c)}</a>
+      ))}
+      <a href="/blog/" aria-current={activo('/blog/')}>Todas</a>
+      <a href="/quien-somos/" aria-current={activo('/quien-somos/')}>Quiénes somos</a>
+      <a href="/el-proyecto/" aria-current={activo('/el-proyecto/')}>El proyecto</a>
+    </nav>
+  </div>
+</header>

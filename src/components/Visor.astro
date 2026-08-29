@@ -1,0 +1,28 @@
+---
+// Visor a pantalla completa para las fotos del articulo. Sin dependencias:
+// un <dialog> nativo, que ya trae cierre con Escape y gestion del foco.
+---
+<dialog class="visor" aria-label="Fotografía ampliada">
+  <button class="cerrar" type="button" aria-label="Cerrar">×</button>
+  <img alt="" />
+</dialog>
+
+<script>
+  const visor = document.querySelector<HTMLDialogElement>('.visor');
+  const grande = visor?.querySelector('img');
+  if (visor && grande) {
+    for (const img of document.querySelectorAll<HTMLImageElement>('.prosa .figura img')) {
+      img.addEventListener('click', () => {
+        grande.src = img.currentSrc || img.src;
+        grande.alt = img.alt;
+        visor.showModal();
+      });
+    }
+    visor.addEventListener('click', (e) => {
+      if (e.target === visor || (e.target as HTMLElement).classList.contains('cerrar')) {
+        visor.close();
+      }
+    });
+    visor.addEventListener('close', () => { grande.removeAttribute('src'); });
+  }
+</script>
