@@ -187,7 +187,12 @@ La guía `el-paraje` lleva `layout: mapa`: al final del texto se inserta en lín
   nombre, carreteras, fuentes, pueblos y términos municipales.
 - **IGN** (CC BY 4.0): curvas de nivel en SVG vectorial del WMS INSPIRE de elevaciones y MDT
   de 25 m en rejilla ASCII del WCS, del que el script calcula el sombreado (PNG con alfa
-  incrustado en base64).
+  incrustado en base64). El WMS no indica la cota de cada curva (y devuelve algunas
+  repetidas): el script las desduplica, deduce la cota con la mediana del MDT a lo largo de
+  la curva redondeada a la equidistancia (`CURVAS_CADA`, 50 m a esta escala) y marca como
+  maestras las de múltiplo de `MAESTRAS_CADA` (100 m). Los caminos de OSM, que suelen venir
+  partidos en varios ways, se empalman por nombre (`encadenar`), de modo que un camino con
+  nombre es una sola línea y su rótulo sale una vez.
 
 Marco: UTM 30 N, `X0,Y0 = 730800, 4485600`, 9 × 12 km, 1 px = 10 m (viewBox 900 × 1200).
 Los colores son variables CSS del sitio con valor de reserva, así que el mapa sigue el tema

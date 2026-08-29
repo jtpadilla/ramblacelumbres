@@ -9,6 +9,9 @@ Fuentes
   - Instituto Geografico Nacional (CC BY 4.0), servicios INSPIRE de
     elevaciones: curvas de nivel en SVG vectorial (WMS) y modelo digital del
     terreno de 25 m en rejilla ASCII (WCS), del que se calcula el sombreado.
+    El WMS no dice la cota de cada curva; se deduce muestreando el MDT a lo
+    largo de ella y redondeando a la equidistancia, y asi se sabe cuales son
+    las maestras.
 
 Todo lo descargado se guarda en tools/_mapa/ y el script trabaja desde ahi;
 solo vuelve a pedirlo con --descargar. No hace falta red para compilar el
@@ -55,6 +58,9 @@ OVERPASS = 'https://overpass-api.de/api/interpreter'
 WMS_MDT = 'https://servicios.idee.es/wms-inspire/mdt'
 WCS_MDT = 'https://servicios.idee.es/wcs-inspire/mdt'
 MDT_CELDA = 25  # metros; el MDT05 existe, pero para un sombreado difuso sobra con 25 m
+# equidistancia de las curvas que el WMS devuelve a esta escala y cada cuantos metros va una maestra
+CURVAS_CADA = 50
+MAESTRAS_CADA = 100
 
 # puntos de interes que se rotulan, con la guia a la que enlazan
 PUNTOS = {
@@ -187,34 +193,38 @@ out body geom;"""
 
 
 # ------------------------------------------------------------------------ OSM
-def anillos(relacion, rol):
-    """Encadena los ways de un rol (`outer` o `inner`) de una relacion en anillos cerrados."""
-    tramos = []
-    for m in relacion['members']:
-        if m['type'] == 'way' and m.get('role', 'outer') == rol and m.get('geometry'):
-            tramos.append([(p['lat'], p['lon']) for p in m['geometry']])
+def encadenar(tramos):
+    """Empalma polilineas por sus extremos coincidentes (invirtiendo sentido si hace
+    falta). Devuelve las lineas resultantes; las que no tocan a ninguna otra salen tal cual."""
+    tramos = list(tramos)
     salida = []
     while tramos:
-        anillo = tramos.pop(0)
+        linea = tramos.pop(0)
         cambiado = True
-        while cambiado and anillo[0] != anillo[-1]:
+        while cambiado and linea[0] != linea[-1]:
             cambiado = False
             for i, t in enumerate(tramos):
-                if t[0] == anillo[-1]:
-                    anillo += t[1:]
-                elif t[-1] == anillo[-1]:
-                    anillo += t[-2::-1]
-                elif t[-1] == anillo[0]:
-                    anillo = t[:-1] + anillo
-                elif t[0] == anillo[0]:
-                    anillo = t[::-1][:-1] + anillo
+                if t[0] == linea[-1]:
+                    linea += t[1:]
+                elif t[-1] == linea[-1]:
+                    linea += t[-2::-1]
+                elif t[-1] == linea[0]:
+                    linea = t[:-1] + linea
+                elif t[0] == linea[0]:
+                    linea = t[::-1][:-1] + linea
                 else:
                     continue
                 tramos.pop(i)
                 cambiado = True
                 break
-        salida.append(anillo)
+        salida.append(linea)
     return salida
+
+
+def anillos(relacion, rol):
+    """Encadena los ways de un rol (`outer` o `inner`) de una relacion en anillos cerrados."""
+    return encadenar([(p['lat'], p['lon']) for p in m['geometry']] for m in relacion['members']
+                     if m['type'] == 'way' and m.get('role', 'outer') == rol and m.get('geometry'))
 
 
 def cargar_osm():
@@ -251,33 +261,58 @@ def cargar_osm():
                 capas['pueblos'].append(p)
             else:
                 capas['parajes'].append(p)
+    # en OSM un camino suele venir partido en varios ways: se empalman los del mismo nombre
+    por_nombre = {}
+    for nombre, g in capas['caminos']:
+        por_nombre.setdefault(nombre, []).append(g)
+    capas['caminos'] = [(nombre, g) for nombre, tramos in por_nombre.items() for g in encadenar(tramos)]
     return capas
 
 
 # ------------------------------------------------------------------- relieve
-def curvas_de_nivel():
+def curvas_de_nivel(mdt):
     """Curvas del WMS del IGN: mismo marco y mismo tamano, asi que las
-    coordenadas ya estan en pixeles del mapa. Devuelve [(d, maestra)]."""
-    ns = {'svg': 'http://www.w3.org/2000/svg'}
+    coordenadas ya estan en pixeles del mapa. El SVG no lleva la cota: se
+    toma la mediana del MDT a lo largo de la curva y se redonda a la
+    equidistancia. Devuelve [(d, maestra)] sin curvas repetidas (el WMS
+    devuelve algunas dos veces)."""
+    w, h, z, celda = mdt
+
+    def cota(x, y):
+        i = min(max(int(x * ESCALA / celda), 0), w - 1)
+        j = min(max(int(y * ESCALA / celda), 0), h - 1)
+        return z[j * w + i]
+
     raiz = ET.parse(CACHE / 'curvas.svg').getroot()
-    salida = []
+    vistas, salida, dudosas = set(), [], 0
 
     def recorre(nodo, ancho, color):
+        nonlocal dudosas
         ancho = nodo.get('stroke-width', ancho)
         color = nodo.get('stroke', color)
-        if nodo.tag == '{http://www.w3.org/2000/svg}path' and nodo.get('d') and color not in ('none', 'white', 'black'):
+        # las curvas son los trazos finos de color; los gruesos son los rotulos de cota del IGN
+        if nodo.tag == '{http://www.w3.org/2000/svg}path' and nodo.get('d') and color not in ('none', 'white', 'black') \
+                and float(ancho) < 2 and nodo.get('d') not in vistas:
+            vistas.add(nodo.get('d'))
             nums = [float(v) for v in re.findall(r'-?\d+(?:\.\d+)?', nodo.get('d'))]
             pts = list(zip(nums[0::2], nums[1::2]))
             if len(pts) > 1:
+                alturas = sorted(cota(*q) for q in pts)
+                mediana = alturas[len(alturas) // 2]
+                nivel = round(mediana / CURVAS_CADA) * CURVAS_CADA
+                if abs(mediana - nivel) > CURVAS_CADA * 0.4:
+                    dudosas += 1
                 pts = simplificar(pts, 0.9)
                 if len(pts) > 3:
-                    salida.append((polilinea(pts), float(ancho) >= 1))
+                    salida.append((polilinea(pts), nivel % MAESTRAS_CADA == 0))
         for h in nodo:
             if h.tag.endswith('clipPath') or h.tag.endswith('defs'):
                 continue
             recorre(h, ancho, color)
 
     recorre(raiz, '1', 'black')
+    if dudosas:
+        print(f'aviso: {dudosas} curvas lejos de un multiplo de {CURVAS_CADA} m; revisar CURVAS_CADA', file=sys.stderr)
     return salida
 
 
@@ -398,15 +433,25 @@ a:hover .t-punto, a:hover .t-roca, a:focus .t-punto, a:focus .t-roca { text-deco
     p.append('</g>')
     p.append('<g class="caminos">')
     rotulos_camino = []
+    # si un camino rotulado sigue partido tras empalmar, el rotulo va solo en el tramo mas largo
+    mas_largo = {}
     for nombre, g in capas['caminos']:
-        d = trazo(g)
-        if not d:
-            continue
+        if nombre in CAMINOS_ROTULADOS and len(g) > len(mas_largo.get(nombre, [])):
+            mas_largo[nombre] = g
+    for nombre, g in capas['caminos']:
         rot = nombre in CAMINOS_ROTULADOS
-        ident = f' id="camino-{re.sub(r"[^a-z]+", "-", nombre.lower())}"' if rot else ''
-        p.append(f'<path class="camino{" rotulado" if rot else ""}"{ident} d="{d}"/>')
-        if rot:
-            rotulos_camino.append((ident[5:-1], nombre))
+        if rot and mas_largo[nombre] is g:
+            pts = [px(*q) for q in g]
+            if pts[-1][0] < pts[0][0]:
+                g = g[::-1]  # de izquierda a derecha, para que el texto no salga boca abajo
+            ident = f'camino-{re.sub(r"[^a-z]+", "-", nombre.lower())}'
+            rotulos_camino.append((ident, nombre))
+            ident = f' id="{ident}"'
+        else:
+            ident = ''
+        d = trazo(g)
+        if d:
+            p.append(f'<path class="camino{" rotulado" if rot else ""}"{ident} d="{d}"/>')
     p.append('</g>')
 
     if capas['paraje']:
@@ -492,8 +537,8 @@ def main():
     print('paraje: anillos', len(capas['paraje']), '| cauce', len(capas['cauce']), 'tramos | rocas', len(capas['rocas']),
           '| caminos', len(capas['caminos']), '| carreteras', len(capas['carreteras']), '| pueblos', len(capas['pueblos']),
           '| fuentes', len(capas['fuentes']), '| otros', [n for n, _, _ in capas['parajes']], file=sys.stderr)
-    curvas = curvas_de_nivel()
-    print('curvas de nivel:', len(curvas), file=sys.stderr)
+    curvas = curvas_de_nivel(leer_mdt())
+    print('curvas de nivel:', len(curvas), '| maestras', sum(1 for _, m in curvas if m), file=sys.stderr)
     sombra = sombreado()
     svg = dibujar(capas, curvas, sombra)
     SALIDA.parent.mkdir(parents=True, exist_ok=True)
