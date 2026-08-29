@@ -394,3 +394,21 @@ em { font-style: italic; }
 .no-encontrada h1 { font-size: clamp(2rem, 5vw, 3.2rem); margin-bottom: .75rem; }
 .no-encontrada p { color: var(--tinta-2); }
 .no-encontrada hr { border: 0; border-top: 1px solid var(--linea); margin: 2.5rem auto; width: 6rem; }
+
+/* ------------------------------------------------------------------- chino */
+/* Fraunces y Source Sans 3 no tienen ideogramas: para el chino se anaden las
+   fuentes CJK del sistema detras de ellas (sin descargar nada), asi los nombres
+   latinos siguen saliendo con las fuentes del sitio y los ideogramas con las
+   del lector. El chino no tiene cursiva, asi que no se sintetiza. */
+:lang(zh-Hans) {
+  --titulos: var(--fuente-titulos, Georgia, serif), 'Noto Serif CJK SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif;
+  --texto: var(--fuente-texto, system-ui, sans-serif), 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
+  font-synthesis-style: none;
+}
+:lang(zh-Hans) h1, :lang(zh-Hans) h2, :lang(zh-Hans) h3, :lang(zh-Hans) h4 { letter-spacing: .01em; }
+:lang(zh-Hans) .prosa, :lang(zh-Hans) .prosa-pagina p, :lang(zh-Hans) .cita p { line-height: 1.85; }
+/* los anchos en `ch` se miden con el «0» latino; en chino cada caracter es el doble */
+:lang(zh-Hans) .portada-inicio p { max-width: 26em; }
+:lang(zh-Hans) .portada-pagina .lema { max-width: 30em; }
+:lang(zh-Hans) .bloque-cabecera p { max-width: 32em; }
+:lang(zh-Hans) .homenaje p { max-width: 36em; }

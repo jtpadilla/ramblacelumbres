@@ -2,15 +2,15 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 /**
- * Cada guia existe en castellano y en valenciano como dos ficheros con la
- * misma `key` (src/content/articulos/es/<key>.md y .../ca/<key>.md).
+ * Cada guia existe en los cuatro idiomas como ficheros con la misma `key`
+ * (src/content/articulos/es/<key>.md, .../ca/, .../en/ y .../zh/).
  */
 const articulos = defineCollection({
   loader: glob({ base: './src/content/articulos', pattern: '**/*.md' }),
   schema: ({ image }) =>
     z.object({
       key: z.string(),
-      lang: z.enum(['es', 'ca', 'en']),
+      lang: z.enum(['es', 'ca', 'en', 'zh']),
       ruta: z.string(),
       title: z.string(),
       subtitle: z.string().optional(),

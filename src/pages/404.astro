@@ -5,6 +5,7 @@ import { ui } from '../site/ui';
 const es = ui('es');
 const ca = ui('ca');
 const en = ui('en');
+const zh = ui('zh');
 ---
 
 <Base lang="es" titulo={es.noEncontrada}>
@@ -27,6 +28,11 @@ const en = ui('en');
       <h2 style="font-size:1.5rem; margin-bottom:.5rem">{en.noEncontrada}</h2>
       <p>{en.noEncontradaTexto}</p>
       <p><a href={urlInicio('en')}>{en.volverInicio} →</a></p>
+    </div>
+    <div lang="zh-Hans" style="margin-top:2rem">
+      <h2 style="font-size:1.5rem; margin-bottom:.5rem">{zh.noEncontrada}</h2>
+      <p>{zh.noEncontradaTexto}</p>
+      <p><a href={urlInicio('zh')}>{zh.volverInicio} →</a></p>
     </div>
   </div>
 </Base>

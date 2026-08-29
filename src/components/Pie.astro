@@ -1,5 +1,5 @@
 ---
-import { SECCIONES, SECCION_KEYS, PAGINAS, SITIO, AUTORES, LANGS, urlSeccion, urlPagina, urlCatalogo, urlInicio, urlRss, type Lang, type Alternativas } from '../site/config';
+import { SECCIONES, SECCION_KEYS, PAGINAS, SITIO, AUTORES, LANGS, CODIGO_IDIOMA, urlSeccion, urlPagina, urlCatalogo, urlInicio, urlRss, type Lang, type Alternativas } from '../site/config';
 import { ui } from '../site/ui';
 
 interface Props { lang: Lang; alternativas?: Alternativas }
@@ -27,7 +27,7 @@ const anio = new Date().getFullYear();
       <ul>
         <li><a href={urlPagina(lang, 'autores')}>{PAGINAS.autores.nombre[lang]}</a></li>
         <li><a href={urlPagina(lang, 'proyecto')}>{PAGINAS.proyecto.nombre[lang]}</a></li>
-        {LANGS.filter((l) => l !== lang).map((l) => <li><a href={alternativas?.[l] ?? urlInicio(l)} hreflang={l} lang={l}>{ui(l).idioma}</a></li>)}
+        {LANGS.filter((l) => l !== lang).map((l) => <li><a href={alternativas?.[l] ?? urlInicio(l)} hreflang={CODIGO_IDIOMA[l]} lang={CODIGO_IDIOMA[l]}>{ui(l).idioma}</a></li>)}
         <li><a href={SITIO.hermano.url} rel="noopener">{t.hermano}: {SITIO.hermano.nombre}</a></li>
         <li><a href={SITIO.repositorio} rel="noopener">{t.codigo}</a></li>
         <li><a href={urlRss(lang)}>{t.rss}</a></li>

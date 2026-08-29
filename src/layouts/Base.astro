@@ -2,7 +2,7 @@
 import { Font } from 'astro:assets';
 import Cabecera from '../components/Cabecera.astro';
 import Pie from '../components/Pie.astro';
-import { SITIO, LANGS, LANG_POR_DEFECTO, urlRss, urlPublico, type Lang, type Alternativas } from '../site/config';
+import { SITIO, LANGS, LANG_POR_DEFECTO, CODIGO_IDIOMA, urlRss, urlPublico, type Lang, type Alternativas } from '../site/config';
 import { ui } from '../site/ui';
 import '../styles/global.css';
 
@@ -29,14 +29,14 @@ const imagenAbs = imagen ? new URL(imagen, Astro.site).href : undefined;
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={CODIGO_IDIOMA[lang]}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{tituloCompleto}</title>
     <meta name="description" content={descripcion} />
     <link rel="canonical" href={canonica.href} />
-    {alternativas && LANGS.map((l) => <link rel="alternate" hreflang={l} href={new URL(alternativas[l], Astro.site).href} />)}
+    {alternativas && LANGS.map((l) => <link rel="alternate" hreflang={CODIGO_IDIOMA[l]} href={new URL(alternativas[l], Astro.site).href} />)}
     {alternativas && <link rel="alternate" hreflang="x-default" href={new URL(alternativas[LANG_POR_DEFECTO], Astro.site).href} />}
     <link rel="icon" href={urlPublico('favicon.svg')} type="image/svg+xml" />
     <link rel="alternate" type="application/rss+xml" title={SITIO.titulo[lang]} href={urlRss(lang)} />

@@ -90,7 +90,7 @@ for (const l of LANGS) {
     {relacionadas.length > 0 && (
       <section class="contenedor relacionados">
         <div class="bloque-cabecera">
-          <h2>{t.masEnSeccion} {s.nombre[lang]}</h2>
+          <h2>{t.masEnSeccion(s.nombre[lang])}</h2>
           <a class="enlace" href={urlSeccion(lang, section)}>{t.verSeccion}</a>
         </div>
         <ul class="rejilla">{relacionadas.map((g) => <Tarjeta guia={g} />)}</ul>
