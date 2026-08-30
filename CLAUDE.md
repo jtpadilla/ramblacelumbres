@@ -21,7 +21,7 @@ entre 2014 y 2016.
 | **Tadeo Julián Querol** | Fotografías |
 | **Juan Tadeo Padilla Julián** | Programación, migración y contacto para correcciones |
 
-Francisca y Tadeo son hermanos, nacidos en Cinctorres, y ya no pueden mantener el blog. El
+Francisca y Tadeo son hermanos, nacidos en Cinctorres, y ya no mantienen el blog. El
 sitio es una iniciativa familiar desinteresada, sin publicidad ni ánimo de lucro, para
 divulgar y conservar el patrimonio natural de Cinctorres y de la comarca dels Ports, y un
 homenaje a su trabajo.
