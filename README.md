@@ -4,7 +4,7 @@ Guía fotográfica de la biodiversidad de la **rambla de Celumbres**, en la coma
 (Cinctorres, Castellfort y Portell de Morella): 23 guías y 315 fotografías sobre el paraje,
 las estaciones, la flora, la fauna, los hongos y los líquenes, en castellano, valenciano, inglés y chino.
 
-[www.ramblacelumbres.org](https://www.ramblacelumbres.org/)
+[ramblacelumbres.org](https://ramblacelumbres.org/)
 
 - **Textos:** Francisca Julián Querol («Paquita»)
 - **Fotografías:** Tadeo Julián Querol

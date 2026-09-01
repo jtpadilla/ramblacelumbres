@@ -9,7 +9,7 @@ export const LANG_POR_DEFECTO: Lang = 'es';
 export type T = Record<Lang, string>;
 
 export const SITIO = {
-  url: 'https://www.ramblacelumbres.org',
+  url: 'https://ramblacelumbres.org',
   nombre: 'Rambla Celumbres',
   titulo: { es: 'Ecosistema de la Rambla Celumbres', ca: 'Ecosistema de la Rambla Celumbres', en: 'Rambla Celumbres Ecosystem', zh: '塞伦布雷斯干河生态系统' } as T,
   lema: {

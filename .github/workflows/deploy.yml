@@ -31,12 +31,6 @@ jobs:
         run: npm ci
 
       - name: Build
-        # PROVISIONAL: mientras www.ramblacelumbres.org no apunte a GitHub Pages,
-        # el sitio se sirve en jtpadilla.github.io/ramblacelumbres/. Al activar
-        # el dominio, borrar estas dos variables y el sitio se compila para la raiz.
-        env:
-          SITE_URL: https://jtpadilla.github.io
-          BASE_PATH: /ramblacelumbres/
         run: npm run build
 
       - name: Upload Pages artifact

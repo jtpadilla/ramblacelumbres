@@ -7,7 +7,7 @@ Leer este fichero completo antes de tocar nada.
 
 ## Qué es este proyecto
 
-**Ecosistema de la Rambla Celumbres** ([www.ramblacelumbres.org](https://www.ramblacelumbres.org/)):
+**Ecosistema de la Rambla Celumbres** ([ramblacelumbres.org](https://ramblacelumbres.org/)):
 guía fotográfica de la biodiversidad de la rambla de Celumbres (Cinctorres, Castellfort y
 Portell de Morella, comarca dels Ports). 23 guías y 315 fotografías, en castellano,
 valenciano, inglés y chino simplificado, hechas a partir de un blog de WordPress publicado
@@ -127,7 +127,7 @@ src/
     [...ruta].astro         TODAS las páginas, en los dos idiomas, salen de aquí
     404.astro, rss.xml.ts, ca/rss.xml.ts, en/rss.xml.ts, zh/rss.xml.ts
   styles/global.css         diseño completo (tokens, claro/oscuro, componentes, bloque :lang(zh-Hans))
-public/CNAME                www.ramblacelumbres.org
+public/CNAME                ramblacelumbres.org
 tools/export-wp.py          migración desde el WordPress (histórico; ver abajo)
 tools/mapa.py               genera el mapa SVG desde OpenStreetMap y el IGN; caché en tools/_mapa/
 wordpress-export/*.xml      exportación oficial del WordPress, 2026-08-29
@@ -250,15 +250,16 @@ Los textos del bloque (`mapaTitulo`, `mapaTexto`, `mapaFuentes`) están en `ui.t
 GitHub Pages mediante `.github/workflows/deploy.yml`: cada `push` a `main` compila y
 publica. Dominio propio en `public/CNAME`.
 
-**Estado provisional:** el workflow compila con `SITE_URL=https://jtpadilla.github.io` y
-`BASE_PATH=/ramblacelumbres/` para que la URL provisional
-<https://jtpadilla.github.io/ramblacelumbres/> funcione entera. Todas las URL internas
-salen de `prefijo()`/`urlPublico()` en `src/site/config.ts`, que anteponen
-`import.meta.env.BASE_URL`; nunca escribir rutas absolutas a mano en las vistas. Al activar
-el dominio hay que **borrar esas dos variables del workflow**. Falta: mover el DNS del registrador a GitHub
-Pages (`www` → `CNAME jtpadilla.github.io`) y declarar el dominio en Pages
-(`gh api -X PUT repos/jtpadilla/ramblacelumbres/pages -f cname=www.ramblacelumbres.org`).
-Mientras tanto, el dominio sirve el WordPress antiguo.
+El dominio canónico es **`ramblacelumbres.org`**, sin `www`, en la raíz: es lo que dice
+`public/CNAME`, lo que hay que declarar en Pages y lo que va en `site` de
+`astro.config.mjs` y en `SITIO.url` de `src/site/config.ts` (los tres tienen que coincidir).
+`www.ramblacelumbres.org` es un `CNAME` a `jtpadilla.github.io` y GitHub lo redirige al
+dominio sin `www`. El DNS del registrador se movió a GitHub Pages el 1 de septiembre de
+2026: el ápice tiene las cuatro A de Pages (185.199.108–111.153) y `www` el `CNAME`.
+
+Todas las URL internas salen de `prefijo()`/`urlPublico()` en `src/site/config.ts`, que
+anteponen `import.meta.env.BASE_URL`; nunca escribir rutas absolutas a mano en las vistas.
+Eso permitiría volver a servir el sitio bajo un subdirectorio cambiando solo `base`.
 
 ---
 
