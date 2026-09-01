@@ -1,6 +1,6 @@
 import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
-import { SITIO, SECCIONES, type Lang } from './config';
+import { SITIO, SECCIONES, urlInicio, type Lang } from './config';
 import { guiasDe, urlDe } from './guias';
 
 export async function feed(lang: Lang, context: APIContext) {
@@ -8,8 +8,9 @@ export async function feed(lang: Lang, context: APIContext) {
   return rss({
     title: SITIO.titulo[lang],
     description: SITIO.descripcion[lang],
-    // las URL de las guias ya llevan la base del sitio, asi que se resuelven sobre la raiz
-    site: context.site!.href,
+    // El <link> del canal apunta a la portada de SU idioma, no a la del sitio. Las URL de
+    // las guias son rutas absolutas y ya llevan la base, asi que se resuelven igual.
+    site: new URL(urlInicio(lang), context.site!).href,
     customData: `<language>${SITIO.locale[lang]}</language>`,
     items: guias.map((g) => ({
       title: g.data.title,

@@ -250,12 +250,20 @@ Los textos del bloque (`mapaTitulo`, `mapaTexto`, `mapaFuentes`) están en `ui.t
 GitHub Pages mediante `.github/workflows/deploy.yml`: cada `push` a `main` compila y
 publica. Dominio propio en `public/CNAME`.
 
-El dominio canónico es **`ramblacelumbres.org`**, sin `www`, en la raíz: es lo que dice
-`public/CNAME`, lo que hay que declarar en Pages y lo que va en `site` de
-`astro.config.mjs` y en `SITIO.url` de `src/site/config.ts` (los tres tienen que coincidir).
-`www.ramblacelumbres.org` es un `CNAME` a `jtpadilla.github.io` y GitHub lo redirige al
-dominio sin `www`. El DNS del registrador se movió a GitHub Pages el 1 de septiembre de
-2026: el ápice tiene las cuatro A de Pages (185.199.108–111.153) y `www` el `CNAME`.
+El dominio canónico es **`ramblacelumbres.org`**, sin `www`, en la raíz. Aparece en cuatro
+sitios que tienen que coincidir: `public/CNAME`, el dominio declarado en Pages, `site` de
+`astro.config.mjs` y `SITIO.url` de `src/site/config.ts`. `www.ramblacelumbres.org` es un
+`CNAME` a `jtpadilla.github.io` y GitHub lo redirige al dominio sin `www`.
+
+El sitio está publicado desde el 1 de septiembre de 2026: DNS movido al registrador de
+GitHub Pages (el ápice con las cuatro A, 185.199.108–111.153, y `www` con el `CNAME`),
+dominio declarado en Pages, certificado emitido para ambos nombres y **Enforce HTTPS**
+activado. Para consultar o cambiar esa configuración:
+
+```bash
+gh api repos/jtpadilla/ramblacelumbres/pages
+gh api -X PUT repos/jtpadilla/ramblacelumbres/pages -f cname=ramblacelumbres.org
+```
 
 Todas las URL internas salen de `prefijo()`/`urlPublico()` en `src/site/config.ts`, que
 anteponen `import.meta.env.BASE_URL`; nunca escribir rutas absolutas a mano en las vistas.
